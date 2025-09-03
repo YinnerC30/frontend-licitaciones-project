@@ -1,9 +1,10 @@
-import { Button } from './components/ui/button';
+import { RouterProvider } from 'react-router';
+import { BrowSerRouter } from './router/router';
 
 function App() {
   return (
     <>
-      <Button>Soy un boton</Button>
+      <RouterProvider router={BrowSerRouter} />
     </>
   );
 }
