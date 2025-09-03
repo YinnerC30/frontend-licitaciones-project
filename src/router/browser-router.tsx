@@ -1,19 +1,31 @@
-import { createBrowserRouter } from 'react-router';
+import AppLayout from '@/layout/app-layout';
+import AuthLayout from '@/layout/auth-layout';
+import { ManagementLayout } from '@/layout/management-layout';
+import { RootLayout } from '@/layout/root-layout';
+import { createBrowserRouter, Navigate } from 'react-router';
 
 export const BrowSerRouter = createBrowserRouter([
   {
     path: '/',
-    element: <div>Hello World</div>,
+    Component: RootLayout,
     errorElement: <div>Hubo un error</div>,
     children: [
       {
         path: 'management',
-        element: <div>Management</div>,
+        Component: ManagementLayout,
         children: [
           {
+            index: true,
+            element: <Navigate to={'auth'} />,
+          },
+          {
             path: 'auth',
-            element: <div>Auth</div>,
+            Component: AuthLayout,
             children: [
+              {
+                index: true,
+                element: <Navigate to={'login'} />,
+              },
               {
                 path: 'login',
                 element: <div>Login</div>,
@@ -22,8 +34,12 @@ export const BrowSerRouter = createBrowserRouter([
           },
           {
             path: 'app',
-            element: <div>App</div>,
+            Component: AppLayout,
             children: [
+              {
+                index: true,
+                element: <Navigate to={'home'} />,
+              },
               {
                 path: 'home',
                 element: <div>Home App Administration</div>,
