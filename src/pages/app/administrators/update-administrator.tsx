@@ -1,8 +1,12 @@
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -11,79 +15,64 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { useCreateAdministrator } from '@/hooks/administrators/use-create-administrator';
-import { useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { useUpdateAdministrator } from '@/hooks/administrators/use-update-administrator';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 
 // Esquema de validación con Zod
 const createAdministratorSchema = z.object({
   first_name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
   last_name: z.string().min(2, 'El apellido debe tener al menos 2 caracteres'),
-  email: z.string().email('Debe ser un email válido'),
+  email: z.email('Debe ser un email válido'),
   cell_phone_number: z
     .string()
     .min(10, 'El número de teléfono debe tener al menos 10 dígitos'),
-  password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres'),
   role: z.enum(['user', 'admin']),
 });
 
-type CreateAdministratorFormData = z.infer<typeof createAdministratorSchema>;
+type UpdateAdministratorFormData = z.infer<typeof createAdministratorSchema>;
 
-const CreateAdministrator = () => {
-  const { mutate, isPending } = useCreateAdministrator();
-  const [statusDialog, setStatusDialog] = useState(false);
+interface UpdateAdministratorProps {
+  data: any;
+  statusDialog: boolean;
+  onChangeStatusDialog: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-  const form = useForm<CreateAdministratorFormData>({
+const UpdateAdministrator: React.FC<UpdateAdministratorProps> = (props) => {
+  const { statusDialog, onChangeStatusDialog, data } = props;
+
+  const { mutate, isPending } = useUpdateAdministrator();
+
+  const form = useForm<UpdateAdministratorFormData>({
     resolver: zodResolver(createAdministratorSchema),
-    defaultValues: {
-      first_name: '',
-      last_name: '',
-      email: '',
-      cell_phone_number: '',
-      password: '',
-      role: 'user',
-    },
+    defaultValues: data,
   });
 
-  const onSubmit = (data: CreateAdministratorFormData) => {
-    console.log('Datos del formulario:', data);
-    // Aquí se implementará la lógica para guardar el administrador
-    mutate(data, {
-      onSuccess: () => {
-        form.reset();
-      },
-    });
+  const onSubmit = (data: UpdateAdministratorFormData) => {
+    mutate(
+      { id: props.data.id, ...data },
+      {
+        onSuccess: ({ data }) => {
+          form.reset(data);
+        },
+      }
+    );
   };
 
   const onCancel = () => {
     form.reset();
-    setStatusDialog(false);
+    onChangeStatusDialog(false);
   };
 
   return (
-    <Dialog open={statusDialog} onOpenChange={setStatusDialog}>
-      <DialogTrigger asChild>
-        <Button
-          variant="default"
-          className="w-24"
-          onClick={() => setStatusDialog(true)}
-        >
-          Crear
-        </Button>
-      </DialogTrigger>
+    <Dialog open={statusDialog} onOpenChange={onChangeStatusDialog}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Registrar un administrador</DialogTitle>
+          <DialogTitle>Actualizar información del administrador</DialogTitle>
           <DialogDescription>
-            Complete los campos para crear un nuevo administrador en el sistema.
+            Complete los campos para actualizar al administrador en el sistema.
           </DialogDescription>
         </DialogHeader>
 
@@ -153,24 +142,6 @@ const CreateAdministrator = () => {
 
             <FormField
               control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Contraseña</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Ingrese la contraseña"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
               name="role"
               render={({ field }) => (
                 <FormItem>
@@ -207,4 +178,4 @@ const CreateAdministrator = () => {
   );
 };
 
-export default CreateAdministrator;
+export default UpdateAdministrator;

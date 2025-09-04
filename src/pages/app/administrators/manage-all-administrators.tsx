@@ -29,6 +29,7 @@ export const columns: ColumnDef<any>[] = [
     cell: ({ row }) => {
       const record = row.original;
 
+      const [openDialog, setOpenDialog] = useState(false);
       const { mutate } = useRemoveAdministrator();
 
       const handleRemove = () => {
@@ -36,23 +37,39 @@ export const columns: ColumnDef<any>[] = [
       };
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(record.id)}
-            >
-              Copiar ID
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleRemove}>Eliminar</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() => navigator.clipboard.writeText(record.id)}
+              >
+                Copiar ID
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  setOpenDialog(true);
+                }}
+              >
+                Modificar
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleRemove}>
+                Eliminar
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <UpdateAdministrator
+            statusDialog={openDialog}
+            onChangeStatusDialog={setOpenDialog}
+            data={record}
+          />
+        </>
       );
     },
   },
@@ -80,8 +97,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { MoreHorizontal } from 'lucide-react';
 import { useRemoveAdministrator } from '@/hooks/administrators/use-remove-administrator';
+import { MoreHorizontal } from 'lucide-react';
+import { useState } from 'react';
+import UpdateAdministrator from './update-administrator';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
