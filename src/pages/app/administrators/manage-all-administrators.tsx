@@ -29,6 +29,12 @@ export const columns: ColumnDef<any>[] = [
     cell: ({ row }) => {
       const record = row.original;
 
+      const { mutate } = useRemoveAdministrator();
+
+      const handleRemove = () => {
+        mutate(record.id);
+      };
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -44,6 +50,7 @@ export const columns: ColumnDef<any>[] = [
             >
               Copiar ID
             </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleRemove}>Eliminar</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -74,6 +81,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { MoreHorizontal } from 'lucide-react';
+import { useRemoveAdministrator } from '@/hooks/administrators/use-remove-administrator';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
