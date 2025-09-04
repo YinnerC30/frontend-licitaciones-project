@@ -5,6 +5,7 @@ import { RootLayout } from '@/layout/root-layout';
 import CreateAdministrator from '@/pages/app/administrators/create-administrator';
 import { ManageAllAdministrator } from '@/pages/app/administrators/manage-all-administrators';
 import { Home } from '@/pages/app/home';
+import { ManageAllTenant } from '@/pages/app/tenants/manage-all-tenants';
 import { Login } from '@/pages/auth/login';
 import { createBrowserRouter, Navigate } from 'react-router';
 
@@ -50,7 +51,6 @@ export const BrowSerRouter = createBrowserRouter([
               },
               {
                 path: 'administrators',
-
                 children: [
                   {
                     index: true,
@@ -68,7 +68,16 @@ export const BrowSerRouter = createBrowserRouter([
               },
               {
                 path: 'tenants',
-                element: <div>Inquilinos</div>,
+                children: [
+                  {
+                    index: true,
+                    element: <Navigate to="all" />,
+                  },
+                  {
+                    path: 'all',
+                    Component: ManageAllTenant,
+                  },
+                ],
               },
             ],
           },
