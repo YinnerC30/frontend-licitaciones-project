@@ -81,6 +81,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
+import ButtonRefetch from '@/components/button-refetch';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -179,14 +180,12 @@ export const ManageAllAdministrator = () => {
       <h1 className="font-bold text-2xl my-4">Administradores del sistema</h1>
 
       <div className="flex justify-between">
-        <Button
-          type="button"
-          onClick={async () => {
+        <ButtonRefetch
+          onRefetch={async () => {
             await refetch();
           }}
-        >
-          Recargar
-        </Button>
+        />
+
         <CreateAdministrator />
       </div>
       {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
