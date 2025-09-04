@@ -11,20 +11,20 @@ import {
 import { Navigate, Outlet } from 'react-router';
 
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
   SidebarHeader,
 } from '@/components/ui/sidebar';
-import { Calendar, ChevronUp, Home, Inbox, User2 } from 'lucide-react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { useAuthStore } from '@/data/auth-store';
+import { ChevronUp, Home, ShieldUser, User2, Users } from 'lucide-react';
 
 const items = [
   {
@@ -35,12 +35,12 @@ const items = [
   {
     title: 'Administradores',
     url: 'administrators',
-    icon: Inbox,
+    icon: ShieldUser,
   },
   {
     title: 'Inquilinos',
     url: 'tenants',
-    icon: Calendar,
+    icon: Users,
   },
 ];
 
