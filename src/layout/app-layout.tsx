@@ -25,6 +25,7 @@ import {
 } from '@/components/ui/sidebar';
 import { useAuthStore } from '@/data/auth-store';
 import { ChevronUp, Home, ShieldUser, User2, Users } from 'lucide-react';
+import { ModeToggle } from '@/components/mode-toggle';
 
 const items = [
   {
@@ -75,6 +76,7 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter>
+        <ModeToggle />
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>
