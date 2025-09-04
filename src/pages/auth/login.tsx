@@ -1,8 +1,15 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '@/components/ui/form';
 
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { useLoginAdministratorUser } from '@/hooks/use-login-administrator-user';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -30,12 +37,12 @@ export function Login() {
 
   const { mutate, isPending } = useLoginAdministratorUser();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormData>({
+  const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: ''
+    }
   });
 
   const onSubmit = async (data: LoginFormData) => {
@@ -55,72 +62,77 @@ export function Login() {
         </p>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Campo de nombre de usuario */}
-          <div className="space-y-2">
-            <Label htmlFor="email" className="text-sm font-medium">
-              Nombre de usuario
-            </Label>
-            <div className="relative">
-              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-              <Input
-                id="email"
-                type="text"
-                placeholder="Ingresa tu nombre de usuario"
-                className={`pl-10 ${errors.email ? 'border-destructive' : ''}`}
-                {...register('email')}
-              />
-            </div>
-            {errors.email && (
-              <p className="text-sm text-destructive">{errors.email.message}</p>
-            )}
-          </div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Correo electrónico</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                      <Input
+                        id="email"
+                        type="text"
+                        placeholder="Ingresa tu correo electrónico"
+                        className={`pl-10`}
+                        {...field}
+                      />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          {/* Campo de contraseña */}
-          <div className="space-y-2">
-            <Label htmlFor="password" className="text-sm font-medium">
-              Contraseña
-            </Label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-              <Input
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                placeholder="Ingresa tu contraseña"
-                className={`pl-10 pr-10 ${
-                  errors.password ? 'border-destructive' : ''
-                }`}
-                {...register('password')}
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                onClick={togglePasswordVisibility}
-                aria-label={
-                  showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'
-                }
-              >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4 text-muted-foreground" />
-                ) : (
-                  <Eye className="h-4 w-4 text-muted-foreground" />
-                )}
-              </Button>
-            </div>
-            {errors.password && (
-              <p className="text-sm text-destructive">
-                {errors.password.message}
-              </p>
-            )}
-          </div>
-
-          {/* Botón de envío */}
-          <Button type="submit" className="w-full" disabled={isPending}>
-            {isPending ? 'Iniciando sesión...' : 'Iniciar Sesión'}
-          </Button>
-        </form>
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Contraseña</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                      <Input
+                        id="password"
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="Ingresa tu contraseña"
+                        className={`pl-10 pr-10`}
+                        {...field}
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                        onClick={togglePasswordVisibility}
+                        aria-label={
+                          showPassword
+                            ? 'Ocultar contraseña'
+                            : 'Mostrar contraseña'
+                        }
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-4 w-4 text-muted-foreground" />
+                        ) : (
+                          <Eye className="h-4 w-4 text-muted-foreground" />
+                        )}
+                      </Button>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* Botón de envío */}
+            <Button type="submit" className="w-full" disabled={isPending}>
+              {isPending ? 'Ingresando...' : 'Ingresar'}
+            </Button>
+          </form>
+        </Form>
       </CardContent>
     </Card>
   );

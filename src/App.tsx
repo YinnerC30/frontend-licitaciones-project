@@ -12,7 +12,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={BrowSerRouter} />
         <ReactQueryDevtools initialIsOpen={false} />
-        <Toaster richColors />
+        <Toaster richColors closeButton />
       </QueryClientProvider>
     </>
   );
