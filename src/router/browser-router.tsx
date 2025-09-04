@@ -2,6 +2,7 @@ import AppLayout from '@/layout/app-layout';
 import AuthLayout from '@/layout/auth-layout';
 import { ManagementLayout } from '@/layout/management-layout';
 import { RootLayout } from '@/layout/root-layout';
+import { Home } from '@/pages/app/home';
 import { Login } from '@/pages/auth/login';
 import { createBrowserRouter, Navigate } from 'react-router';
 
@@ -29,7 +30,7 @@ export const BrowSerRouter = createBrowserRouter([
               },
               {
                 path: 'login',
-                Component: Login
+                Component: Login,
               },
             ],
           },
@@ -43,7 +44,7 @@ export const BrowSerRouter = createBrowserRouter([
               },
               {
                 path: 'home',
-                element: <div>Home App Administration</div>,
+                Component: Home,
               },
               {
                 path: 'administrators',
