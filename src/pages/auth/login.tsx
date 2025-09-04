@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useLoginAdministratorUser } from '@/hooks/use-login-administrator-user';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Eye, EyeOff, Lock, User } from 'lucide-react';
 import { useState } from 'react';
@@ -33,7 +34,9 @@ export function Login() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormData>({});
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+  });
 
   const onSubmit = async (data: LoginFormData) => {
     mutate(data);
