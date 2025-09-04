@@ -1,4 +1,5 @@
 import AppLayout from '@/layout/app-layout';
+import AppTenantLayout from '@/layout/app-tenant-layout';
 import AuthLayout from '@/layout/auth-layout';
 import AuthTenantLayout from '@/layout/auth-tenant-layout';
 import { ManagementLayout } from '@/layout/management-layout';
@@ -9,6 +10,7 @@ import { ManageAllAdministrator } from '@/pages/management/app/administrators/ma
 import { Home } from '@/pages/management/app/home';
 import { ManageAllTenant } from '@/pages/management/app/tenants/manage-all-tenants';
 import { Login } from '@/pages/management/auth/login';
+import { HomeTenant } from '@/pages/tenant/app/home-tenant';
 import { LoginTenant } from '@/pages/tenant/auth/login-tenant';
 import { createBrowserRouter, Navigate } from 'react-router';
 
@@ -110,7 +112,7 @@ export const BrowSerRouter = createBrowserRouter([
           },
           {
             path: 'app',
-            Component: AppLayout,
+            Component: AppTenantLayout,
             children: [
               {
                 index: true,
@@ -118,7 +120,7 @@ export const BrowSerRouter = createBrowserRouter([
               },
               {
                 path: 'home',
-                Component: Home,
+                Component: HomeTenant,
               },
             ],
           },

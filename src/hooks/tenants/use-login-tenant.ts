@@ -1,4 +1,3 @@
-import { useAuthStore } from '@/data/auth-store';
 import { useAuthTenantStore } from '@/data/auth-tenant-store';
 import { AxiosInstance } from '@/services/axios-service';
 import { useMutation } from '@tanstack/react-query';

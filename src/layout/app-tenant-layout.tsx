@@ -10,6 +10,7 @@ import {
 
 import { Link, Navigate, Outlet } from 'react-router';
 
+import { ModeToggle } from '@/components/mode-toggle';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,31 +24,20 @@ import {
   SidebarGroup,
   SidebarHeader,
 } from '@/components/ui/sidebar';
-import { useAuthStore } from '@/data/auth-store';
-import { ChevronUp, Home, ShieldUser, User2, Users } from 'lucide-react';
-import { ModeToggle } from '@/components/mode-toggle';
+import { useAuthTenantStore } from '@/data/auth-tenant-store';
 import { NAVIGATION_ROUTES } from '@/router/navigation-routes';
+import { ChevronUp, Home, User2 } from 'lucide-react';
 
 const items = [
   {
     title: 'Inicio',
-    url: NAVIGATION_ROUTES.management.home,
+    url: NAVIGATION_ROUTES.tenant.home,
     icon: Home,
-  },
-  {
-    title: 'Administradores',
-    url: NAVIGATION_ROUTES.management.administrators.all,
-    icon: ShieldUser,
-  },
-  {
-    title: 'Inquilinos',
-    url: NAVIGATION_ROUTES.management.tenants.all,
-    icon: Users,
   },
 ];
 
 export function AppSidebar() {
-  const { isAuthenticated, logout } = useAuthStore((state) => state);
+  const { isAuthenticated, logout } = useAuthTenantStore((state) => state);
 
   if (!isAuthenticated) {
     return <Navigate to={'../auth'} replace />;
@@ -58,7 +48,7 @@ export function AppSidebar() {
       <SidebarHeader />
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Administración</SidebarGroupLabel>
+          <SidebarGroupLabel>Barra de navegación</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
@@ -108,7 +98,7 @@ export function AppSidebar() {
   );
 }
 
-const AppLayout = () => {
+const AppTenantLayout = () => {
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -120,4 +110,4 @@ const AppLayout = () => {
   );
 };
 
-export default AppLayout;
+export default AppTenantLayout;

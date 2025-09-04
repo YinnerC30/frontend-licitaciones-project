@@ -10,8 +10,6 @@ import {
 } from '@/components/ui/form';
 
 import { Input } from '@/components/ui/input';
-import { useLoginAdministratorUser } from '@/hooks/administrators/use-login-administrator-user';
-import { useGetTenantBySubdomain } from '@/hooks/tenants/use-get-tenant-by-subdomain';
 import { useLoginTenant } from '@/hooks/tenants/use-login-tenant';
 import { zodResolver } from '@hookform/resolvers/zod';
 
