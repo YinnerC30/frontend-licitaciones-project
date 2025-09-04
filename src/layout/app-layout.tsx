@@ -111,7 +111,7 @@ const AppLayout = () => {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main>
+      <main className='px-4'>
         <SidebarTrigger />
         <Outlet />
       </main>
