@@ -1,10 +1,19 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider } from 'react-router';
 import { BrowSerRouter } from './router/browser-router';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Toaster } from "@/components/ui/sonner"
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
     <>
-      <RouterProvider router={BrowSerRouter} />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={BrowSerRouter} />
+        <ReactQueryDevtools initialIsOpen={false} />
+        <Toaster richColors />
+      </QueryClientProvider>
     </>
   );
 }
