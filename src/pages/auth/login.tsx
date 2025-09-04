@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/form';
 
 import { Input } from '@/components/ui/input';
-import { useLoginAdministratorUser } from '@/hooks/use-login-administrator-user';
+import { useLoginAdministratorUser } from '@/hooks/administrators/use-login-administrator-user';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Eye, EyeOff, Lock, User } from 'lucide-react';
