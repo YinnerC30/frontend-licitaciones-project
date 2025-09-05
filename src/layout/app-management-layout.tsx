@@ -50,7 +50,6 @@ export function AppSidebar() {
   const { isAuthenticated, logout, user } = useAuthManagementStore(
     (state) => state
   );
-  console.log('🚀 ~ AppSidebar ~ user:', user)
 
   if (!isAuthenticated) {
     return <Navigate to={'../auth'} replace />;
@@ -85,8 +84,8 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton className='capitalize'>
-                  <User2 /> { user?.first_name }
+                <SidebarMenuButton className="capitalize">
+                  <User2 /> {user?.first_name}
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
