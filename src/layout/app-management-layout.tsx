@@ -10,6 +10,7 @@ import {
 
 import { Link, Navigate, Outlet } from 'react-router';
 
+import { ModeToggle } from '@/components/mode-toggle';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,10 +24,9 @@ import {
   SidebarGroup,
   SidebarHeader,
 } from '@/components/ui/sidebar';
-import { useAuthStore } from '@/data/auth-store';
-import { ChevronUp, Home, ShieldUser, User2, Users } from 'lucide-react';
-import { ModeToggle } from '@/components/mode-toggle';
+import { useAuthManagementStore } from '@/data/auth-management-store';
 import { NAVIGATION_ROUTES } from '@/router/navigation-routes';
+import { ChevronUp, Home, ShieldUser, User2, Users } from 'lucide-react';
 
 const items = [
   {
@@ -47,7 +47,10 @@ const items = [
 ];
 
 export function AppSidebar() {
-  const { isAuthenticated, logout } = useAuthStore((state) => state);
+  const { isAuthenticated, logout, user } = useAuthManagementStore(
+    (state) => state
+  );
+  console.log('🚀 ~ AppSidebar ~ user:', user)
 
   if (!isAuthenticated) {
     return <Navigate to={'../auth'} replace />;
@@ -82,8 +85,8 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
-                  <User2 /> Username
+                <SidebarMenuButton className='capitalize'>
+                  <User2 /> { user?.first_name }
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>

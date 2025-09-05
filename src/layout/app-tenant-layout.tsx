@@ -74,7 +74,7 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
+                <SidebarMenuButton className="capitalize">
                   <User2 /> {user?.username}
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>

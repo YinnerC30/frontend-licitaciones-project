@@ -1,8 +1,8 @@
-import { useAuthStore } from '@/data/auth-store';
+import { useAuthManagementStore } from '@/data/auth-management-store';
 import { Navigate, Outlet } from 'react-router';
 
 export const AuthManagementLayout = () => {
-  const isAuthUser = useAuthStore((state) => state.isAuthenticated);
+  const isAuthUser = useAuthManagementStore((state) => state.isAuthenticated);
 
   if (isAuthUser) {
     return <Navigate to={'../app'} replace />;
