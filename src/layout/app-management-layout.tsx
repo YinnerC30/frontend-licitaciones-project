@@ -93,7 +93,6 @@ export function AppSidebar() {
               >
                 <DropdownMenuItem
                   onClick={() => {
-                    console.log('Hubo llamado');
                     logout();
                   }}
                 >
