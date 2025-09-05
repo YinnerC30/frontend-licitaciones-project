@@ -161,7 +161,7 @@ export function TenantsDataTable<TData, TValue>({
   );
 }
 
-export const ManageAllTenant = () => {
+export const ManageAllTenants = () => {
   const { data, isFetching, refetch } = useGetAllTenants();
 
   if (isFetching) {

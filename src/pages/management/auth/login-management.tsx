@@ -6,7 +6,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from '@/components/ui/form';
 
 import { Input } from '@/components/ui/input';
@@ -32,7 +32,7 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
-export function Login() {
+export function LoginManagement() {
   const [showPassword, setShowPassword] = useState(false);
 
   const { mutate, isPending } = useLoginAdministratorUser();
@@ -41,8 +41,8 @@ export function Login() {
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: '',
-      password: ''
-    }
+      password: '',
+    },
   });
 
   const onSubmit = async (data: LoginFormData) => {

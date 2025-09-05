@@ -108,7 +108,7 @@ export function AppSidebar() {
   );
 }
 
-const AppLayout = () => {
+const AppManagementLayout = () => {
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -120,4 +120,4 @@ const AppLayout = () => {
   );
 };
 
-export default AppLayout;
+export default AppManagementLayout;

@@ -1,7 +1,7 @@
 import { useAuthStore } from '@/data/auth-store';
 import { Navigate, Outlet } from 'react-router';
 
-export const AuthLayout = () => {
+export const AuthManagementLayout = () => {
   const isAuthUser = useAuthStore((state) => state.isAuthenticated);
 
   if (isAuthUser) {
@@ -17,4 +17,4 @@ export const AuthLayout = () => {
   );
 };
 
-export default AuthLayout;
+export default AuthManagementLayout;

@@ -1,15 +1,15 @@
-import AppLayout from '@/layout/app-layout';
+import AppManagementLayout from '@/layout/app-management-layout';
 import AppTenantLayout from '@/layout/app-tenant-layout';
-import AuthLayout from '@/layout/auth-layout';
+import AuthManagementLayout from '@/layout/auth-management-layout';
 import AuthTenantLayout from '@/layout/auth-tenant-layout';
 import { ManagementLayout } from '@/layout/management-layout';
 import { RootLayout } from '@/layout/root-layout';
 import { TenantLayout } from '@/layout/tenant-layout';
 import CreateAdministrator from '@/pages/management/app/administrators/create-administrator';
 import { ManageAllAdministrator } from '@/pages/management/app/administrators/manage-all-administrators';
-import { Home } from '@/pages/management/app/home';
-import { ManageAllTenant } from '@/pages/management/app/tenants/manage-all-tenants';
-import { Login } from '@/pages/management/auth/login';
+import { HomeManagement } from '@/pages/management/app/home';
+import { ManageAllTenants } from '@/pages/management/app/tenants/manage-all-tenants';
+import { LoginManagement } from '@/pages/management/auth/login-management';
 import { HomeTenant } from '@/pages/tenant/app/home-tenant';
 import { LoginTenant } from '@/pages/tenant/auth/login-tenant';
 import { createBrowserRouter, Navigate } from 'react-router';
@@ -30,7 +30,7 @@ export const BrowSerRouter = createBrowserRouter([
           },
           {
             path: 'auth',
-            Component: AuthLayout,
+            Component: AuthManagementLayout,
             children: [
               {
                 index: true,
@@ -38,13 +38,13 @@ export const BrowSerRouter = createBrowserRouter([
               },
               {
                 path: 'login',
-                Component: Login,
+                Component: LoginManagement,
               },
             ],
           },
           {
             path: 'app',
-            Component: AppLayout,
+            Component: AppManagementLayout,
             children: [
               {
                 index: true,
@@ -52,7 +52,7 @@ export const BrowSerRouter = createBrowserRouter([
               },
               {
                 path: 'home',
-                Component: Home,
+                Component: HomeManagement,
               },
               {
                 path: 'administrators',
@@ -80,7 +80,7 @@ export const BrowSerRouter = createBrowserRouter([
                   },
                   {
                     path: 'all',
-                    Component: ManageAllTenant,
+                    Component: ManageAllTenants,
                   },
                 ],
               },
