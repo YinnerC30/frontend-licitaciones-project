@@ -54,8 +54,6 @@ const CreateAdministrator = () => {
   });
 
   const onSubmit = (data: CreateAdministratorFormData) => {
-    console.log('Datos del formulario:', data);
-    // Aquí se implementará la lógica para guardar el administrador
     mutate(data, {
       onSuccess: () => {
         form.reset();

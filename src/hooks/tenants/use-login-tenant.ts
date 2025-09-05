@@ -17,8 +17,8 @@ export const useLoginTenant = () => {
 
   const mutation = useMutation({
     mutationFn: loginTenant,
-    onSuccess: ({ data: { id, username } }) => {
-      login({ id, username });
+    onSuccess: ({ data: { user } }) => {
+      login(user);
       navigate('/tenant/app');
       toast.success('Puedes ingresar Tenant');
     },

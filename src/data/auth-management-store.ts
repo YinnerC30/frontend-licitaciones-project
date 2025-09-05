@@ -4,6 +4,8 @@ import { persist } from 'zustand/middleware';
 interface User {
   id: string;
   email: string;
+  first_name: string;
+  last_name: string;
 }
 
 interface AuthState {
@@ -13,7 +15,7 @@ interface AuthState {
   logout: () => void;
 }
 
-export const useAuthStore = create<AuthState>()(
+export const useAuthManagementStore = create<AuthState>()(
   persist(
     (set) => ({
       user: null,
@@ -30,7 +32,7 @@ export const useAuthStore = create<AuthState>()(
         }),
     }),
     {
-      name: 'auth-storage',
+      name: 'auth-management-storage',
     }
   )
 );

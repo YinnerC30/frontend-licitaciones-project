@@ -10,6 +10,7 @@ import {
 
 import { Link, Navigate, Outlet } from 'react-router';
 
+import { ModeToggle } from '@/components/mode-toggle';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,10 +24,9 @@ import {
   SidebarGroup,
   SidebarHeader,
 } from '@/components/ui/sidebar';
-import { useAuthStore } from '@/data/auth-store';
-import { ChevronUp, Home, ShieldUser, User2, Users } from 'lucide-react';
-import { ModeToggle } from '@/components/mode-toggle';
+import { useAuthManagementStore } from '@/data/auth-management-store';
 import { NAVIGATION_ROUTES } from '@/router/navigation-routes';
+import { ChevronUp, Home, ShieldUser, User2, Users } from 'lucide-react';
 
 const items = [
   {
@@ -47,7 +47,9 @@ const items = [
 ];
 
 export function AppSidebar() {
-  const { isAuthenticated, logout } = useAuthStore((state) => state);
+  const { isAuthenticated, logout, user } = useAuthManagementStore(
+    (state) => state
+  );
 
   if (!isAuthenticated) {
     return <Navigate to={'../auth'} replace />;
@@ -58,7 +60,7 @@ export function AppSidebar() {
       <SidebarHeader />
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Administración</SidebarGroupLabel>
+          <SidebarGroupLabel>Barra de navegación</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
@@ -82,8 +84,8 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
-                  <User2 /> Username
+                <SidebarMenuButton className="capitalize">
+                  <User2 /> {user?.first_name}
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -93,7 +95,6 @@ export function AppSidebar() {
               >
                 <DropdownMenuItem
                   onClick={() => {
-                    console.log('Hubo llamado');
                     logout();
                   }}
                 >
@@ -108,7 +109,7 @@ export function AppSidebar() {
   );
 }
 
-const AppLayout = () => {
+const AppManagementLayout = () => {
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -120,4 +121,4 @@ const AppLayout = () => {
   );
 };
 
-export default AppLayout;
+export default AppManagementLayout;

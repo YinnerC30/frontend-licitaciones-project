@@ -1,7 +1,4 @@
-
-export const Home = () => {
-  
-
+export const HomeManagement = () => {
   return (
     <div>
       <h1>Home Administration</h1>

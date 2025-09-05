@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/data/auth-store';
+import { useAuthManagementStore } from '@/data/auth-management-store';
 import { AxiosInstance } from '@/services/axios-service';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router';
@@ -11,12 +11,12 @@ const loginAdministratorUser = async (data: any) => {
 
 export const useLoginAdministratorUser = () => {
   const navigate = useNavigate();
-  const { login } = useAuthStore((state) => state);
+  const { login } = useAuthManagementStore((state) => state);
 
   const mutation = useMutation({
     mutationFn: loginAdministratorUser,
-    onSuccess: ({ data: { id, email } }) => {
-      login({ id, email });
+    onSuccess: ({ data: { user } }) => {
+      login(user);
       navigate('/management/app');
       toast.success('Puedes ingresar Admin');
     },

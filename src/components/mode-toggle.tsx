@@ -1,4 +1,4 @@
-import { ChevronUp, Moon, Sun } from 'lucide-react';
+import { ChevronUp, Moon, Sun, Check } from 'lucide-react';
 
 import { useTheme } from '@/components/theme-provider';
 import {
@@ -9,8 +9,12 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from './ui/sidebar';
 
+export function CheckIcon() {
+  return <Check className="mr-2 h-4 w-4" />;
+}
+
 export function ModeToggle() {
-  const { setTheme } = useTheme();
+  const { setTheme, theme } = useTheme();
 
   return (
     <div>
@@ -27,13 +31,22 @@ export function ModeToggle() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => setTheme('light')}>
-                Claro
+                <span className="flex items-center justify-between  w-full">
+                  Claro
+                  {theme === 'light' && <CheckIcon />}
+                </span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setTheme('dark')}>
-                Oscuro
+                <span className="flex items-center justify-between  w-full">
+                  Oscuro
+                  {theme === 'dark' && <CheckIcon />}
+                </span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setTheme('system')}>
-                Sistema
+                <span className="flex items-center justify-between  w-full">
+                  Sistema
+                  {theme === 'system' && <CheckIcon />}
+                </span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

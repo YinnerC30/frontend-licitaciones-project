@@ -37,7 +37,9 @@ const items = [
 ];
 
 export function AppSidebar() {
-  const { isAuthenticated, logout } = useAuthTenantStore((state) => state);
+  const { isAuthenticated, logout, user } = useAuthTenantStore(
+    (state) => state
+  );
 
   if (!isAuthenticated) {
     return <Navigate to={'../auth'} replace />;
@@ -72,8 +74,8 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
-                  <User2 /> Username
+                <SidebarMenuButton className="capitalize">
+                  <User2 /> {user?.username}
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -83,7 +85,6 @@ export function AppSidebar() {
               >
                 <DropdownMenuItem
                   onClick={() => {
-                    console.log('Hubo llamado');
                     logout();
                   }}
                 >

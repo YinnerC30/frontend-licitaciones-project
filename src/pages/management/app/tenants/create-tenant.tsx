@@ -52,8 +52,6 @@ const CreateTenant = () => {
   });
 
   const onSubmit = (data: CreateTenantFormData) => {
-    console.log('Datos del formulario:', data);
-    // Aquí se implementará la lógica para guardar el inquilino
     mutate(data, {
       onSuccess: () => {
         form.reset();
