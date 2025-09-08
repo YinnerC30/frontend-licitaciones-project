@@ -10,6 +10,7 @@ import { ManageAllAdministrator } from '@/pages/management/app/administrators/ma
 import { HomeManagement } from '@/pages/management/app/home';
 import { ManageAllTenants } from '@/pages/management/app/tenants/manage-all-tenants';
 import { LoginManagement } from '@/pages/management/auth/login-management';
+import ManageAllCriteria from '@/pages/tenant/app/criteria/manage-all-criteria';
 import { HomeTenant } from '@/pages/tenant/app/home-tenant';
 import { LoginTenant } from '@/pages/tenant/auth/login-tenant';
 import { createBrowserRouter, Navigate } from 'react-router';
@@ -121,6 +122,10 @@ export const BrowSerRouter = createBrowserRouter([
               {
                 path: 'home',
                 Component: HomeTenant,
+              },
+              {
+                path: 'criteria',
+                Component: ManageAllCriteria,
               },
             ],
           },

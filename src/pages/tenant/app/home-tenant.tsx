@@ -7,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { useGetAllCriteria } from '@/hooks/criteria/use-get-all-criteria';
 import { useGetAllLicitations } from '@/hooks/licitations/use-get-all-licitations';
 import { useGetAllLicitationsByCriteria } from '@/hooks/licitations/use-get-all-licitations-by-criteria';
 import {
@@ -16,21 +15,6 @@ import {
   useReactTable,
   type ColumnDef,
 } from '@tanstack/react-table';
-
-export const columnsCriteria: ColumnDef<any>[] = [
-  {
-    accessorKey: 'id',
-    header: 'ID',
-  },
-  {
-    accessorKey: 'nombre',
-    header: 'Nombre',
-  },
-  {
-    accessorKey: 'es_valido',
-    header: '¿Es valido?',
-  },
-];
 
 export const columnsLicitations: ColumnDef<any>[] = [
   {
@@ -139,30 +123,12 @@ export const HomeTenant = () => {
 
   const queryByCriteria = useGetAllLicitationsByCriteria();
 
-  const queryCriteria = useGetAllCriteria();
-
-  if (
-    query.isFetching ||
-    queryByCriteria.isFetching ||
-    queryCriteria.isFetching
-  ) {
+  if (query.isFetching || queryByCriteria.isFetching) {
     return <div>Cargando...</div>;
   }
 
   return (
     <div>
-      <h1>Todos los criterios</h1>
-      <ButtonRefetch
-        onRefetch={async () => {
-          await queryCriteria.refetch();
-        }}
-      />
-      {/* <pre>{JSON.stringify(queryCriteria.data, null, 2)}</pre> */}
-      <TemplateDataTable
-        columns={columnsCriteria}
-        data={queryCriteria.data.records}
-      />
-
       <h1>Todas las licitaciones</h1>
       <ButtonRefetch
         onRefetch={async () => {
