@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { useGetAllCriteria } from '@/hooks/criteria/use-get-all-criteria';
 import { useGetAllLicitations } from '@/hooks/licitations/use-get-all-licitations';
 import { useGetAllLicitationsByCriteria } from '@/hooks/licitations/use-get-all-licitations-by-criteria';
 import {
@@ -16,7 +17,22 @@ import {
   type ColumnDef,
 } from '@tanstack/react-table';
 
-export const columns: ColumnDef<any>[] = [
+export const columnsCriteria: ColumnDef<any>[] = [
+  {
+    accessorKey: 'id',
+    header: 'ID',
+  },
+  {
+    accessorKey: 'nombre',
+    header: 'Nombre',
+  },
+  {
+    accessorKey: 'es_valido',
+    header: '¿Es valido?',
+  },
+];
+
+export const columnsLicitations: ColumnDef<any>[] = [
   {
     accessorKey: 'id',
     header: 'ID',
@@ -60,7 +76,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-export function LicitationsDataTable<TData, TValue>({
+export function TemplateDataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -123,12 +139,30 @@ export const HomeTenant = () => {
 
   const queryByCriteria = useGetAllLicitationsByCriteria();
 
-  if (query.isFetching || queryByCriteria.isFetching) {
+  const queryCriteria = useGetAllCriteria();
+
+  if (
+    query.isFetching ||
+    queryByCriteria.isFetching ||
+    queryCriteria.isFetching
+  ) {
     return <div>Cargando...</div>;
   }
 
   return (
     <div>
+      <h1>Todos los criterios</h1>
+      <ButtonRefetch
+        onRefetch={async () => {
+          await queryCriteria.refetch();
+        }}
+      />
+      {/* <pre>{JSON.stringify(queryCriteria.data, null, 2)}</pre> */}
+      <TemplateDataTable
+        columns={columnsCriteria}
+        data={queryCriteria.data.records}
+      />
+
       <h1>Todas las licitaciones</h1>
       <ButtonRefetch
         onRefetch={async () => {
@@ -136,7 +170,10 @@ export const HomeTenant = () => {
         }}
       />
       {/* <pre>{JSON.stringify(query.data, null, 2)}</pre> */}
-      <LicitationsDataTable columns={columns} data={query.data.records} />
+      <TemplateDataTable
+        columns={columnsLicitations}
+        data={query.data.records}
+      />
 
       <h1>Todas las licitaciones por criterio</h1>
       <ButtonRefetch
@@ -145,8 +182,8 @@ export const HomeTenant = () => {
         }}
       />
       {/* <pre>{JSON.stringify(queryByCriteria.data, null, 2)}</pre> */}
-      <LicitationsDataTable
-        columns={columns}
+      <TemplateDataTable
+        columns={columnsLicitations}
         data={queryByCriteria.data.records}
       />
     </div>
