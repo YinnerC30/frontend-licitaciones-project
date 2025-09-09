@@ -1,4 +1,12 @@
 import ButtonRefetch from '@/components/button-refetch';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import {
   Table,
   TableBody,
@@ -15,8 +23,48 @@ import {
   useReactTable,
   type ColumnDef,
 } from '@tanstack/react-table';
+import { MoreHorizontal } from 'lucide-react';
+import LicitationsSelected from './licitations-selected';
+import { useSelectedLicitation } from '@/hooks/licitations/use-selected-licitation';
 
 export const columnsLicitations: ColumnDef<any>[] = [
+  {
+    id: 'actions',
+    cell: ({ row }) => {
+      const record = row.original;
+
+      const { mutate } = useSelectedLicitation();
+
+      const handleSelected = () => {
+        mutate({ id_licitacion: record.id, es_aceptada: true });
+      };
+
+      return (
+        <>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() => navigator.clipboard.writeText(record.id)}
+              >
+                Copiar ID
+              </DropdownMenuItem>
+
+              <DropdownMenuItem onClick={handleSelected}>
+                Seleccionar
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </>
+      );
+    },
+  },
   {
     accessorKey: 'id',
     header: 'ID',
@@ -53,6 +101,7 @@ export const columnsLicitations: ColumnDef<any>[] = [
     accessorKey: 'monto_disponible',
     header: 'Monto disponible',
   },
+  
 ];
 
 interface DataTableProps<TData, TValue> {
@@ -152,6 +201,9 @@ export const HomeTenant = () => {
         columns={columnsLicitations}
         data={queryByCriteria.data.records}
       />
+
+      <LicitationsSelected />
     </div>
   );
 };
+
