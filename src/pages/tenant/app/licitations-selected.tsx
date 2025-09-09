@@ -7,10 +7,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useGetAllLicitationsStatus } from '@/hooks/licitations-status/use-get-all-licitations-status';
 import { useGetAllLicitationsSelected } from '@/hooks/licitations/use-get-all-licitations-selected';
-import { useSelectedLicitation } from '@/hooks/licitations/use-selected-licitation';
 import type { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
+import { useState } from 'react';
+import { TemplateDataTable } from './home-tenant';
+import UpdateLicitationStatus from './update-licitation-status';
 
 export const columnsLicitationsSelected: ColumnDef<any>[] = [
   {
@@ -18,11 +21,8 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
     cell: ({ row }) => {
       const record = row.original;
 
-      const { mutate } = useSelectedLicitation();
-
-      const handleSelected = () => {
-        mutate({ id_licitacion: record.id, es_aceptada: true });
-      };
+      const [openDialog, setOpenDialog] = useState(false);
+      const queryLicitationsStatus = useGetAllLicitationsStatus();
 
       return (
         <>
@@ -41,11 +41,19 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
                 Copiar ID
               </DropdownMenuItem>
 
-              <DropdownMenuItem onClick={handleSelected}>
-                Seleccionar
+              <DropdownMenuItem onClick={() => setOpenDialog(true)}>
+                Actualizar status
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          {openDialog && (
+            <UpdateLicitationStatus
+              data={record}
+              statusDialog={openDialog}
+              onChangeStatusDialog={setOpenDialog}
+              query={queryLicitationsStatus}
+            />
+          )}
         </>
       );
     },
@@ -53,6 +61,10 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
   {
     accessorKey: 'id',
     header: 'ID',
+  },
+  {
+    accessorKey: 'id_licitacion',
+    header: 'ID licitación',
   },
   {
     accessorKey: 'id_original',
@@ -90,6 +102,10 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
     accessorKey: 'es_aceptada',
     header: 'Aceptada',
   },
+  {
+    accessorKey: 'estado.codigo',
+    header: 'Estado',
+  },
 ];
 
 const LicitationsSelected = () => {
@@ -97,15 +113,30 @@ const LicitationsSelected = () => {
   if (isFetching) {
     return <div>Cargando...</div>;
   }
+
+  const dataRecords = data.records.map(
+    ({ id, licitacion, es_aceptada, estado }: any) => ({
+      ...licitacion,
+      id,
+      id_licitacion: licitacion.id,
+      es_aceptada: es_aceptada ? 'Si' : 'No',
+      estado: estado,
+    })
+  );
+
   return (
-    <div>
+    <div className="my-10">
       <h1>Licitaciones seleccionadas</h1>
       <ButtonRefetch
         onRefetch={async () => {
           await refetch();
         }}
       />
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+
+      <TemplateDataTable
+        columns={columnsLicitationsSelected}
+        data={dataRecords}
+      />
     </div>
   );
 };

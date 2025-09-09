@@ -11,7 +11,7 @@ const updateLicitationSelectedStatus = async (
   data: SelectedLicitationProps
 ) => {
   const { id, id_status } = data;
-  const res = await AxiosInstance.post(
+  const res = await AxiosInstance.patch(
     '/licitations/update-status-selected/' + id,
     { id_status }
   );
