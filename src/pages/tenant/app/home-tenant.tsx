@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/table';
 import { useGetAllLicitations } from '@/hooks/licitations/use-get-all-licitations';
 import { useGetAllLicitationsByCriteria } from '@/hooks/licitations/use-get-all-licitations-by-criteria';
+import { useSelectedLicitation } from '@/hooks/licitations/use-selected-licitation';
 import {
   flexRender,
   getCoreRowModel,
@@ -24,8 +25,8 @@ import {
   type ColumnDef,
 } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
+import LicitationStatus from './licitation-status';
 import LicitationsSelected from './licitations-selected';
-import { useSelectedLicitation } from '@/hooks/licitations/use-selected-licitation';
 
 export const columnsLicitations: ColumnDef<any>[] = [
   {
@@ -178,6 +179,9 @@ export const HomeTenant = () => {
 
   return (
     <div>
+      <LicitationStatus />
+
+
       <h1>Todas las licitaciones</h1>
       <ButtonRefetch
         onRefetch={async () => {
