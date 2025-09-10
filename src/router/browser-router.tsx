@@ -7,10 +7,14 @@ import { RootLayout } from '@/layout/root-layout';
 import { TenantLayout } from '@/layout/tenant-layout';
 import CreateAdministrator from '@/pages/management/app/administrators/create-administrator';
 import { ManageAllAdministrator } from '@/pages/management/app/administrators/manage-all-administrators';
-import { HomeManagement } from '@/pages/management/app/home';
+import { HomeManagement } from '@/pages/management/app/home-management';
 import { ManageAllTenants } from '@/pages/management/app/tenants/manage-all-tenants';
 import { LoginManagement } from '@/pages/management/auth/login-management';
-import { HomeTenant } from '@/pages/tenant/app/home-tenant';
+import ManageAllCriteria from '@/pages/tenant/app/criteria/manage-all-criteria';
+import { HomeTenant } from '@/pages/tenant/app/home/home-tenant';
+import ManageAllLicitationsStatus from '@/pages/tenant/app/licitation-status/manage-all-licitations-status';
+import ManageAllRawLicitations from '@/pages/tenant/app/raw-licitations/manage-all-raw-licitations';
+
 import { LoginTenant } from '@/pages/tenant/auth/login-tenant';
 import { createBrowserRouter, Navigate } from 'react-router';
 
@@ -122,6 +126,18 @@ export const BrowSerRouter = createBrowserRouter([
                 path: 'home',
                 Component: HomeTenant,
               },
+              {
+                path: 'criteria',
+                Component: ManageAllCriteria,
+              },
+              {
+                path: 'licitation-status',
+                Component: ManageAllLicitationsStatus,
+              },
+              {
+                path: 'raw-licitations',
+                Component: ManageAllRawLicitations,
+              }
             ],
           },
         ],

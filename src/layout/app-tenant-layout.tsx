@@ -26,13 +26,28 @@ import {
 } from '@/components/ui/sidebar';
 import { useAuthTenantStore } from '@/data/auth-tenant-store';
 import { NAVIGATION_ROUTES } from '@/router/navigation-routes';
-import { ChevronUp, Home, User2 } from 'lucide-react';
+import { ChevronUp, Home, Layers, List, Stamp, User2 } from 'lucide-react';
 
 const items = [
   {
     title: 'Inicio',
     url: NAVIGATION_ROUTES.tenant.home,
     icon: Home,
+  },
+  {
+    title: 'Criterios',
+    url: NAVIGATION_ROUTES.tenant.criteria,
+    icon: List,
+  },
+  {
+    title: 'Estados',
+    url: NAVIGATION_ROUTES.tenant.licitationStatus,
+    icon: Stamp,
+  },
+  {
+    title: 'Licitaciones',
+    url: NAVIGATION_ROUTES.tenant.rawLicitations,
+    icon: Layers,
   },
 ];
 
