@@ -1,7 +1,7 @@
 import ButtonRefetch from '@/components/button-refetch';
 import { useGetAllLicitationsStatus } from '@/hooks/licitations-status/use-get-all-licitations-status';
 import type { ColumnDef } from '@tanstack/react-table';
-import { TemplateDataTable } from './home-tenant';
+import { TemplateDataTable } from '@/components/data-table/template-data-table';
 
 export const columnsLicitationsSelected: ColumnDef<any>[] = [
   // {
@@ -55,7 +55,7 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
   },
 ];
 
-const LicitationStatus = () => {
+const ManageAllLicitationsStatus = () => {
   const { data, isFetching, refetch } = useGetAllLicitationsStatus();
   if (isFetching) {
     return <div>Cargando...</div>;
@@ -77,4 +77,4 @@ const LicitationStatus = () => {
   );
 };
 
-export default LicitationStatus;
+export default ManageAllLicitationsStatus;

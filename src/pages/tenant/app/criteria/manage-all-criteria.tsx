@@ -11,10 +11,11 @@ import { useGetAllCriteria } from '@/hooks/criteria/use-get-all-criteria';
 import { useRemoveCriterion } from '@/hooks/criteria/use-remove-criterion';
 import type { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
-import { TemplateDataTable } from '../home-tenant';
+
 import CreateCriterion from './create-criterion';
 import { useState } from 'react';
 import UpdateCriterion from './update-criterion';
+import { TemplateDataTable } from '@/components/data-table/template-data-table';
 
 export const columnsCriteria: ColumnDef<any>[] = [
   {
@@ -105,7 +106,6 @@ const ManageAllCriteria = () => {
         <CreateCriterion />
       </div>
 
-      {/* <pre>{JSON.stringify(queryCriteria.data, null, 2)}</pre> */}
       <TemplateDataTable columns={columnsCriteria} data={records} />
     </div>
   );

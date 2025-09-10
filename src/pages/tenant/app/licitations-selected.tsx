@@ -12,7 +12,7 @@ import { useGetAllLicitationsSelected } from '@/hooks/licitations/use-get-all-li
 import type { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
 import { useState } from 'react';
-import { TemplateDataTable } from './home-tenant';
+import { TemplateDataTable } from '@/components/data-table/template-data-table';
 import UpdateLicitationStatus from './update-licitation-status';
 
 export const columnsLicitationsSelected: ColumnDef<any>[] = [

@@ -26,7 +26,7 @@ import {
 } from '@/components/ui/sidebar';
 import { useAuthTenantStore } from '@/data/auth-tenant-store';
 import { NAVIGATION_ROUTES } from '@/router/navigation-routes';
-import { ChevronUp, Home, List, User2 } from 'lucide-react';
+import { ChevronUp, Home, List, Stamp, User2 } from 'lucide-react';
 
 const items = [
   {
@@ -38,7 +38,12 @@ const items = [
     title: 'Criterios',
     url: NAVIGATION_ROUTES.tenant.criteria,
     icon: List,
-  }
+  },
+  {
+    title: 'Estados',
+    url: NAVIGATION_ROUTES.tenant.licitationStatus,
+    icon: Stamp,
+  },
 ];
 
 export function AppSidebar() {

@@ -1,4 +1,5 @@
 import ButtonRefetch from '@/components/button-refetch';
+import { TemplateDataTable } from '@/components/data-table/template-data-table';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -7,26 +8,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import { useGetAllLicitations } from '@/hooks/licitations/use-get-all-licitations';
 import { useGetAllLicitationsByCriteria } from '@/hooks/licitations/use-get-all-licitations-by-criteria';
 import { useSelectedLicitation } from '@/hooks/licitations/use-selected-licitation';
-import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-  type ColumnDef,
-} from '@tanstack/react-table';
+import { type ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
-import LicitationStatus from './licitation-status';
-import LicitationsSelected from './licitations-selected';
+import LicitationsSelected from '../licitations-selected';
 
 export const columnsLicitations: ColumnDef<any>[] = [
   {
@@ -102,71 +89,7 @@ export const columnsLicitations: ColumnDef<any>[] = [
     accessorKey: 'monto_disponible',
     header: 'Monto disponible',
   },
-  
 ];
-
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-}
-
-export function TemplateDataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
-  return (
-    <div className="overflow-hidden rounded-md border">
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && 'selected'}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
-  );
-}
 
 export const HomeTenant = () => {
   const query = useGetAllLicitations();
@@ -179,16 +102,13 @@ export const HomeTenant = () => {
 
   return (
     <div>
-      <LicitationStatus />
-
-
       <h1>Todas las licitaciones</h1>
       <ButtonRefetch
         onRefetch={async () => {
           await query.refetch();
         }}
       />
-      {/* <pre>{JSON.stringify(query.data, null, 2)}</pre> */}
+
       <TemplateDataTable
         columns={columnsLicitations}
         data={query.data.records}
@@ -200,7 +120,6 @@ export const HomeTenant = () => {
           await queryByCriteria.refetch();
         }}
       />
-      {/* <pre>{JSON.stringify(queryByCriteria.data, null, 2)}</pre> */}
       <TemplateDataTable
         columns={columnsLicitations}
         data={queryByCriteria.data.records}
@@ -210,4 +129,3 @@ export const HomeTenant = () => {
     </div>
   );
 };
-
