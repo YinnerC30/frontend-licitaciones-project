@@ -26,7 +26,7 @@ import {
 } from '@/components/ui/sidebar';
 import { useAuthTenantStore } from '@/data/auth-tenant-store';
 import { NAVIGATION_ROUTES } from '@/router/navigation-routes';
-import { ChevronUp, Home, List, Stamp, User2 } from 'lucide-react';
+import { ChevronUp, Home, Layers, List, Stamp, User2 } from 'lucide-react';
 
 const items = [
   {
@@ -43,6 +43,11 @@ const items = [
     title: 'Estados',
     url: NAVIGATION_ROUTES.tenant.licitationStatus,
     icon: Stamp,
+  },
+  {
+    title: 'Licitaciones',
+    url: NAVIGATION_ROUTES.tenant.rawLicitations,
+    icon: Layers,
   },
 ];
 

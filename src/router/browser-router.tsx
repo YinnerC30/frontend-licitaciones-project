@@ -12,7 +12,9 @@ import { ManageAllTenants } from '@/pages/management/app/tenants/manage-all-tena
 import { LoginManagement } from '@/pages/management/auth/login-management';
 import ManageAllCriteria from '@/pages/tenant/app/criteria/manage-all-criteria';
 import { HomeTenant } from '@/pages/tenant/app/home/home-tenant';
-import LicitationStatus from '@/pages/tenant/app/licitation-status/manage-all-licitations-status';
+import ManageAllLicitationsStatus from '@/pages/tenant/app/licitation-status/manage-all-licitations-status';
+import ManageAllRawLicitations from '@/pages/tenant/app/raw-licitations/manage-all-raw-licitations';
+
 import { LoginTenant } from '@/pages/tenant/auth/login-tenant';
 import { createBrowserRouter, Navigate } from 'react-router';
 
@@ -130,8 +132,12 @@ export const BrowSerRouter = createBrowserRouter([
               },
               {
                 path: 'licitation-status',
-                Component: LicitationStatus,
+                Component: ManageAllLicitationsStatus,
               },
+              {
+                path: 'raw-licitations',
+                Component: ManageAllRawLicitations,
+              }
             ],
           },
         ],

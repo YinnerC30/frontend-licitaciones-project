@@ -12,5 +12,6 @@ export const NAVIGATION_ROUTES = {
     home: '/tenant/app/home',
     criteria: '/tenant/app/criteria',
     licitationStatus: '/tenant/app/licitation-status',
+    rawLicitations: '/tenant/app/raw-licitations',
   },
 };
