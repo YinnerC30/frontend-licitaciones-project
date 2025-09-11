@@ -73,15 +73,18 @@ export const HomeTenant = () => {
             }}
           />
         </div>
-        <div>
+
+        <div className="lg:col-span-1 col-span-2">
           <LicitationsFilterByCriteriaDataTable
             columns={columnsLicitations}
             data={queryByCriteria.data.records}
           />
         </div>
-        <div>
+
+        <div className="lg:col-span-1 col-span-2">
           <CardInfoLicitacion />
         </div>
+
       </HomeTenantProvider>
     </div>
   );
