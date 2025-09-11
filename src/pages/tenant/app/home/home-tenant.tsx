@@ -11,18 +11,22 @@ export const HomeTenant = () => {
   }
 
   return (
-    <div>
-      <h1>Todas las licitaciones por criterio</h1>
-      <ButtonRefetch
-        onRefetch={async () => {
-          await queryByCriteria.refetch();
-        }}
-      />
-      <TemplateDataTable
-        columns={columnsLicitations}
-        data={queryByCriteria.data.records}
-      />
-
+    <div className="grid grid-cols-2 gap-8">
+      <div>
+        <h1>Todas las licitaciones por criterio</h1>
+        <ButtonRefetch
+          onRefetch={async () => {
+            await queryByCriteria.refetch();
+          }}
+        />
+        <TemplateDataTable
+          columns={columnsLicitations}
+          data={queryByCriteria.data.records}
+        />
+      </div>
+      <div>
+        <h1>Información de la licitación seleccionada</h1>
+      </div>
     </div>
   );
 };
