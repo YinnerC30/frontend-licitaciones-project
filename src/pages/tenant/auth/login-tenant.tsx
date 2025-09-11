@@ -40,8 +40,8 @@ export function LoginTenant() {
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      username: '',
-      password: '',
+      username: 'email_test@mail.com',
+      password: 'mypass123',
     },
   });
 

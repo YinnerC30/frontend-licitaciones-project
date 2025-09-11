@@ -1,9 +1,8 @@
 import { useAuthTenantStore } from '@/data/auth-tenant-store';
 import { AxiosInstance } from '@/services/axios-service';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
-import { useGetTenantBySubdomain } from './use-get-tenant-by-subdomain';
 
 const logoutTenant = async () => {
   const res = await AxiosInstance.post('/auth/logout');
@@ -11,16 +10,17 @@ const logoutTenant = async () => {
 };
 
 export const useLogoutTenant = () => {
-  useGetTenantBySubdomain();
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { logout } = useAuthTenantStore((state) => state);
 
   const mutation = useMutation({
     mutationFn: logoutTenant,
-    onSuccess: () => {
+    onSuccess: async () => {
       logout();
+      queryClient.clear();
+      await queryClient.invalidateQueries();
       navigate('/tenant/auth/login', { replace: true });
-      window.location.reload();
       toast.success('Has cerrado sesión');
     },
     onError: () => {
