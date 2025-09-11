@@ -6,6 +6,7 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
+  useSidebar,
 } from '@/components/ui/sidebar';
 
 import { Link, Navigate, Outlet } from 'react-router';
@@ -25,13 +26,22 @@ import {
   SidebarHeader,
 } from '@/components/ui/sidebar';
 import { useAuthTenantStore } from '@/data/auth-tenant-store';
-import { NAVIGATION_ROUTES } from '@/router/navigation-routes';
-import { ChevronUp, Home, Layers, List, ListCheck, Stamp, User2 } from 'lucide-react';
-import { useEffect } from 'react';
 import {
   TIME_REFRESH_TOKEN,
   useRefreshTenantToken,
 } from '@/hooks/tenants/use-refresh-tenant-token';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { NAVIGATION_ROUTES } from '@/router/navigation-routes';
+import {
+  ChevronUp,
+  Home,
+  Layers,
+  List,
+  ListCheck,
+  Stamp,
+  User2,
+} from 'lucide-react';
+import { useEffect } from 'react';
 
 const items = [
   {
@@ -124,6 +134,25 @@ export function AppSidebar() {
   );
 }
 
+const MainContent = () => {
+  const isMobile = useIsMobile();
+  const { open } = useSidebar();
+  return (
+    <main
+      className={`h-screen px-5 pt-5  ${
+        isMobile
+          ? 'w-screen'
+          : open
+          ? 'w-[calc(100vw-var(--sidebar-width))]'
+          : 'w-screen'
+      }`}
+    >
+      <SidebarTrigger />
+      <Outlet />
+    </main>
+  );
+};
+
 const AppTenantLayout = () => {
   const mutationRenewToken = useRefreshTenantToken();
 
@@ -138,10 +167,7 @@ const AppTenantLayout = () => {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className="px-4">
-        <SidebarTrigger />
-        <Outlet />
-      </main>
+      <MainContent />
     </SidebarProvider>
   );
 };
