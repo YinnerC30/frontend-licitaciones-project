@@ -27,6 +27,11 @@ import {
 import { useAuthTenantStore } from '@/data/auth-tenant-store';
 import { NAVIGATION_ROUTES } from '@/router/navigation-routes';
 import { ChevronUp, Home, Layers, List, Stamp, User2 } from 'lucide-react';
+import { useEffect } from 'react';
+import {
+  TIME_REFRESH_TOKEN,
+  useRefreshTenantToken,
+} from '@/hooks/tenants/use-refresh-tenant-token';
 
 const items = [
   {
@@ -115,6 +120,16 @@ export function AppSidebar() {
 }
 
 const AppTenantLayout = () => {
+  const mutationRenewToken = useRefreshTenantToken();
+
+  useEffect(() => {
+    const timeOut = setTimeout(() => {
+      mutationRenewToken.mutate();
+    }, TIME_REFRESH_TOKEN);
+
+    return () => clearTimeout(timeOut);
+  }, [mutationRenewToken]);
+
   return (
     <SidebarProvider>
       <AppSidebar />
