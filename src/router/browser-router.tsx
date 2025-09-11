@@ -5,6 +5,7 @@ import AuthTenantLayout from '@/layout/auth-tenant-layout';
 import { ManagementLayout } from '@/layout/management-layout';
 import { RootLayout } from '@/layout/root-layout';
 import { TenantLayout } from '@/layout/tenant-layout';
+import ErrorPage from '@/pages/error-page';
 import CreateAdministrator from '@/pages/management/app/administrators/create-administrator';
 import { ManageAllAdministrator } from '@/pages/management/app/administrators/manage-all-administrators';
 import { HomeManagement } from '@/pages/management/app/home-management';
@@ -22,7 +23,7 @@ export const BrowSerRouter = createBrowserRouter([
   {
     path: '/',
     Component: RootLayout,
-    errorElement: <div>Hubo un error</div>,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: 'management',
