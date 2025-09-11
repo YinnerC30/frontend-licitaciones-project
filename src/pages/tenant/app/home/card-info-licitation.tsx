@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useHomeTenantContext } from '@/context/tenants/home/home-tenant-context';
-import { useClasifyLicitation } from '@/hooks/licitations/use-selected-licitation';
+import { useClasifyLicitation } from '@/hooks/licitations/use-clasify-licitation';
 
 const CardInfoLicitacion = () => {
   const { selectedLicitacion } = useHomeTenantContext();

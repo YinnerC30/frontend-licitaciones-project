@@ -18,6 +18,7 @@ export const useClasifyLicitation = () => {
     mutationFn: clasifyLicitation,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['licitations-selected'] });
+      await queryClient.invalidateQueries({ queryKey: ['licitations-by-criteria'] });
       toast.success('Licitación clasificada');
     },
     onError: () => {

@@ -6,7 +6,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useClasifyLicitation } from '@/hooks/licitations/use-selected-licitation';
+import { useClasifyLicitation } from '@/hooks/licitations/use-clasify-licitation';
 
 import type { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
