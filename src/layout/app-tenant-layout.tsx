@@ -26,7 +26,7 @@ import {
 } from '@/components/ui/sidebar';
 import { useAuthTenantStore } from '@/data/auth-tenant-store';
 import { NAVIGATION_ROUTES } from '@/router/navigation-routes';
-import { ChevronUp, Home, Layers, List, Stamp, User2 } from 'lucide-react';
+import { ChevronUp, Home, Layers, List, ListCheck, Stamp, User2 } from 'lucide-react';
 import { useEffect } from 'react';
 import {
   TIME_REFRESH_TOKEN,
@@ -42,7 +42,7 @@ const items = [
   {
     title: 'Licitaciones seleccionadas',
     url: NAVIGATION_ROUTES.tenant.licitationsSelected,
-    icon: List,
+    icon: ListCheck,
   },
   {
     title: 'Criterios',
