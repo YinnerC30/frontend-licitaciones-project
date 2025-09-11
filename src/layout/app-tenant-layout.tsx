@@ -26,6 +26,7 @@ import {
   SidebarHeader,
 } from '@/components/ui/sidebar';
 import { useAuthTenantStore } from '@/data/auth-tenant-store';
+import { useLogoutTenant } from '@/hooks/tenants/use-logout-tenant';
 import {
   TIME_REFRESH_TOKEN,
   useRefreshTenantToken,
@@ -72,13 +73,17 @@ const items = [
 ];
 
 export function AppSidebar() {
-  const { isAuthenticated, logout, user } = useAuthTenantStore(
-    (state) => state
-  );
+  const { isAuthenticated, user } = useAuthTenantStore((state) => state);
+
+  const logoutTenant = useLogoutTenant();
 
   if (!isAuthenticated) {
     return <Navigate to={'../auth'} replace />;
   }
+
+  const handleLogout = () => {
+    logoutTenant.mutate();
+  };
 
   return (
     <Sidebar>
@@ -120,7 +125,7 @@ export function AppSidebar() {
               >
                 <DropdownMenuItem
                   onClick={() => {
-                    logout();
+                    handleLogout();
                   }}
                 >
                   <span>Cerrar sesión</span>
