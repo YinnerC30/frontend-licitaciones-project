@@ -4,9 +4,11 @@ import { useGetAllLicitationsByCriteria } from '@/hooks/licitations/use-get-all-
 import { columnsLicitations } from '../raw-licitations/columns-licitations-table';
 import LicitationsFilterByCriteriaDataTable from './licitations-filter-by-criteria-data-table';
 import CardInfoLicitacion from './card-info-licitation';
+import { useGetLicitationsCounts } from '@/hooks/licitations/use-get-licitations-counts';
 
 export const HomeTenant = () => {
   const queryByCriteria = useGetAllLicitationsByCriteria();
+  const queryCounts = useGetLicitationsCounts();
 
   if (queryByCriteria.isFetching) {
     return <div>Cargando...</div>;
@@ -15,13 +17,20 @@ export const HomeTenant = () => {
   return (
     <div className="grid grid-cols-2 gap-8">
       <HomeTenantProvider>
-        <div>
+        <div className="col-span-2">
+          <h1>Contadores de licitaciones</h1>
+          <pre>{JSON.stringify(queryCounts.data, null, 2)}</pre>
+        </div>
+
+        <div className="col-span-2">
           <h1>Todas las licitaciones por criterio</h1>
           <ButtonRefetch
             onRefetch={async () => {
               await queryByCriteria.refetch();
             }}
           />
+        </div>
+        <div>
           <LicitationsFilterByCriteriaDataTable
             columns={columnsLicitations}
             data={queryByCriteria.data.records}
