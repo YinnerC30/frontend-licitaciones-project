@@ -6,6 +6,7 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
+  useSidebar,
 } from '@/components/ui/sidebar';
 
 import { Link, Navigate, Outlet } from 'react-router';
@@ -25,14 +26,34 @@ import {
   SidebarHeader,
 } from '@/components/ui/sidebar';
 import { useAuthTenantStore } from '@/data/auth-tenant-store';
+import { useLogoutTenant } from '@/hooks/tenants/use-logout-tenant';
+import {
+  TIME_REFRESH_TOKEN,
+  useRefreshTenantToken,
+} from '@/hooks/tenants/use-refresh-tenant-token';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { NAVIGATION_ROUTES } from '@/router/navigation-routes';
-import { ChevronUp, Home, Layers, List, Stamp, User2 } from 'lucide-react';
+import {
+  ChevronUp,
+  Home,
+  Layers,
+  List,
+  ListCheck,
+  Stamp,
+  User2,
+} from 'lucide-react';
+import { useEffect } from 'react';
 
 const items = [
   {
     title: 'Inicio',
     url: NAVIGATION_ROUTES.tenant.home,
     icon: Home,
+  },
+  {
+    title: 'Licitaciones seleccionadas',
+    url: NAVIGATION_ROUTES.tenant.licitationsSelected,
+    icon: ListCheck,
   },
   {
     title: 'Criterios',
@@ -52,13 +73,17 @@ const items = [
 ];
 
 export function AppSidebar() {
-  const { isAuthenticated, logout, user } = useAuthTenantStore(
-    (state) => state
-  );
+  const { isAuthenticated, user } = useAuthTenantStore((state) => state);
+
+  const logoutTenant = useLogoutTenant();
 
   if (!isAuthenticated) {
     return <Navigate to={'../auth'} replace />;
   }
+
+  const handleLogout = () => {
+    logoutTenant.mutate();
+  };
 
   return (
     <Sidebar>
@@ -100,7 +125,7 @@ export function AppSidebar() {
               >
                 <DropdownMenuItem
                   onClick={() => {
-                    logout();
+                    handleLogout();
                   }}
                 >
                   <span>Cerrar sesión</span>
@@ -114,14 +139,40 @@ export function AppSidebar() {
   );
 }
 
+const MainContent = () => {
+  const isMobile = useIsMobile();
+  const { open } = useSidebar();
+  return (
+    <main
+      className={`h-screen px-5 pt-5  ${
+        isMobile
+          ? 'w-screen'
+          : open
+          ? 'w-[calc(100vw-var(--sidebar-width))]'
+          : 'w-screen'
+      }`}
+    >
+      <SidebarTrigger />
+      <Outlet />
+    </main>
+  );
+};
+
 const AppTenantLayout = () => {
+  const mutationRenewToken = useRefreshTenantToken();
+
+  useEffect(() => {
+    const timeOut = setTimeout(() => {
+      mutationRenewToken.mutate();
+    }, TIME_REFRESH_TOKEN);
+
+    return () => clearTimeout(timeOut);
+  }, [mutationRenewToken]);
+
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className="px-4">
-        <SidebarTrigger />
-        <Outlet />
-      </main>
+      <MainContent />
     </SidebarProvider>
   );
 };

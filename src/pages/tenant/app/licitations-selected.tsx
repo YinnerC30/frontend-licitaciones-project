@@ -1,4 +1,5 @@
 import ButtonRefetch from '@/components/button-refetch';
+import { TemplateDataTable } from '@/components/data-table/template-data-table';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -7,12 +8,18 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useGetAllLicitationsStatus } from '@/hooks/licitations-status/use-get-all-licitations-status';
 import { useGetAllLicitationsSelected } from '@/hooks/licitations/use-get-all-licitations-selected';
 import type { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
 import { useState } from 'react';
-import { TemplateDataTable } from '@/components/data-table/template-data-table';
 import UpdateLicitationStatus from './update-licitation-status';
 
 export const columnsLicitationsSelected: ColumnDef<any>[] = [
@@ -108,8 +115,14 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
   },
 ];
 
+type OptionQuery = 'all_records' | 'only_accepted' | 'only_rejected';
+
 const LicitationsSelected = () => {
-  const { data, isFetching, refetch } = useGetAllLicitationsSelected();
+  const [optionQuery, setOptionQuery] = useState<OptionQuery>('only_accepted');
+
+  const { data, isFetching, refetch } = useGetAllLicitationsSelected({
+    [optionQuery]: true,
+  });
   if (isFetching) {
     return <div>Cargando...</div>;
   }
@@ -132,6 +145,20 @@ const LicitationsSelected = () => {
           await refetch();
         }}
       />
+
+      <Select
+        value={optionQuery}
+        onValueChange={(value) => setOptionQuery(value as OptionQuery)}
+      >
+        <SelectTrigger>
+          <SelectValue placeholder="Selecciona una opción" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all_records">Todas las licitaciones</SelectItem>
+          <SelectItem value="only_accepted">Licitaciones aceptadas</SelectItem>
+          <SelectItem value="only_rejected">Licitaciones rechazadas</SelectItem>
+        </SelectContent>
+      </Select>
 
       <TemplateDataTable
         columns={columnsLicitationsSelected}
