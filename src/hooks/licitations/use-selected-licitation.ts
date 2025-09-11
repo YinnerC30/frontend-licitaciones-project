@@ -7,18 +7,18 @@ interface SelectedLicitationProps {
   es_aceptada: boolean;
 }
 
-const selectedLicitation = async (data: SelectedLicitationProps) => {
-  const res = await AxiosInstance.post('/licitations/create-selected', data);
+const clasifyLicitation = async (data: SelectedLicitationProps) => {
+  const res = await AxiosInstance.post('/licitations/clasify', data);
   return res;
 };
 
-export const useSelectedLicitation = () => {
+export const useClasifyLicitation = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: selectedLicitation,
+    mutationFn: clasifyLicitation,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['licitations-selected'] });
-      toast.success('Licitación seleccionada');
+      toast.success('Licitación clasificada');
     },
     onError: () => {
       toast.error('Ocurrió un error');
