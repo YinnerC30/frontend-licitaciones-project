@@ -40,6 +40,11 @@ const items = [
     icon: Home,
   },
   {
+    title: 'Licitaciones seleccionadas',
+    url: NAVIGATION_ROUTES.tenant.licitationsSelected,
+    icon: List,
+  },
+  {
     title: 'Criterios',
     url: NAVIGATION_ROUTES.tenant.criteria,
     icon: List,

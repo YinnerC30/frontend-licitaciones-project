@@ -1,7 +1,6 @@
 import ButtonRefetch from '@/components/button-refetch';
 import { TemplateDataTable } from '@/components/data-table/template-data-table';
 import { useGetAllLicitationsByCriteria } from '@/hooks/licitations/use-get-all-licitations-by-criteria';
-import LicitationsSelected from '../licitations-selected';
 import { columnsLicitations } from '../raw-licitations/columns-licitations-table';
 
 export const HomeTenant = () => {
@@ -24,7 +23,6 @@ export const HomeTenant = () => {
         data={queryByCriteria.data.records}
       />
 
-      <LicitationsSelected />
     </div>
   );
 };
