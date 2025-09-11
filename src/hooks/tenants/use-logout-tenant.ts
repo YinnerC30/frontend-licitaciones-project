@@ -17,9 +17,9 @@ export const useLogoutTenant = () => {
   const mutation = useMutation({
     mutationFn: logoutTenant,
     onSuccess: async () => {
+      logout();
       queryClient.clear();
       await queryClient.invalidateQueries();
-      logout();
       navigate('/tenant/auth/login', { replace: true });
       toast.success('Has cerrado sesión');
     },

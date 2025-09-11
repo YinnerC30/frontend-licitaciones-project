@@ -53,16 +53,39 @@ export const CountsInformation = () => {
   );
 };
 
+export const LicitationsByCriteria = () => {
+  const queryByCriteria = useGetAllLicitationsByCriteria();
+
+  if (queryByCriteria.isFetching) {
+    return <div>Cargando...</div>;
+  }
+
+  return (
+    <>
+      <div className="col-span-2">
+        <h1>Todas las licitaciones por criterio</h1>
+        <ButtonRefetch
+          onRefetch={async () => {
+            await queryByCriteria.refetch();
+          }}
+        />
+      </div>
+
+      <div className="lg:col-span-1 col-span-2">
+        <LicitationsFilterByCriteriaDataTable
+          columns={columnsLicitations}
+          data={queryByCriteria.data.records}
+        />
+      </div>
+    </>
+  );
+};
+
 export const HomeTenant = () => {
   const { isAuthenticated } = useAuthTenantStore((state) => state);
 
   if (!isAuthenticated) {
     return <Navigate to={'../../auth/login'} replace />;
-  }
-  const queryByCriteria = useGetAllLicitationsByCriteria();
-
-  if (queryByCriteria.isFetching) {
-    return <div>Cargando...</div>;
   }
 
   return (
@@ -72,21 +95,7 @@ export const HomeTenant = () => {
           <CountsInformation />
         </div>
 
-        <div className="col-span-2">
-          <h1>Todas las licitaciones por criterio</h1>
-          <ButtonRefetch
-            onRefetch={async () => {
-              await queryByCriteria.refetch();
-            }}
-          />
-        </div>
-
-        <div className="lg:col-span-1 col-span-2">
-          <LicitationsFilterByCriteriaDataTable
-            columns={columnsLicitations}
-            data={queryByCriteria.data.records}
-          />
-        </div>
+        <LicitationsByCriteria />
 
         <div className="lg:col-span-1 col-span-2">
           <CardInfoLicitacion />
