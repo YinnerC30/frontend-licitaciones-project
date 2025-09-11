@@ -19,6 +19,7 @@ export const useClasifyLicitation = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['licitations-selected'] });
       await queryClient.invalidateQueries({ queryKey: ['licitations-by-criteria'] });
+      await queryClient.invalidateQueries({ queryKey: ['licitations-counts'] });
       toast.success('Licitación clasificada');
     },
     onError: () => {
