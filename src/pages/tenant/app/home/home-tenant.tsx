@@ -1,12 +1,18 @@
 import ButtonRefetch from '@/components/button-refetch';
 import { HomeTenantProvider } from '@/context/tenants/home/home-tenant-context';
+import {
+  LicitationsFilterByCriteriaProvider,
+  useLicitationsFilterByCriteriaContext,
+} from '@/context/tenants/home/licitations-filter-by-criteria-context';
 import { useGetAllLicitationsByCriteria } from '@/hooks/licitations/use-get-all-licitations-by-criteria';
 import { useGetLicitationsCounts } from '@/hooks/licitations/use-get-licitations-counts';
 import { columnsLicitations } from '../raw-licitations/columns-licitations-table';
 import CardInfoLicitacion from './card-info-licitation';
 import LicitationsFilterByCriteriaDataTable from './licitations-filter-by-criteria-data-table';
 
+import { Button } from '@/components/ui/button';
 import { useAuthTenantStore } from '@/data/auth-tenant-store';
+import { useClasifyLicitationBulk } from '@/hooks/licitations/use-clasify-licitations-bulk';
 import { CalendarDays, CheckCircle, Filter } from 'lucide-react';
 import { Navigate } from 'react-router';
 
@@ -53,6 +59,50 @@ export const CountsInformation = () => {
   );
 };
 
+const ButtonClasifyToSelectedLicitationsBulk = () => {
+  const { table } = useLicitationsFilterByCriteriaContext();
+  const { mutate } = useClasifyLicitationBulk();
+
+  const id_licitaciones = table.getSelectedRowModel().rows.map((row) => {
+    return { id_licitacion: row.original.id };
+  });
+
+  const handleSelected = () => {
+    mutate(
+      { licitaciones: id_licitaciones, es_aceptada: true },
+      {
+        onSuccess: () => {
+          table.resetRowSelection();
+        },
+      }
+    );
+  };
+
+  return <Button onClick={handleSelected}>Seleccionar licitaciones</Button>;
+};
+
+const ButtonClasifyToDiscardLicitationsBulk = () => {
+  const { table } = useLicitationsFilterByCriteriaContext();
+  const { mutate } = useClasifyLicitationBulk();
+
+  const id_licitaciones = table.getSelectedRowModel().rows.map((row) => {
+    return { id_licitacion: row.original.id };
+  });
+
+  const handleDiscard = () => {
+    mutate(
+      { licitaciones: id_licitaciones, es_aceptada: false },
+      {
+        onSuccess: () => {
+          table.resetRowSelection();
+        },
+      }
+    );
+  };
+
+  return <Button onClick={handleDiscard}>Descartar licitaciones</Button>;
+};
+
 export const LicitationsByCriteria = () => {
   const queryByCriteria = useGetAllLicitationsByCriteria();
 
@@ -62,21 +112,25 @@ export const LicitationsByCriteria = () => {
 
   return (
     <>
-      <div className="col-span-2">
-        <h1>Todas las licitaciones por criterio</h1>
-        <ButtonRefetch
-          onRefetch={async () => {
-            await queryByCriteria.refetch();
-          }}
-        />
-      </div>
+      <LicitationsFilterByCriteriaProvider
+        columns={columnsLicitations}
+        data={queryByCriteria.data.records}
+      >
+        <div className="col-span-2">
+          <h1>Todas las licitaciones por criterio</h1>
+          <ButtonRefetch
+            onRefetch={async () => {
+              await queryByCriteria.refetch();
+            }}
+          />
+          <ButtonClasifyToSelectedLicitationsBulk />
+          <ButtonClasifyToDiscardLicitationsBulk />
+        </div>
 
-      <div className="lg:col-span-1 col-span-2">
-        <LicitationsFilterByCriteriaDataTable
-          columns={columnsLicitations}
-          data={queryByCriteria.data.records}
-        />
-      </div>
+        <div className="lg:col-span-1 col-span-2">
+          <LicitationsFilterByCriteriaDataTable />
+        </div>
+      </LicitationsFilterByCriteriaProvider>
     </>
   );
 };

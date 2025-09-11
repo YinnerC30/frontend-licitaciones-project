@@ -1,9 +1,4 @@
-import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-  type ColumnDef,
-} from '@tanstack/react-table';
+import { flexRender } from '@tanstack/react-table';
 import {
   Table,
   TableBody,
@@ -13,22 +8,11 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useHomeTenantContext } from '@/context/tenants/home/home-tenant-context';
+import { useLicitationsFilterByCriteriaContext } from '@/context/tenants/home/licitations-filter-by-criteria-context';
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-}
-
-export function LicitationsFilterByCriteriaDataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
+export function LicitationsFilterByCriteriaDataTable<TData>() {
   const { setSelectedLicitacion } = useHomeTenantContext();
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
+  const { table } = useLicitationsFilterByCriteriaContext<TData>();
 
   return (
     <div className="overflow-hidden rounded-md border">
@@ -70,7 +54,10 @@ export function LicitationsFilterByCriteriaDataTable<TData, TValue>({
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
+              <TableCell
+                colSpan={table.getAllColumns().length}
+                className="h-24 text-center"
+              >
                 No results.
               </TableCell>
             </TableRow>
