@@ -1,7 +1,9 @@
 import ButtonRefetch from '@/components/button-refetch';
-import { TemplateDataTable } from '@/components/data-table/template-data-table';
+import { HomeTenantProvider } from '@/context/tenants/home/home-tenant-context';
 import { useGetAllLicitationsByCriteria } from '@/hooks/licitations/use-get-all-licitations-by-criteria';
 import { columnsLicitations } from '../raw-licitations/columns-licitations-table';
+import LicitationsFilterByCriteriaDataTable from './licitations-filter-by-criteria-data-table';
+import CardInfoLicitacion from './card-info-licitation';
 
 export const HomeTenant = () => {
   const queryByCriteria = useGetAllLicitationsByCriteria();
@@ -12,21 +14,23 @@ export const HomeTenant = () => {
 
   return (
     <div className="grid grid-cols-2 gap-8">
-      <div>
-        <h1>Todas las licitaciones por criterio</h1>
-        <ButtonRefetch
-          onRefetch={async () => {
-            await queryByCriteria.refetch();
-          }}
-        />
-        <TemplateDataTable
-          columns={columnsLicitations}
-          data={queryByCriteria.data.records}
-        />
-      </div>
-      <div>
-        <h1>Información de la licitación seleccionada</h1>
-      </div>
+      <HomeTenantProvider>
+        <div>
+          <h1>Todas las licitaciones por criterio</h1>
+          <ButtonRefetch
+            onRefetch={async () => {
+              await queryByCriteria.refetch();
+            }}
+          />
+          <LicitationsFilterByCriteriaDataTable
+            columns={columnsLicitations}
+            data={queryByCriteria.data.records}
+          />
+        </div>
+        <div>
+          <CardInfoLicitacion />
+        </div>
+      </HomeTenantProvider>
     </div>
   );
 };
