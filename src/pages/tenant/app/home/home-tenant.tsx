@@ -6,7 +6,9 @@ import { columnsLicitations } from '../raw-licitations/columns-licitations-table
 import CardInfoLicitacion from './card-info-licitation';
 import LicitationsFilterByCriteriaDataTable from './licitations-filter-by-criteria-data-table';
 
+import { useAuthTenantStore } from '@/data/auth-tenant-store';
 import { CalendarDays, CheckCircle, Filter } from 'lucide-react';
+import { Navigate } from 'react-router';
 
 export const CountsInformation = () => {
   const queryCounts = useGetLicitationsCounts();
@@ -52,6 +54,11 @@ export const CountsInformation = () => {
 };
 
 export const HomeTenant = () => {
+  const { isAuthenticated } = useAuthTenantStore((state) => state);
+
+  if (!isAuthenticated) {
+    return <Navigate to={'../../auth/login'} replace />;
+  }
   const queryByCriteria = useGetAllLicitationsByCriteria();
 
   if (queryByCriteria.isFetching) {
@@ -84,7 +91,6 @@ export const HomeTenant = () => {
         <div className="lg:col-span-1 col-span-2">
           <CardInfoLicitacion />
         </div>
-
       </HomeTenantProvider>
     </div>
   );
