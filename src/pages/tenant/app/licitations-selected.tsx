@@ -18,9 +18,12 @@ import {
 import { useGetAllLicitationsStatus } from '@/hooks/licitations-status/use-get-all-licitations-status';
 import { useGetAllLicitationsSelected } from '@/hooks/licitations/use-get-all-licitations-selected';
 import type { ColumnDef } from '@tanstack/react-table';
-import { MoreHorizontal } from 'lucide-react';
+import { Copy, Filter, MoreHorizontal, Pencil } from 'lucide-react';
 import { useState } from 'react';
 import UpdateLicitationStatus from './update-licitation-status';
+import { Badge } from '@/components/ui/badge';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 
 export const columnsLicitationsSelected: ColumnDef<any>[] = [
   {
@@ -45,10 +48,12 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
               <DropdownMenuItem
                 onClick={() => navigator.clipboard.writeText(record.id)}
               >
+                <Copy className="h-4 w-4" />
                 Copiar ID
               </DropdownMenuItem>
 
               <DropdownMenuItem onClick={() => setOpenDialog(true)}>
+                <Pencil className="h-4 w-4" />
                 Actualizar status
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -65,21 +70,10 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
       );
     },
   },
-  {
-    accessorKey: 'id',
-    header: 'ID',
-  },
-  {
-    accessorKey: 'id_licitacion',
-    header: 'ID licitación',
-  },
+
   {
     accessorKey: 'id_original',
     header: 'ID original',
-  },
-  {
-    accessorKey: 'fecha_hora_ejecucion_cron',
-    header: 'Fecha y hora de ejecución cron',
   },
   {
     accessorKey: 'nombre',
@@ -92,26 +86,84 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
   {
     accessorKey: 'descripcion',
     header: 'Descripción',
+    cell: ({ row }) => {
+      return (
+        <div className="line-clamp-2">
+          {row.original.descripcion.length
+            ? row.original.descripcion
+            : 'Sin descripción'}
+        </div>
+      );
+    },
   },
   {
     accessorKey: 'moneda',
     header: 'Moneda',
+    cell: ({ row }) => {
+      return (
+        <Badge className="bg-purple-500 text-white">
+          {row.original.moneda}
+        </Badge>
+      );
+    },
   },
   {
     accessorKey: 'fecha_hora_cierre',
     header: 'Fecha y hora de cierre',
+    cell: ({ row }) => {
+      return (
+        <div className="flex justify-end">
+          <span className="text-end">
+            {format(
+              new Date(row.original.fecha_hora_cierre),
+              "dd 'de' MMMM 'del' yyyy, hh:mm a",
+              { locale: es }
+            )}
+          </span>
+        </div>
+      );
+    },
   },
   {
     accessorKey: 'monto_disponible',
     header: 'Monto disponible',
+    cell: ({ row }) => {
+      return (
+        <div className="flex justify-end">
+          <span className="text-end">
+            {row.original.monto_disponible.toLocaleString('es-CL', {
+              style: 'currency',
+              currency: row.original.moneda || 'CLP',
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            })}
+          </span>
+        </div>
+      );
+    },
   },
   {
     accessorKey: 'es_aceptada',
     header: 'Valida',
+    cell: ({ row }) => {
+      const color = row.original.es_aceptada ? 'bg-green-500' : 'bg-red-500';
+      return (
+        <Badge className={color}>
+          {row.original.es_aceptada ? 'Si' : 'No'}
+        </Badge>
+      );
+    },
   },
   {
     accessorKey: 'estado.codigo',
     header: 'Estado',
+    cell: ({ row }) => {
+      return (
+        <Badge className="bg-gray-500 text-white">
+          {row.original.estado?.codigo ?? 'Sin estado'}
+        </Badge>
+      );
+    },
   },
 ];
 
@@ -127,38 +179,44 @@ const LicitationsSelected = () => {
     return <div>Cargando...</div>;
   }
 
-  const dataRecords = data.records.map(
-    ({ id, licitacion, es_aceptada, estado }: any) => ({
-      ...licitacion,
-      id,
-      id_licitacion: licitacion.id,
-      es_aceptada: es_aceptada ? 'Si' : 'No',
-      estado: estado,
-    })
-  );
+  const dataRecords = data.records.map(({ id, licitacion, estado }: any) => ({
+    ...licitacion,
+    id,
+    id_licitacion: licitacion.id,
+    estado: estado,
+  }));
 
   return (
     <div className="my-10">
-      <h1>Licitaciones seleccionadas</h1>
-      <ButtonRefetch
-        onRefetch={async () => {
-          await refetch();
-        }}
-      />
+      <h1 className="text-2xl font-bold">Licitaciones seleccionadas</h1>
 
-      <Select
-        value={optionQuery}
-        onValueChange={(value) => setOptionQuery(value as OptionQuery)}
-      >
-        <SelectTrigger>
-          <SelectValue placeholder="Selecciona una opción" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all_records">Todas las licitaciones</SelectItem>
-          <SelectItem value="only_accepted">Licitaciones aceptadas</SelectItem>
-          <SelectItem value="only_rejected">Licitaciones rechazadas</SelectItem>
-        </SelectContent>
-      </Select>
+      <div className="grid grid-cols-2 gap-2 my-2">
+        <div>
+          <ButtonRefetch
+            className=""
+            onRefetch={async () => {
+              await refetch();
+            }}
+          />
+        </div>
+
+        <div className="flex items-center gap-2 justify-end">
+          <span>Filtrar por:</span>
+          <Select
+            value={optionQuery}
+            onValueChange={(value) => setOptionQuery(value as OptionQuery)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Selecciona una opción" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all_records">Todas</SelectItem>
+              <SelectItem value="only_accepted">Validas</SelectItem>
+              <SelectItem value="only_rejected">Descartadas</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
 
       <TemplateDataTable
         columns={columnsLicitationsSelected}
