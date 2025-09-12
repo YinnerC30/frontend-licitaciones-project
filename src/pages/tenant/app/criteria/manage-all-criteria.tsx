@@ -7,16 +7,27 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useGetAllCriteria } from '@/hooks/criteria/use-get-all-criteria';
 import { useRemoveCriterion } from '@/hooks/criteria/use-remove-criterion';
 import type { ColumnDef } from '@tanstack/react-table';
 import { Copy, MoreHorizontal, Pencil, Trash } from 'lucide-react';
 
-import CreateCriterion from './create-criterion';
-import { useState } from 'react';
-import UpdateCriterion from './update-criterion';
-import { TemplateDataTable } from '@/components/data-table/template-data-table';
 import { Checkbox } from '@/components/ui/checkbox';
+import {
+  CriteriaProvider,
+  useCriteriaContext,
+} from '@/context/tenants/criteria/criteria-context';
+import { useState } from 'react';
+import CreateCriterion from './create-criterion';
+import CriteriaDataTable from './criteria-data-table';
+import UpdateCriterion from './update-criterion';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { useRemoveCriterionBulk } from '@/hooks/criteria/use-remove-bulk-criteria';
 
 export const columnsCriteria: ColumnDef<any>[] = [
   {
@@ -105,30 +116,100 @@ export const columnsCriteria: ColumnDef<any>[] = [
   },
 ];
 
-const ManageAllCriteria = () => {
-  const queryCriteria = useGetAllCriteria();
+export const GeneralActionsTable = () => {
+  const { queryCriteria, table, hasSelectedCriteria } = useCriteriaContext();
+  const { mutate } = useRemoveCriterionBulk();
 
-  if (queryCriteria.isFetching) {
-    return <div>Cargando...</div>;
-  }
-
-  const { records } = queryCriteria.data;
+  const handleRemove = () => {
+    const selectedIds = table.getSelectedRowModel().rows.map((row) => {
+      return { id: row.original.id };
+    });
+    mutate({ recordsIds: selectedIds });
+  };
 
   return (
-    <div className="flex gap-2 flex-col">
-      <h1 className="font-bold text-2xl my-4">Todos los criterios</h1>
+    <div className="flex gap-2 justify-between">
+      <ButtonRefetch
+        disabled={queryCriteria.isFetching}
+        onRefetch={async () => {
+          await queryCriteria.refetch();
+        }}
+      />
+      <CreateCriterion />
+      {hasSelectedCriteria && (
+        <Button
+          onClick={handleRemove}
+          variant="destructive"
+          className="bg-red-500 text-white hover:bg-red-500/80"
+          disabled={!hasSelectedCriteria}
+        >
+          <Trash className="h-4 w-4" />
+          Eliminar
+        </Button>
+      )}
+    </div>
+  );
+};
 
-      <div className="flex justify-between">
-        <ButtonRefetch
-          onRefetch={async () => {
-            await queryCriteria.refetch();
-          }}
-        />
-
-        <CreateCriterion />
+const PaginationInformation = () => {
+  const { pagination_information, countSelectedCriteria, table } =
+    useCriteriaContext();
+  return (
+    <div className="grid grid-cols-2 gap-2 my-2">
+      <div className="">
+        <p>Total: {pagination_information.total_row_count}</p>
+        <p>N° de seleccionados: {countSelectedCriteria}</p>
       </div>
+      <div className="flex items-center gap-2 justify-end">
+        <p className="text-sm">N° registros:</p>
+        <Select
+          value={`${table.getState().pagination.pageSize}`}
+          onValueChange={(value) => {
+            table.setPageSize(Number(value));
+          }}
+        >
+          <SelectTrigger
+            className="h-8 w-[70px]"
+            data-testid="btn-page-size-selector"
+          >
+            <SelectValue
+              className="font-medium text-muted-foreground"
+              placeholder={table.getState().pagination.pageSize}
+              data-testid="page-size-value"
+            />
+          </SelectTrigger>
+          <SelectContent
+            side="top"
+            onPointerDownOutside={(e) => e.preventDefault()}
+          >
+            {[10, 20, 30, 40, 50].map((pageSize) => (
+              <SelectItem
+                key={pageSize}
+                value={`${pageSize}`}
+                data-testid={`select-item-page-size-${pageSize}`}
+              >
+                {pageSize}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    </div>
+  );
+};
 
-      <TemplateDataTable columns={columnsCriteria} data={records} />
+const ManageAllCriteria = () => {
+  return (
+    <div className="flex gap-2 flex-col">
+      <h1 className="font-bold text-2xl my-4">Criterios de búsqueda</h1>
+
+      <CriteriaProvider>
+        <GeneralActionsTable />
+
+        <PaginationInformation />
+
+        <CriteriaDataTable />
+      </CriteriaProvider>
     </div>
   );
 };

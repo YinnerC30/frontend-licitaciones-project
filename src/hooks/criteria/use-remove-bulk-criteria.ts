@@ -18,8 +18,8 @@ export const useRemoveCriterionBulk = () => {
   const mutation = useMutation({
     mutationFn: removeCriterionBulk,
     onSuccess: async () => {
-      toast.success('Los criterios fueron eliminados con éxito');
       await queryClient.invalidateQueries({ queryKey: ['criteria'] });
+      toast.success('Los criterios fueron eliminados con éxito');
     },
   });
 
