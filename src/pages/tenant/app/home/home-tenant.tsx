@@ -139,7 +139,7 @@ export const LicitationsByCriteria = () => {
         </h1>
 
         <div className="lg:col-span-1 col-span-2">
-          <div className="col-span-1 flex gap-2 my-4 w-full justify-between">
+          <div className="col-span-1 flex gap-2 my-4 w-full justify-between flex-wrap">
             <ButtonRefetch
               className=""
               onRefetch={async () => {
