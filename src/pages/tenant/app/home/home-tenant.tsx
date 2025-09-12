@@ -19,7 +19,7 @@ import {
 import { useAuthTenantStore } from '@/data/auth-tenant-store';
 import { useClasifyLicitationBulk } from '@/hooks/licitations/use-clasify-licitations-bulk';
 import { cn } from '@/lib/utils';
-import { CalendarDays, CheckCircle, Filter, XCircle } from 'lucide-react';
+import { CalendarDays, CheckCircle, XCircle } from 'lucide-react';
 import { Navigate } from 'react-router';
 
 export const CountsInformation = () => {
@@ -28,35 +28,24 @@ export const CountsInformation = () => {
 
   return (
     <>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         <div className="flex items-center p-4 rounded-lg bg-green-100 shadow">
           <CheckCircle className="text-green-600 w-8 h-8 mr-3" />
           <div>
             <p className="text-sm text-green-800 font-semibold">
-              Licitaciones aceptadas
+              Licitaciones validas
             </p>
             <p className="text-xl font-bold text-green-900">
               {data?.valid_licitations ?? 0}
             </p>
           </div>
         </div>
-        <div className="flex items-center p-4 rounded-lg bg-blue-100 shadow">
-          <CalendarDays className="text-blue-600 w-8 h-8 mr-3" />
+        <div className="flex items-center p-4 rounded-lg bg-red-100 shadow">
+          <CalendarDays className="text-red-600 w-8 h-8 mr-3" />
           <div>
-            <p className="text-sm text-blue-800 font-semibold">Cerradas hoy</p>
-            <p className="text-xl font-bold text-blue-900">
+            <p className="text-sm text-red-800 font-semibold">Cierran hoy</p>
+            <p className="text-xl font-bold text-red-900">
               {data?.closed_today_licitations ?? 0}
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center p-4 rounded-lg bg-yellow-100 shadow">
-          <Filter className="text-yellow-600 w-8 h-8 mr-3" />
-          <div>
-            <p className="text-sm text-yellow-800 font-semibold">
-              Por criterio
-            </p>
-            <p className="text-xl font-bold text-yellow-900">
-              {data?.all_licitations_by_criteria ?? 0}
             </p>
           </div>
         </div>
@@ -98,7 +87,7 @@ const ButtonClasifyToSelectedLicitationsBulk = ({
       disabled={!hasSelectedLicitations}
     >
       <CheckCircle className="w-4 h-4" />
-      Seleccionar
+      Validar
     </Button>
   );
 };
@@ -220,6 +209,10 @@ export const LicitationsByCriteria = () => {
           Licitaciones que cumplen con los criterios registrados
         </h1>
 
+        <div className="col-span-2">
+          <CountsInformation />
+        </div>
+
         <div className="lg:col-span-1 col-span-2">
           <GeneralActionsTable />
 
@@ -241,10 +234,6 @@ export const HomeTenant = () => {
   return (
     <div className="grid grid-cols-2 gap-8">
       <HomeTenantProvider>
-        {/* <div className="col-span-2">
-          <CountsInformation />
-        </div> */}
-
         <LicitationsByCriteria />
 
         <div className="lg:col-span-1 col-span-2">

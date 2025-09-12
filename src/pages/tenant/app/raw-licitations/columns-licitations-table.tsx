@@ -73,7 +73,7 @@ export const columnsLicitations: ColumnDef<any>[] = [
 
               <DropdownMenuItem onClick={handleSelected}>
                 <CheckCircle className="h-4 w-4" />
-                Seleccionar
+                Validar
               </DropdownMenuItem>
               <DropdownMenuItem onClick={handleDiscard}>
                 <XCircle className="h-4 w-4" />

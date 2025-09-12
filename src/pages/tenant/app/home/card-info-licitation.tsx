@@ -136,7 +136,7 @@ const CardInfoLicitacion = () => {
             className="bg-green-500 text-white"
           >
             <CheckCircle className="w-4 h-4" />
-            Seleccionar
+            Validar
           </Button>
           <Button variant="destructive" onClick={handleDiscard}>
             <XCircle className="w-4 h-4" />
