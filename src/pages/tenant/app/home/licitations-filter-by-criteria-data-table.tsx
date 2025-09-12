@@ -15,7 +15,7 @@ export function LicitationsFilterByCriteriaDataTable<TData>() {
   const { table } = useLicitationsFilterByCriteriaContext<TData>();
 
   return (
-    <div className="overflow-hidden rounded-md border">
+    <div className="overflow-hidden rounded-md border px-2 py-1">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
