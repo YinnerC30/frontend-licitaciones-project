@@ -33,8 +33,31 @@ import {
 import UpdateLicitationStatus from './update-licitation-status';
 import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router';
+import { Checkbox } from '@/components/ui/checkbox';
 
 export const columnsLicitationsSelected: ColumnDef<any>[] = [
+  {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     id: 'actions',
     cell: ({ row }) => {

@@ -30,6 +30,8 @@ interface LicitationsSelectedContextType<TData> {
   queryLicitationsSelected: UseQueryResult<any, Error>;
   optionQuery: OptionQuery;
   setOptionQuery: (option: OptionQuery) => void;
+  hasSelectedLicitations: boolean;
+  countSelectedLicitations: number;
 }
 
 const LicitationsSelectedContext =
@@ -103,6 +105,9 @@ export const LicitationsSelectedProvider = ({
     rowCount: queryLicitationsSelected.data?.total_row_count ?? 0,
   });
 
+  const countSelectedLicitations = table.getSelectedRowModel().rows.length;
+  const hasSelectedLicitations = countSelectedLicitations > 0;
+
   const value = {
     table,
     pagination_information: queryLicitationsSelected.data ?? {
@@ -115,6 +120,8 @@ export const LicitationsSelectedProvider = ({
     queryLicitationsSelected,
     optionQuery,
     setOptionQuery,
+    hasSelectedLicitations,
+    countSelectedLicitations,
   };
 
   return (
