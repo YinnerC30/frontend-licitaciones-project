@@ -1,3 +1,4 @@
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -11,6 +12,8 @@ import { useClasifyLicitation } from '@/hooks/licitations/use-clasify-licitation
 
 import type { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 
 export const columnsLicitations: ColumnDef<any>[] = [
   {
@@ -79,18 +82,18 @@ export const columnsLicitations: ColumnDef<any>[] = [
       );
     },
   },
-  {
-    accessorKey: 'id',
-    header: 'ID',
-  },
+  // {
+  //   accessorKey: 'id',
+  //   header: 'ID',
+  // },
   {
     accessorKey: 'id_original',
-    header: 'ID original',
+    header: 'Id',
   },
-  {
-    accessorKey: 'fecha_hora_ejecucion_cron',
-    header: 'Fecha y hora de ejecución cron',
-  },
+  // {
+  //   accessorKey: 'fecha_hora_ejecucion_cron',
+  //   header: 'Fecha y hora de ejecución cron',
+  // },
   {
     accessorKey: 'nombre',
     header: 'Nombre',
@@ -102,17 +105,60 @@ export const columnsLicitations: ColumnDef<any>[] = [
   {
     accessorKey: 'descripcion',
     header: 'Descripción',
+    cell: ({ row }) => {
+      return (
+        <div className="line-clamp-2">
+          {row.original.descripcion.length
+            ? row.original.descripcion
+            : 'Sin descripción'}
+        </div>
+      );
+    },
   },
   {
     accessorKey: 'moneda',
     header: 'Moneda',
+    cell: ({ row }) => {
+      return (
+        <Badge className="bg-purple-500 text-white">
+          {row.original.moneda}
+        </Badge>
+      );
+    },
   },
   {
     accessorKey: 'fecha_hora_cierre',
-    header: 'Fecha y hora de cierre',
+    header: 'Fecha de cierre',
+    cell: ({ row }) => {
+      return (
+        <div className="flex justify-end">
+          <span className="text-end">
+            {format(
+              new Date(row.original.fecha_hora_cierre),
+              "dd 'de' MMMM 'del' yyyy, hh:mm a",
+              { locale: es }
+            )}
+          </span>
+        </div>
+      );
+    },
   },
   {
     accessorKey: 'monto_disponible',
     header: 'Monto disponible',
+    cell: ({ row }) => {
+      return (
+        <div className="flex justify-end">
+          <span className="font-medium text-end">
+            {row.original.monto_disponible?.toLocaleString('es-CL', {
+              style: 'currency',
+              currency: row.original.moneda || 'CLP',
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            })}
+          </span>
+        </div>
+      );
+    },
   },
 ];
