@@ -10,17 +10,36 @@ import {
 import { useGetAllCriteria } from '@/hooks/criteria/use-get-all-criteria';
 import { useRemoveCriterion } from '@/hooks/criteria/use-remove-criterion';
 import type { ColumnDef } from '@tanstack/react-table';
-import { MoreHorizontal } from 'lucide-react';
+import { Copy, MoreHorizontal, Pencil, Trash } from 'lucide-react';
 
 import CreateCriterion from './create-criterion';
 import { useState } from 'react';
 import UpdateCriterion from './update-criterion';
 import { TemplateDataTable } from '@/components/data-table/template-data-table';
+import { Checkbox } from '@/components/ui/checkbox';
 
 export const columnsCriteria: ColumnDef<any>[] = [
   {
-    accessorKey: 'id',
-    header: 'ID',
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
   },
   {
     accessorKey: 'nombre',
@@ -56,6 +75,7 @@ export const columnsCriteria: ColumnDef<any>[] = [
               <DropdownMenuItem
                 onClick={() => navigator.clipboard.writeText(record.id)}
               >
+                <Copy className="h-4 w-4" />
                 Copiar ID
               </DropdownMenuItem>
 
@@ -64,10 +84,12 @@ export const columnsCriteria: ColumnDef<any>[] = [
                   setOpenDialog(true);
                 }}
               >
+                <Pencil className="h-4 w-4" />
                 Modificar
               </DropdownMenuItem>
 
               <DropdownMenuItem onClick={handleRemove}>
+                <Trash className="h-4 w-4" />
                 Eliminar
               </DropdownMenuItem>
             </DropdownMenuContent>
