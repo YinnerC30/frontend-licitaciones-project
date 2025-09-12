@@ -43,6 +43,7 @@ import {
   User2,
 } from 'lucide-react';
 import { useEffect } from 'react';
+import { Separator } from '@/components/ui/separator';
 
 const items = [
   {
@@ -153,6 +154,7 @@ const MainContent = () => {
       }`}
     >
       <SidebarTrigger />
+      <Separator className='my-2' />
       <Outlet />
     </main>
   );
