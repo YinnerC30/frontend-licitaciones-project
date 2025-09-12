@@ -130,6 +130,23 @@ export const columnsLicitations: ColumnDef<any>[] = [
     },
   },
   {
+    accessorKey: 'fecha_hora_publicacion',
+    header: 'Fecha de publicación',
+    cell: ({ row }) => {
+      return (
+        <div className="flex justify-end">
+          <span className="text-end">
+            {format(
+              new Date(row.original.fecha_hora_publicacion),
+              "dd 'de' MMMM 'del' yyyy, hh:mm a",
+              { locale: es }
+            )}
+          </span>
+        </div>
+      );
+    },
+  },
+  {
     accessorKey: 'fecha_hora_cierre',
     header: 'Fecha de cierre',
     cell: ({ row }) => {

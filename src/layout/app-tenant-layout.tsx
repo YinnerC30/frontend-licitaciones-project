@@ -62,7 +62,7 @@ const items = [
     icon: List,
   },
   {
-    title: 'Estados',
+    title: 'Etapas',
     url: NAVIGATION_ROUTES.tenant.licitationStatus,
     icon: Stamp,
   },

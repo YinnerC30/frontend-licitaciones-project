@@ -69,11 +69,11 @@ export const LicitationsSelectedProvider = ({
     if (!queryLicitationsSelected.data?.records) return [];
 
     return queryLicitationsSelected.data.records.map(
-      ({ id, licitacion, estado, es_aceptada }: any) => ({
+      ({ id, licitacion, etapa, es_aceptada }: any) => ({
         ...licitacion,
         id,
         id_licitacion: licitacion.id,
-        estado: estado,
+        etapa: etapa,
         es_aceptada: es_aceptada,
       })
     );

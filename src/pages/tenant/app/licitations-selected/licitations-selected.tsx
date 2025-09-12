@@ -7,6 +7,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  LicitationsSelectedProvider,
+  useLicitationsSelectedContext,
+} from '@/context/tenants/licitations-selected/licitations-selected-context';
 import { useGetAllLicitationsStatus } from '@/hooks/licitations-status/use-get-all-licitations-status';
 import { useUpdateClasifyLicitation } from '@/hooks/licitations/use-update-clasify-licitation';
 import type { ColumnDef } from '@tanstack/react-table';
@@ -21,16 +25,12 @@ import {
   XCircle,
 } from 'lucide-react';
 import { useState } from 'react';
-import UpdateLicitationStatus from './update-licitation-status';
 import {
   GeneralActionsTable,
   InformationPagination,
   LicitationsSelectedDataTable,
 } from './components';
-import {
-  LicitationsSelectedProvider,
-  useLicitationsSelectedContext,
-} from '@/context/tenants/licitations-selected/licitations-selected-context';
+import UpdateLicitationStatus from './update-licitation-status';
 
 export const columnsLicitationsSelected: ColumnDef<any>[] = [
   {
@@ -167,6 +167,23 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
     },
   },
   {
+    accessorKey: 'fecha_hora_publicacion',
+    header: 'Fecha de publicación',
+    cell: ({ row }) => {
+      return (
+        <div className="flex justify-end">
+          <span className="text-end">
+            {format(
+              new Date(row.original.fecha_hora_publicacion),
+              "dd 'de' MMMM 'del' yyyy, hh:mm a",
+              { locale: es }
+            )}
+          </span>
+        </div>
+      );
+    },
+  },
+  {
     accessorKey: 'fecha_hora_cierre',
     header: 'Fecha y hora de cierre',
     cell: ({ row }) => {
@@ -215,12 +232,13 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
     },
   },
   {
-    accessorKey: 'estado.codigo',
-    header: 'Estado',
+    accessorKey: 'etapa.codigo',
+    header: 'Etapa',
     cell: ({ row }) => {
+      const color = row.original.etapa?.codigo ? 'bg-blue-500' : 'bg-gray-500';
       return (
-        <Badge className="bg-gray-500 text-white">
-          {row.original.estado?.codigo ?? 'Sin estado'}
+        <Badge className={color}>
+          {row.original.etapa?.codigo ?? 'Sin etapa'}
         </Badge>
       );
     },
