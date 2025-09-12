@@ -107,7 +107,7 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
   },
   {
     accessorKey: 'es_aceptada',
-    header: 'Aceptada',
+    header: 'Valida',
   },
   {
     accessorKey: 'estado.codigo',

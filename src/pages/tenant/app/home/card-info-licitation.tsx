@@ -3,6 +3,19 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useHomeTenantContext } from '@/context/tenants/home/home-tenant-context';
 import { useClasifyLicitation } from '@/hooks/licitations/use-clasify-licitation';
 
+// Iconos de Lucide
+import {
+  BadgeDollarSign,
+  CalendarDays,
+  CheckCircle,
+  Coins,
+  Globe,
+  Hash,
+  Landmark,
+  X,
+  XCircle,
+} from 'lucide-react';
+
 const formatFecha = (fechaStr?: string) => {
   if (!fechaStr) return '-';
   const fecha = new Date(fechaStr);
@@ -26,15 +39,33 @@ const formatMonto = (monto?: number, moneda?: string) => {
 };
 
 const CardInfoLicitacion = () => {
-  const { selectedLicitacion } = useHomeTenantContext();
+  const { selectedLicitacion, setSelectedLicitacion } = useHomeTenantContext();
   const { mutate } = useClasifyLicitation();
 
   const handleSelect = () => {
-    mutate({ id_licitacion: selectedLicitacion?.id, es_aceptada: true });
+    mutate(
+      { id_licitacion: selectedLicitacion?.id, es_aceptada: true },
+      {
+        onSuccess: () => {
+          setSelectedLicitacion(null);
+        },
+      }
+    );
   };
 
   const handleDiscard = () => {
-    mutate({ id_licitacion: selectedLicitacion?.id, es_aceptada: false });
+    mutate(
+      { id_licitacion: selectedLicitacion?.id, es_aceptada: false },
+      {
+        onSuccess: () => {
+          setSelectedLicitacion(null);
+        },
+      }
+    );
+  };
+
+  const handleClose = () => {
+    setSelectedLicitacion(null);
   };
 
   if (!selectedLicitacion) {
@@ -44,7 +75,9 @@ const CardInfoLicitacion = () => {
           <CardTitle>Información de la licitación</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-gray-500">Selecciona una licitación para ver los detalles.</p>
+          <p className="text-gray-500">
+            Selecciona una licitación para ver los detalles.
+          </p>
         </CardContent>
       </Card>
     );
@@ -53,43 +86,70 @@ const CardInfoLicitacion = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Información de la licitación</CardTitle>
+        <CardTitle>{selectedLicitacion.nombre}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="mb-4">
-          <h2 className="text-lg font-semibold mb-1">{selectedLicitacion.nombre}</h2>
-          <p className="text-sm text-gray-600 mb-2">{selectedLicitacion.descripcion || 'Sin descripción'}</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-sm">
-            <div>
+          <p className="text-sm text-gray-600 mb-2 flex items-center gap-2">
+            <Globe className="w-4 h-4 text-gray-400" />
+            {selectedLicitacion.descripcion || 'Sin descripción'}
+          </p>
+          <div className="grid grid-cols-1 gap-x-8 gap-y-2 text-sm">
+            <div className="flex items-center gap-2">
+              <Hash className="w-4 h-4 text-gray-400" />
               <span className="font-medium">ID licitación: </span>
               <span>{selectedLicitacion.id_original}</span>
             </div>
-            <div>
+            <div className="flex items-center gap-2">
+              <Landmark className="w-4 h-4 text-gray-400" />
               <span className="font-medium">Organismo: </span>
               <span>{selectedLicitacion.nombre_organismo}</span>
             </div>
-            <div>
+            <div className="flex items-center gap-2">
+              <CalendarDays className="w-4 h-4 text-gray-400" />
               <span className="font-medium">Fecha publicación: </span>
-              <span>{formatFecha(selectedLicitacion.fecha_hora_publicacion)}</span>
+              <span>
+                {formatFecha(selectedLicitacion.fecha_hora_publicacion)}
+              </span>
             </div>
-            <div>
+            <div className="flex items-center gap-2">
+              <CalendarDays className="w-4 h-4 text-gray-400" />
               <span className="font-medium">Fecha cierre: </span>
               <span>{formatFecha(selectedLicitacion.fecha_hora_cierre)}</span>
             </div>
-            <div>
+            <div className="flex items-center gap-2">
+              <BadgeDollarSign className="w-4 h-4 text-gray-400" />
               <span className="font-medium">Monto disponible: </span>
-              <span>{formatMonto(selectedLicitacion.monto_disponible, selectedLicitacion.moneda)}</span>
+              <span>
+                {formatMonto(
+                  selectedLicitacion.monto_disponible,
+                  selectedLicitacion.moneda
+                )}
+              </span>
             </div>
-            <div>
+            <div className="flex items-center gap-2">
+              <Coins className="w-4 h-4 text-gray-400" />
               <span className="font-medium">Moneda: </span>
               <span>{selectedLicitacion.moneda}</span>
             </div>
           </div>
         </div>
-        <div className="flex gap-2 mt-4">
-          <Button onClick={handleSelect}>Seleccionar</Button>
+        <div className="flex gap-2 mt-4 justify-end">
+          <Button
+            onClick={handleSelect}
+            variant="default"
+            className="bg-green-500 text-white"
+          >
+            <CheckCircle className="w-4 h-4" />
+            Validar
+          </Button>
           <Button variant="destructive" onClick={handleDiscard}>
+            <XCircle className="w-4 h-4" />
             Descartar
+          </Button>
+          <Button variant="outline" onClick={handleClose}>
+            <X className="w-4 h-4" />
+            Cerrar
           </Button>
         </div>
       </CardContent>
