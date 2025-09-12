@@ -19,7 +19,7 @@ import {
 import { useAuthTenantStore } from '@/data/auth-tenant-store';
 import { useClasifyLicitationBulk } from '@/hooks/licitations/use-clasify-licitations-bulk';
 import { cn } from '@/lib/utils';
-import { CalendarDays, CheckCircle, XCircle } from 'lucide-react';
+import { CalendarDays, CheckCircle, PartyPopper, XCircle } from 'lucide-react';
 import { Navigate } from 'react-router';
 
 export const CountsInformation = () => {
@@ -28,7 +28,7 @@ export const CountsInformation = () => {
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-3 gap-4">
         <div className="flex items-center p-4 rounded-lg bg-green-100 shadow">
           <CheckCircle className="text-green-600 w-8 h-8 mr-3" />
           <div>
@@ -46,6 +46,18 @@ export const CountsInformation = () => {
             <p className="text-sm text-red-800 font-semibold">Cierran hoy</p>
             <p className="text-xl font-bold text-red-900">
               {data?.closed_today_licitations ?? 0}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center p-4 rounded-lg bg-blue-100 shadow">
+          <PartyPopper className="text-blue-600 w-8 h-8 mr-3" />
+          <div>
+            <p className="text-sm text-blue-800 font-semibold">
+              Licitaciones nuevas
+            </p>
+            <p className="text-xl font-bold text-blue-900">
+              {data?.all_licitations_by_criteria ?? 0}
             </p>
           </div>
         </div>
