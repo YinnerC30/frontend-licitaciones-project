@@ -13,8 +13,11 @@ import { flexRender } from '@tanstack/react-table';
 
 export function LicitationsFilterByCriteriaDataTable<TData>() {
   const { setSelectedLicitacion, selectedLicitacion } = useHomeTenantContext();
-  const { table, pagination_information } =
-    useLicitationsFilterByCriteriaContext<TData>();
+  const {
+    table,
+    pagination_information,
+    queryByCriteria: { isFetching },
+  } = useLicitationsFilterByCriteriaContext<TData>();
 
   return (
     <div>
@@ -66,6 +69,15 @@ export function LicitationsFilterByCriteriaDataTable<TData>() {
                   </>
                 );
               })
+            ) : isFetching ? (
+              <TableRow>
+                <TableCell
+                  colSpan={table.getAllColumns().length}
+                  className="h-24 text-center"
+                >
+                  Cargando...
+                </TableCell>
+              </TableRow>
             ) : (
               <TableRow>
                 <TableCell
