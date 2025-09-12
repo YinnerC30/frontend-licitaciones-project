@@ -156,7 +156,8 @@ interface TableLogbooksProps {
 const TableLogbooks = (props: TableLogbooksProps) => {
   const { data } = props;
   return (
-    <div>
+    <div className='col-span-2'>
+      <h2 className='text-lg font-bold my-2'>Historial de bitácora</h2>
       <TemplateDataTable columns={columnsLogbooks} data={data} />
     </div>
   );
