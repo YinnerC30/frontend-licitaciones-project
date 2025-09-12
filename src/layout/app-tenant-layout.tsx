@@ -18,6 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Separator } from '@/components/ui/separator';
 import {
   Sidebar,
   SidebarContent,
@@ -35,15 +36,14 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { NAVIGATION_ROUTES } from '@/router/navigation-routes';
 import {
   ChevronUp,
+  Filter,
   Home,
   Layers,
-  List,
   ListCheck,
   Stamp,
-  User2,
+  User2
 } from 'lucide-react';
 import { useEffect } from 'react';
-import { Separator } from '@/components/ui/separator';
 
 const items = [
   {
@@ -59,7 +59,7 @@ const items = [
   {
     title: 'Criterios',
     url: NAVIGATION_ROUTES.tenant.criteria,
-    icon: List,
+    icon: Filter,
   },
   {
     title: 'Etapas',
@@ -96,7 +96,7 @@ export function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={location.pathname === item.url}>
+                  <SidebarMenuButton asChild isActive={location.pathname.includes(item.url)}>
                     <Link to={item.url}>
                       <item.icon />
                       <span>{item.title}</span>

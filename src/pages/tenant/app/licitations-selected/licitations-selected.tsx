@@ -32,6 +32,7 @@ import {
 } from './components';
 import UpdateLicitationStatus from './update-licitation-status';
 import { cn } from '@/lib/utils';
+import { useNavigate } from 'react-router';
 
 export const columnsLicitationsSelected: ColumnDef<any>[] = [
   {
@@ -42,7 +43,7 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
 
       const [openDialog, setOpenDialog] = useState(false);
       const queryLicitationsStatus = useGetAllLicitationsStatus();
-
+      const navigate = useNavigate();
       const isAccepted = record.es_aceptada;
 
       const { mutate } = useUpdateClasifyLicitation();
@@ -116,6 +117,17 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
                   Validar
                 </DropdownMenuItem>
               )}
+
+              <DropdownMenuItem
+                onClick={() =>
+                  navigate(
+                    `/tenant/app/licitations-selected/manage/${record.id}`
+                  )
+                }
+              >
+                <Pencil className="h-4 w-4" />
+                Administrar
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           {openDialog && (

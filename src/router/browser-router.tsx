@@ -15,6 +15,7 @@ import ManageAllCriteria from '@/pages/tenant/app/criteria/manage-all-criteria';
 import { HomeTenant } from '@/pages/tenant/app/home/home-tenant';
 import ManageAllLicitationsStatus from '@/pages/tenant/app/licitation-status/manage-all-licitations-status';
 import LicitationsSelected from '@/pages/tenant/app/licitations-selected/licitations-selected';
+import ManageOneLicitationSelected from '@/pages/tenant/app/licitations-selected/manage/manage-one-licitation-selected';
 import ManageAllRawLicitations from '@/pages/tenant/app/raw-licitations/manage-all-raw-licitations';
 
 import { LoginTenant } from '@/pages/tenant/auth/login-tenant';
@@ -133,6 +134,10 @@ export const BrowSerRouter = createBrowserRouter([
           {
             path: 'licitations-selected',
             Component: LicitationsSelected,
+          },
+          {
+            path: 'licitations-selected/manage/:id',
+            Component: ManageOneLicitationSelected,
           },
           {
             path: 'criteria',
