@@ -149,31 +149,21 @@ export const InformationPagination = () => {
 };
 
 export const LicitationsByCriteria = () => {
-  const queryByCriteria = useGetAllLicitationsByCriteria();
-
-  if (queryByCriteria.isFetching) {
-    return <div>Cargando...</div>;
-  }
-
   return (
     <>
-      <LicitationsFilterByCriteriaProvider
-        columns={columnsLicitations}
-        data={queryByCriteria.data.records}
-        pagination_information={{ ...queryByCriteria.data }}
-      >
+      <LicitationsFilterByCriteriaProvider>
         <h1 className="col-span-2 text-2xl font-bold">
           Licitaciones que cumplen con los criterios registrados
         </h1>
 
         <div className="lg:col-span-1 col-span-2">
           <div className="col-span-1 flex gap-2 my-4 w-full justify-between flex-wrap">
-            <ButtonRefetch
+            {/* <ButtonRefetch
               className=""
               onRefetch={async () => {
                 await queryByCriteria.refetch();
               }}
-            />
+            /> */}
             <div className="flex gap-2">
               <ButtonClasifyToSelectedLicitationsBulk className="bg-green-500 text-white" />
               <ButtonClasifyToDiscardLicitationsBulk />
