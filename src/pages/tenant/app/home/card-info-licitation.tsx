@@ -7,10 +7,12 @@ import { useClasifyLicitation } from '@/hooks/licitations/use-clasify-licitation
 import {
   BadgeDollarSign,
   CalendarDays,
+  CheckCircle,
   Coins,
   Globe,
   Hash,
   Landmark,
+  XCircle,
 } from 'lucide-react';
 
 const formatFecha = (fechaStr?: string) => {
@@ -127,9 +129,17 @@ const CardInfoLicitacion = () => {
             </div>
           </div>
         </div>
-        <div className="flex gap-2 mt-4">
-          <Button onClick={handleSelect}>Seleccionar</Button>
+        <div className="flex gap-2 mt-4 justify-end">
+          <Button
+            onClick={handleSelect}
+            variant="default"
+            className="bg-green-500 text-white"
+          >
+            <CheckCircle className="w-4 h-4" />
+            Seleccionar
+          </Button>
           <Button variant="destructive" onClick={handleDiscard}>
+            <XCircle className="w-4 h-4" />
             Descartar
           </Button>
         </div>
