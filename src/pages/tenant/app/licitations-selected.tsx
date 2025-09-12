@@ -34,6 +34,8 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
       const [openDialog, setOpenDialog] = useState(false);
       const queryLicitationsStatus = useGetAllLicitationsStatus();
 
+      const isAccepted = record.es_aceptada;
+
       return (
         <>
           <DropdownMenu>
@@ -52,7 +54,7 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
                 Copiar ID
               </DropdownMenuItem>
 
-              <DropdownMenuItem onClick={() => setOpenDialog(true)}>
+              <DropdownMenuItem onClick={() => setOpenDialog(true)} disabled={!isAccepted}>
                 <Pencil className="h-4 w-4" />
                 Actualizar status
               </DropdownMenuItem>
