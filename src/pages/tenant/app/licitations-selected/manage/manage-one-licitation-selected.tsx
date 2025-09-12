@@ -127,10 +127,7 @@ const columnsLogbooks: ColumnDef<any>[] = [
       return <div>{row.original.usuario.username}</div>;
     },
   },
-  {
-    accessorKey: 'contenido',
-    header: 'Contenido',
-  },
+  
   {
     accessorKey: 'fecha_hora',
     header: 'Fecha y hora',
@@ -145,6 +142,10 @@ const columnsLogbooks: ColumnDef<any>[] = [
         </div>
       );
     },
+  },
+  {
+    accessorKey: 'contenido',
+    header: 'Contenido',
   },
 ];
 
