@@ -146,6 +146,7 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
     accessorKey: 'es_aceptada',
     header: 'Valida',
     cell: ({ row }) => {
+      console.log(row.original.es_aceptada);
       const color = row.original.es_aceptada ? 'bg-green-500' : 'bg-red-500';
       return (
         <Badge className={color}>
@@ -179,11 +180,12 @@ const LicitationsSelected = () => {
     return <div>Cargando...</div>;
   }
 
-  const dataRecords = data.records.map(({ id, licitacion, estado }: any) => ({
+  const dataRecords = data.records.map(({ id, licitacion, estado, es_aceptada }: any) => ({
     ...licitacion,
     id,
     id_licitacion: licitacion.id,
     estado: estado,
+    es_aceptada: es_aceptada,
   }));
 
   return (
