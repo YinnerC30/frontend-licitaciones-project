@@ -26,15 +26,29 @@ const formatMonto = (monto?: number, moneda?: string) => {
 };
 
 const CardInfoLicitacion = () => {
-  const { selectedLicitacion } = useHomeTenantContext();
+  const { selectedLicitacion, setSelectedLicitacion } = useHomeTenantContext();
   const { mutate } = useClasifyLicitation();
 
   const handleSelect = () => {
-    mutate({ id_licitacion: selectedLicitacion?.id, es_aceptada: true });
+    mutate(
+      { id_licitacion: selectedLicitacion?.id, es_aceptada: true },
+      {
+        onSuccess: () => {
+          setSelectedLicitacion(null);
+        },
+      }
+    );
   };
 
   const handleDiscard = () => {
-    mutate({ id_licitacion: selectedLicitacion?.id, es_aceptada: false });
+    mutate(
+      { id_licitacion: selectedLicitacion?.id, es_aceptada: false },
+      {
+        onSuccess: () => {
+          setSelectedLicitacion(null);
+        },
+      }
+    );
   };
 
   if (!selectedLicitacion) {
@@ -44,7 +58,9 @@ const CardInfoLicitacion = () => {
           <CardTitle>Información de la licitación</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-gray-500">Selecciona una licitación para ver los detalles.</p>
+          <p className="text-gray-500">
+            Selecciona una licitación para ver los detalles.
+          </p>
         </CardContent>
       </Card>
     );
@@ -57,8 +73,12 @@ const CardInfoLicitacion = () => {
       </CardHeader>
       <CardContent>
         <div className="mb-4">
-          <h2 className="text-lg font-semibold mb-1">{selectedLicitacion.nombre}</h2>
-          <p className="text-sm text-gray-600 mb-2">{selectedLicitacion.descripcion || 'Sin descripción'}</p>
+          <h2 className="text-lg font-semibold mb-1">
+            {selectedLicitacion.nombre}
+          </h2>
+          <p className="text-sm text-gray-600 mb-2">
+            {selectedLicitacion.descripcion || 'Sin descripción'}
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-sm">
             <div>
               <span className="font-medium">ID licitación: </span>
@@ -70,7 +90,9 @@ const CardInfoLicitacion = () => {
             </div>
             <div>
               <span className="font-medium">Fecha publicación: </span>
-              <span>{formatFecha(selectedLicitacion.fecha_hora_publicacion)}</span>
+              <span>
+                {formatFecha(selectedLicitacion.fecha_hora_publicacion)}
+              </span>
             </div>
             <div>
               <span className="font-medium">Fecha cierre: </span>
@@ -78,7 +100,12 @@ const CardInfoLicitacion = () => {
             </div>
             <div>
               <span className="font-medium">Monto disponible: </span>
-              <span>{formatMonto(selectedLicitacion.monto_disponible, selectedLicitacion.moneda)}</span>
+              <span>
+                {formatMonto(
+                  selectedLicitacion.monto_disponible,
+                  selectedLicitacion.moneda
+                )}
+              </span>
             </div>
             <div>
               <span className="font-medium">Moneda: </span>

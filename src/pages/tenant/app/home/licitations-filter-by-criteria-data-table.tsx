@@ -11,7 +11,7 @@ import { useHomeTenantContext } from '@/context/tenants/home/home-tenant-context
 import { useLicitationsFilterByCriteriaContext } from '@/context/tenants/home/licitations-filter-by-criteria-context';
 
 export function LicitationsFilterByCriteriaDataTable<TData>() {
-  const { setSelectedLicitacion } = useHomeTenantContext();
+  const { setSelectedLicitacion, selectedLicitacion } = useHomeTenantContext();
   const { table } = useLicitationsFilterByCriteriaContext<TData>();
 
   return (
@@ -37,21 +37,31 @@ export function LicitationsFilterByCriteriaDataTable<TData>() {
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && 'selected'}
-                onClick={() => {
-                  setSelectedLicitacion(row.original);
-                }}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
+            table.getRowModel().rows.map((row: any) => {
+
+              const isSelected = row.original?.id === selectedLicitacion?.id;
+              return (
+                <>
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                    className={`cursor-pointer ${isSelected ? 'bg-muted' : ''}`}
+                    onDoubleClick={() => {
+                      setSelectedLicitacion(row.original);
+                    }}
+                  >
+                    {row.getVisibleCells().map((cell: any) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </>
+              );
+            })
           ) : (
             <TableRow>
               <TableCell
