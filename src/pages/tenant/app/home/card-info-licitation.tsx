@@ -19,18 +19,9 @@ import {
 
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { toast } from 'sonner';
 
-const formatFecha = (fechaStr?: string) => {
-  if (!fechaStr) return '-';
-  const fecha = new Date(fechaStr);
-  return fecha.toLocaleString('es-CL', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-};
+
 
 const formatMonto = (monto?: number, moneda?: string) => {
   if (monto == null) return '-';
@@ -67,6 +58,11 @@ const CardInfoLicitacion = () => {
         },
       }
     );
+  };
+
+  const handleConsult = () => {
+    toast.error('Pendiente de implementación');
+    
   };
 
   const handleClose = () => {
@@ -152,20 +148,36 @@ const CardInfoLicitacion = () => {
         <div className="grid lg:grid-cols-2 grid-cols-1 gap-2">
           <div className="flex gap-2 lg:justify-start justify-center px-2">
             <Button
+              onClick={handleConsult}
+              variant="default"
+              className="bg-blue-500 text-white hover:bg-blue-500/80 cursor-pointer"
+            >
+              {!isMobile && <Globe className="w-4 h-4" />}
+              Consultar
+            </Button>
+            <Button
               onClick={handleSelect}
               variant="default"
-              className="bg-green-500 text-white"
+              className="bg-green-500 text-white hover:bg-green-500/80 cursor-pointer"
             >
               {!isMobile && <CheckCircle className="w-4 h-4" />}
               Validar
             </Button>
-            <Button variant="destructive" onClick={handleDiscard}>
+            <Button
+              variant="destructive"
+              onClick={handleDiscard}
+              className="bg-red-500 text-white hover:bg-red-500/80 cursor-pointer"
+            >
               {!isMobile && <XCircle className="w-4 h-4" />}
               Descartar
             </Button>
           </div>
           <div className="flex lg:justify-end justify-center">
-            <Button variant="outline" onClick={handleClose}>
+            <Button
+              variant="outline"
+              onClick={handleClose}
+              className=" hover:bg-gray-500/50 cursor-pointer"
+            >
               {!isMobile && <X className="w-4 h-4" />}
               Cerrar
             </Button>
