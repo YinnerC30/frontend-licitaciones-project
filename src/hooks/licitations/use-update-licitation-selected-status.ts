@@ -26,7 +26,7 @@ export const useUpdateLicitationSelectedStatus = () => {
       await queryClient.invalidateQueries({
         queryKey: ['licitations-selected'],
       });
-      toast.success('El estado de la licitación seleccionada fue actualizado');
+      toast.success('La etapa de la licitación seleccionada fue actualizada');
     },
     onError: () => {
       toast.error('Ocurrió un error');

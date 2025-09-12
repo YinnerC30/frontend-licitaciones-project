@@ -215,12 +215,12 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
     },
   },
   {
-    accessorKey: 'estado.codigo',
-    header: 'Estado',
+    accessorKey: 'etapa.codigo',
+    header: 'Etapa',
     cell: ({ row }) => {
       return (
         <Badge className="bg-gray-500 text-white">
-          {row.original.estado?.codigo ?? 'Sin estado'}
+          {row.original.etapa?.codigo ?? 'Sin etapa'}
         </Badge>
       );
     },

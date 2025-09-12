@@ -38,7 +38,7 @@ interface EstadoLicitacion {
 
 // Esquema de validación con Zod
 const createLicitationStatusSchema = z.object({
-  estado: z.object({
+  etapa: z.object({
     id: z.string(),
     codigo: z.string(),
     descripcion: z.string(),
@@ -62,7 +62,7 @@ const UpdateLicitationStatus: React.FC<UpdateLicitationStatusProps> = (
   const { statusDialog, onChangeStatusDialog, data, query } = props;
 
   const defaultValues = {
-    estado: data.estado || {
+    etapa: data.etapa || {
       id: '',
       codigo: '',
       descripcion: '',
@@ -84,7 +84,7 @@ const UpdateLicitationStatus: React.FC<UpdateLicitationStatusProps> = (
 
   const onSubmit = (data: UpdateLicitationStatusFormData) => {
     mutate(
-      { id: props.data.id, id_status: data.estado.id },
+      { id: props.data.id, id_status: data.etapa.id },
       {
         onSuccess: ({ data }: { data: UpdateLicitationStatusFormData }) => {
           form.reset(data);
@@ -103,10 +103,10 @@ const UpdateLicitationStatus: React.FC<UpdateLicitationStatusProps> = (
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>
-            Actualizar información del estado de la licitación
+            Actualizar información de la etapa de la licitación
           </DialogTitle>
           <DialogDescription>
-            Complete los campos para actualizar al estado de la licitación en el
+            Complete los campos para actualizar la etapa de la licitación en el
             sistema.
           </DialogDescription>
         </DialogHeader>
@@ -116,10 +116,10 @@ const UpdateLicitationStatus: React.FC<UpdateLicitationStatusProps> = (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="estado"
+                name="etapa"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Estado</FormLabel>
+                    <FormLabel>Etapa</FormLabel>
                     <FormControl>
                       <Select
                         onValueChange={(value: string) => {
@@ -133,13 +133,13 @@ const UpdateLicitationStatus: React.FC<UpdateLicitationStatusProps> = (
                         value={field.value.id}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Seleccione el estado" />
+                          <SelectValue placeholder="Seleccione la etapa" />
                         </SelectTrigger>
                         <SelectContent>
                           {queryLicitationsStatus.data.records.map(
-                            (estado: EstadoLicitacion) => (
-                              <SelectItem key={estado.id} value={estado.id}>
-                                {estado.codigo}
+                            (etapa: EstadoLicitacion) => (
+                              <SelectItem key={etapa.id} value={etapa.id}>
+                                {etapa.codigo}
                               </SelectItem>
                             )
                           )}
