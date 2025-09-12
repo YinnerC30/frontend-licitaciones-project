@@ -31,6 +31,7 @@ import {
   LicitationsSelectedDataTable,
 } from './components';
 import UpdateLicitationStatus from './update-licitation-status';
+import { cn } from '@/lib/utils';
 
 export const columnsLicitationsSelected: ColumnDef<any>[] = [
   {
@@ -225,7 +226,7 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
       console.log(row.original.es_aceptada);
       const color = row.original.es_aceptada ? 'bg-green-500' : 'bg-red-500';
       return (
-        <Badge className={color}>
+        <Badge className={cn(color, 'dark:text-white')}>
           {row.original.es_aceptada ? 'Si' : 'No'}
         </Badge>
       );
@@ -237,7 +238,7 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
     cell: ({ row }) => {
       const color = row.original.etapa?.codigo ? 'bg-blue-500' : 'bg-gray-500';
       return (
-        <Badge className={color}>
+        <Badge className={cn(color, 'dark:text-white')}>
           {row.original.etapa?.codigo ?? 'Sin etapa'}
         </Badge>
       );

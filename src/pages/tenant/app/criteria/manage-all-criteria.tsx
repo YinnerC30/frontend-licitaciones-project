@@ -28,6 +28,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useRemoveCriterionBulk } from '@/hooks/criteria/use-remove-bulk-criteria';
+import { Badge } from '@/components/ui/badge';
 
 export const columnsCriteria: ColumnDef<any>[] = [
   {
@@ -59,6 +60,17 @@ export const columnsCriteria: ColumnDef<any>[] = [
   {
     accessorKey: 'es_valido',
     header: '¿Es valido?',
+    cell: ({ row }) => {
+      const record = row.original;
+      return (
+        <Badge
+          variant={record.es_valido ? 'default' : 'destructive'}
+          className="dark:text-white"
+        >
+          {record.es_valido ? 'Si' : 'No'}
+        </Badge>
+      );
+    },
   },
   {
     id: 'actions',
@@ -200,7 +212,7 @@ const PaginationInformation = () => {
 
 const ManageAllCriteria = () => {
   return (
-    <div className="flex gap-2 flex-col">
+    <div className="grid grid-cols-1 gap-2">
       <h1 className="font-bold text-2xl my-4">Criterios de búsqueda</h1>
 
       <CriteriaProvider>
