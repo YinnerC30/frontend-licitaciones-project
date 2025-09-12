@@ -15,6 +15,7 @@ const ButtonRefetch: React.FC<ButtonRefetchProps> = (props) => {
         await onRefetch();
       }}
       variant={'outline'}
+      className="cursor-pointer"
       {...rest}
     >
       <RefreshCw className="w-4 h-4" />

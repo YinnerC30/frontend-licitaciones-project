@@ -23,6 +23,7 @@ import {
 import { useCreateCriterion } from '@/hooks/criteria/use-create-criterion';
 import { useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Plus } from 'lucide-react';
 
 // Esquema de validación con Zod
 const createCriterionSchema = z.object({
@@ -62,9 +63,10 @@ const CreateCriterion = () => {
       <DialogTrigger asChild>
         <Button
           variant="default"
-          className="w-24"
+          className="w-24 dark:text-white cursor-pointer"
           onClick={() => setStatusDialog(true)}
         >
+          <Plus className="h-4 w-4" />
           Crear
         </Button>
       </DialogTrigger>

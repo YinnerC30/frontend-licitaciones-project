@@ -1,14 +1,23 @@
 import { AxiosInstance } from '@/services/axios-service';
 import { useQuery } from '@tanstack/react-query';
 
-const getAllCriteria = () => {
-  return AxiosInstance.get('/criteria/all');
+interface GetAllCriteriaParams {
+  limit?: number;
+  offset?: number;
+}
+
+const getAllCriteria = (params: GetAllCriteriaParams) => {
+  const { limit = 10, offset = 0 } = params;
+
+  return AxiosInstance.get('/criteria/all', {
+    params: { limit, offset },
+  });
 };
 
-export const useGetAllCriteria = () => {
+export const useGetAllCriteria = (params: GetAllCriteriaParams) => {
   const query = useQuery({
     queryKey: ['criteria'],
-    queryFn: getAllCriteria,
+    queryFn: () => getAllCriteria(params),
     select({ data }) {
       return data;
     },
