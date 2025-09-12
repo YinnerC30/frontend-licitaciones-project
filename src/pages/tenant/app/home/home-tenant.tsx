@@ -248,7 +248,7 @@ export const HomeTenant = () => {
       <HomeTenantProvider>
         <LicitationsByCriteria />
 
-        <div className="lg:col-span-1 col-span-2">
+        <div className="lg:col-span-1 col-span-2 lg:mt-28">
           <CardInfoLicitacion />
         </div>
       </HomeTenantProvider>

@@ -12,6 +12,7 @@ import {
   Globe,
   Hash,
   Landmark,
+  X,
   XCircle,
 } from 'lucide-react';
 
@@ -63,6 +64,10 @@ const CardInfoLicitacion = () => {
     );
   };
 
+  const handleClose = () => {
+    setSelectedLicitacion(null);
+  };
+
   if (!selectedLicitacion) {
     return (
       <Card>
@@ -89,7 +94,7 @@ const CardInfoLicitacion = () => {
             <Globe className="w-4 h-4 text-gray-400" />
             {selectedLicitacion.descripcion || 'Sin descripción'}
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-sm">
+          <div className="grid grid-cols-1 gap-x-8 gap-y-2 text-sm">
             <div className="flex items-center gap-2">
               <Hash className="w-4 h-4 text-gray-400" />
               <span className="font-medium">ID licitación: </span>
@@ -141,6 +146,10 @@ const CardInfoLicitacion = () => {
           <Button variant="destructive" onClick={handleDiscard}>
             <XCircle className="w-4 h-4" />
             Descartar
+          </Button>
+          <Button variant="outline" onClick={handleClose}>
+            <X className="w-4 h-4" />
+            Cerrar
           </Button>
         </div>
       </CardContent>
