@@ -18,7 +18,7 @@ export const useClasifyLicitationBulk = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: clasifyLicitationBulk,
-    onSuccess: async () => {
+    onSuccess: async (_, { es_aceptada }) => {
       await queryClient.invalidateQueries({
         queryKey: ['licitations-selected'],
       });
@@ -26,7 +26,7 @@ export const useClasifyLicitationBulk = () => {
         queryKey: ['licitations-by-criteria'],
       });
       await queryClient.invalidateQueries({ queryKey: ['licitations-counts'] });
-      toast.success('Licitaciónes clasificadas');
+      toast.success(`Las licitaciones fueron ${es_aceptada ? 'aceptadas' : 'descartadas'}`);
     },
     onError: () => {
       toast.error('Ocurrió un error');
