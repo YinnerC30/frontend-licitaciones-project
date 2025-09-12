@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useGetOneLicitationSelected } from '@/hooks/licitations/use-get-one-licitation-selected';
 import { useGetAllLogbooksByLicitationSelected } from '@/hooks/logbooks/use-get-all-logbooks-by-licitation-selected';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 import {
   CalendarDays,
   Coins,
@@ -10,17 +12,6 @@ import {
   Landmark,
 } from 'lucide-react';
 import { useParams } from 'react-router';
-
-// "id": "3a329dd0-216d-466b-b367-33acb3c218da",
-//     "id_original": "2484-666-COT25",
-//     "fecha_hora_ejecucion_cron": "2025-09-12T17:50:59.000Z",
-//     "nombre": "Suministro de insumos para encuentros en salas de espera de los centros de salud con la comunidad",
-//     "nombre_organismo": "I MUNICIPALIDAD DE QUILICURA",
-//     "descripcion": "",
-//     "moneda": "CLP",
-//     "fecha_hora_publicacion": "2025-09-07T01:20:00.000Z",
-//     "fecha_hora_cierre": "2025-09-08T21:00:00.000Z",
-//     "monto_disponible": 3500000,
 
 interface CardLicitationInfoProps {
   data: {
@@ -63,17 +54,36 @@ const CardLicitationInfo = (props: CardLicitationInfoProps) => {
               <div className="flex items-center gap-2">
                 <CalendarDays className="w-4 h-4 text-gray-400" />
                 <span className="font-medium">Fecha publicación: </span>
-                <span>{data.fecha_hora_publicacion}</span>
+                <span>
+                  {format(
+                    new Date(data.fecha_hora_publicacion),
+                    "dd 'de' MMMM 'del' yyyy, hh:mm a",
+                    { locale: es }
+                  )}
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 <CalendarDays className="w-4 h-4 text-gray-400" />
                 <span className="font-medium">Fecha cierre: </span>
-                <span>{data.fecha_hora_cierre}</span>
+                <span>
+                  {format(
+                    new Date(data.fecha_hora_cierre),
+                    "dd 'de' MMMM 'del' yyyy, hh:mm a",
+                    { locale: es }
+                  )}
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 <DollarSign className="w-4 h-4 text-gray-400" />
                 <span className="font-medium">Monto disponible: </span>
-                <span>{data.monto_disponible}</span>
+                <span>
+                  {data.monto_disponible.toLocaleString('es-CL', {
+                    style: 'currency',
+                    currency: data.moneda || 'CLP',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 <Coins className="w-4 h-4 text-gray-400" />
