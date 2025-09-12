@@ -13,7 +13,7 @@ import LicitationsFilterByCriteriaDataTable from './licitations-filter-by-criter
 import { Button } from '@/components/ui/button';
 import { useAuthTenantStore } from '@/data/auth-tenant-store';
 import { useClasifyLicitationBulk } from '@/hooks/licitations/use-clasify-licitations-bulk';
-import { CalendarDays, CheckCircle, Filter } from 'lucide-react';
+import { CalendarDays, CheckCircle, Filter, XCircle } from 'lucide-react';
 import { Navigate } from 'react-router';
 
 export const CountsInformation = () => {
@@ -59,7 +59,11 @@ export const CountsInformation = () => {
   );
 };
 
-const ButtonClasifyToSelectedLicitationsBulk = () => {
+const ButtonClasifyToSelectedLicitationsBulk = ({
+  className,
+}: {
+  className?: string;
+}) => {
   const { table } = useLicitationsFilterByCriteriaContext();
   const { mutate } = useClasifyLicitationBulk();
 
@@ -78,10 +82,19 @@ const ButtonClasifyToSelectedLicitationsBulk = () => {
     );
   };
 
-  return <Button onClick={handleSelected}>Seleccionar licitaciones</Button>;
+  return (
+    <Button onClick={handleSelected} variant="default" className={className}>
+      <CheckCircle className="w-4 h-4" />
+      Seleccionar
+    </Button>
+  );
 };
 
-const ButtonClasifyToDiscardLicitationsBulk = () => {
+const ButtonClasifyToDiscardLicitationsBulk = ({
+  className,
+}: {
+  className?: string;
+}) => {
   const { table } = useLicitationsFilterByCriteriaContext();
   const { mutate } = useClasifyLicitationBulk();
 
@@ -100,7 +113,12 @@ const ButtonClasifyToDiscardLicitationsBulk = () => {
     );
   };
 
-  return <Button onClick={handleDiscard}>Descartar licitaciones</Button>;
+  return (
+    <Button onClick={handleDiscard} variant="destructive" className={className}>
+      <XCircle className="w-4 h-4" />
+      Descartar
+    </Button>
+  );
 };
 
 export const LicitationsByCriteria = () => {
@@ -116,18 +134,23 @@ export const LicitationsByCriteria = () => {
         columns={columnsLicitations}
         data={queryByCriteria.data.records}
       >
-        <div className="col-span-2">
-          <h1>Todas las licitaciones por criterio</h1>
-          <ButtonRefetch
-            onRefetch={async () => {
-              await queryByCriteria.refetch();
-            }}
-          />
-          <ButtonClasifyToSelectedLicitationsBulk />
-          <ButtonClasifyToDiscardLicitationsBulk />
-        </div>
+        <h1 className="col-span-2 text-2xl font-bold">
+          Licitaciones que cumplen con los criterios registrados
+        </h1>
 
         <div className="lg:col-span-1 col-span-2">
+          <div className="col-span-1 flex gap-2 my-4 w-full justify-between">
+            <ButtonRefetch
+              className=""
+              onRefetch={async () => {
+                await queryByCriteria.refetch();
+              }}
+            />
+            <div className="flex gap-2">
+              <ButtonClasifyToSelectedLicitationsBulk className="bg-green-500 text-white" />
+              <ButtonClasifyToDiscardLicitationsBulk />
+            </div>
+          </div>
           <LicitationsFilterByCriteriaDataTable />
         </div>
       </LicitationsFilterByCriteriaProvider>
