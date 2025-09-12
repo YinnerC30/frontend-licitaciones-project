@@ -15,6 +15,7 @@ import { useAuthTenantStore } from '@/data/auth-tenant-store';
 import { useClasifyLicitationBulk } from '@/hooks/licitations/use-clasify-licitations-bulk';
 import { CalendarDays, CheckCircle, Filter, XCircle } from 'lucide-react';
 import { Navigate } from 'react-router';
+import { cn } from '@/lib/utils';
 
 export const CountsInformation = () => {
   const queryCounts = useGetLicitationsCounts();
@@ -67,6 +68,8 @@ const ButtonClasifyToSelectedLicitationsBulk = ({
   const { table } = useLicitationsFilterByCriteriaContext();
   const { mutate } = useClasifyLicitationBulk();
 
+  const { hasSelectedLicitations } = useLicitationsFilterByCriteriaContext();
+
   const id_licitaciones = table.getSelectedRowModel().rows.map((row) => {
     return { id_licitacion: row.original.id };
   });
@@ -83,7 +86,12 @@ const ButtonClasifyToSelectedLicitationsBulk = ({
   };
 
   return (
-    <Button onClick={handleSelected} variant="default" className={className}>
+    <Button
+      onClick={handleSelected}
+      variant="default"
+      className={cn(className, !hasSelectedLicitations ? 'hidden' : '')}
+      disabled={!hasSelectedLicitations}
+    >
       <CheckCircle className="w-4 h-4" />
       Seleccionar
     </Button>
@@ -97,6 +105,8 @@ const ButtonClasifyToDiscardLicitationsBulk = ({
 }) => {
   const { table } = useLicitationsFilterByCriteriaContext();
   const { mutate } = useClasifyLicitationBulk();
+
+  const { hasSelectedLicitations } = useLicitationsFilterByCriteriaContext();
 
   const id_licitaciones = table.getSelectedRowModel().rows.map((row) => {
     return { id_licitacion: row.original.id };
@@ -114,10 +124,27 @@ const ButtonClasifyToDiscardLicitationsBulk = ({
   };
 
   return (
-    <Button onClick={handleDiscard} variant="destructive" className={className}>
+    <Button
+      onClick={handleDiscard}
+      variant="destructive"
+      className={cn(className, !hasSelectedLicitations ? 'hidden' : '')}
+      disabled={!hasSelectedLicitations}
+    >
       <XCircle className="w-4 h-4" />
       Descartar
     </Button>
+  );
+};
+
+export const InformationPagination = () => {
+  const { countSelectedLicitations, pagination_information } =
+    useLicitationsFilterByCriteriaContext();
+
+  return (
+    <div>
+      <p>Total: {pagination_information?.total_row_count}</p>
+      <p>N° de seleccionados: {countSelectedLicitations}</p>
+    </div>
   );
 };
 
@@ -133,6 +160,7 @@ export const LicitationsByCriteria = () => {
       <LicitationsFilterByCriteriaProvider
         columns={columnsLicitations}
         data={queryByCriteria.data.records}
+        pagination_information={{ ...queryByCriteria.data }}
       >
         <h1 className="col-span-2 text-2xl font-bold">
           Licitaciones que cumplen con los criterios registrados
@@ -151,6 +179,8 @@ export const LicitationsByCriteria = () => {
               <ButtonClasifyToDiscardLicitationsBulk />
             </div>
           </div>
+
+          <InformationPagination />
           <LicitationsFilterByCriteriaDataTable />
         </div>
       </LicitationsFilterByCriteriaProvider>

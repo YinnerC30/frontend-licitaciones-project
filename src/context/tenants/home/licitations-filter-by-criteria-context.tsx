@@ -15,6 +15,14 @@ import { createContext, useContext, type ReactNode } from 'react';
 
 interface LicitationsFilterByCriteriaContextType<TData> {
   table: Table<TData>;
+  hasSelectedLicitations: boolean;
+  countSelectedLicitations: number;
+  pagination_information: {
+    total_row_count: number;
+    current_row_count: number;
+    total_page_count: number;
+    current_page_count: number;
+  };
 }
 
 const LicitationsFilterByCriteriaContext =
@@ -24,12 +32,24 @@ interface LicitationsFilterByCriteriaProviderProps<TData, TValue> {
   children: ReactNode;
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  pagination_information?: {
+    total_row_count: number;
+    current_row_count: number;
+    total_page_count: number;
+    current_page_count: number;
+  };
 }
 
 export const LicitationsFilterByCriteriaProvider = <TData, TValue>({
   children,
   columns,
   data,
+  pagination_information = {
+    total_row_count: 0,
+    current_row_count: 0,
+    total_page_count: 0,
+    current_page_count: 0,
+  },
 }: LicitationsFilterByCriteriaProviderProps<TData, TValue>) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -58,8 +78,14 @@ export const LicitationsFilterByCriteriaProvider = <TData, TValue>({
     },
   });
 
+  const countSelectedLicitations = table.getSelectedRowModel().rows.length;
+  const hasSelectedLicitations = countSelectedLicitations > 0;
+
   const value = {
     table,
+    hasSelectedLicitations,
+    countSelectedLicitations,
+    pagination_information,
   };
 
   return (
