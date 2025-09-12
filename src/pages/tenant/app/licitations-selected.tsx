@@ -18,10 +18,18 @@ import {
 } from '@/components/ui/select';
 import { useGetAllLicitationsStatus } from '@/hooks/licitations-status/use-get-all-licitations-status';
 import { useGetAllLicitationsSelected } from '@/hooks/licitations/use-get-all-licitations-selected';
+import { useUpdateClasifyLicitation } from '@/hooks/licitations/use-update-clasify-licitation';
 import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { Copy, MoreHorizontal, Pencil } from 'lucide-react';
+import {
+  CheckCircle,
+  Copy,
+  Globe,
+  MoreHorizontal,
+  Pencil,
+  XCircle,
+} from 'lucide-react';
 import { useState } from 'react';
 import UpdateLicitationStatus from './update-licitation-status';
 
@@ -30,11 +38,36 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
     id: 'actions',
     cell: ({ row }) => {
       const record = row.original;
+      console.log('🚀 ~ record:', record);
 
       const [openDialog, setOpenDialog] = useState(false);
       const queryLicitationsStatus = useGetAllLicitationsStatus();
 
       const isAccepted = record.es_aceptada;
+
+      const { mutate } = useUpdateClasifyLicitation();
+
+      const handleSelect = () => {
+        mutate(
+          { id: record.id, es_aceptada: true },
+          {
+            onSuccess: () => {
+              setOpenDialog(false);
+            },
+          }
+        );
+      };
+
+      const handleDiscard = () => {
+        mutate(
+          { id: record.id, es_aceptada: false },
+          {
+            onSuccess: () => {
+              setOpenDialog(false);
+            },
+          }
+        );
+      };
 
       return (
         <>
@@ -54,10 +87,35 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
                 Copiar ID
               </DropdownMenuItem>
 
-              <DropdownMenuItem onClick={() => setOpenDialog(true)} disabled={!isAccepted}>
+              <DropdownMenuItem
+                onClick={() => setOpenDialog(true)}
+                disabled={!isAccepted}
+              >
                 <Pencil className="h-4 w-4" />
                 Actualizar status
               </DropdownMenuItem>
+
+              <DropdownMenuItem
+                // onClick={() => setOpenDialog(true)}
+                disabled={!isAccepted}
+              >
+                <Globe className="h-4 w-4" />
+                Consultar
+              </DropdownMenuItem>
+
+              {isAccepted && (
+                <DropdownMenuItem onClick={handleDiscard}>
+                  <XCircle className="h-4 w-4" />
+                  Descartar
+                </DropdownMenuItem>
+              )}
+
+              {!isAccepted && (
+                <DropdownMenuItem onClick={handleSelect}>
+                  <CheckCircle className="h-4 w-4" />
+                  Validar
+                </DropdownMenuItem>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
           {openDialog && (
@@ -182,13 +240,15 @@ const LicitationsSelected = () => {
     return <div>Cargando...</div>;
   }
 
-  const dataRecords = data.records.map(({ id, licitacion, estado, es_aceptada }: any) => ({
-    ...licitacion,
-    id,
-    id_licitacion: licitacion.id,
-    estado: estado,
-    es_aceptada: es_aceptada,
-  }));
+  const dataRecords = data.records.map(
+    ({ id, licitacion, estado, es_aceptada }: any) => ({
+      ...licitacion,
+      id,
+      id_licitacion: licitacion.id,
+      estado: estado,
+      es_aceptada: es_aceptada,
+    })
+  );
 
   return (
     <div className="my-10">
