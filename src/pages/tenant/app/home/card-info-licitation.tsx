@@ -3,6 +3,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useHomeTenantContext } from '@/context/tenants/home/home-tenant-context';
 import { useClasifyLicitation } from '@/hooks/licitations/use-clasify-licitation';
 
+// Iconos de Lucide
+import {
+  BadgeDollarSign,
+  CalendarDays,
+  Coins,
+  Globe,
+  Hash,
+  Landmark,
+} from 'lucide-react';
+
 const formatFecha = (fechaStr?: string) => {
   if (!fechaStr) return '-';
   const fecha = new Date(fechaStr);
@@ -69,36 +79,39 @@ const CardInfoLicitacion = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Información de la licitación</CardTitle>
+        <CardTitle>{selectedLicitacion.nombre}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="mb-4">
-          <h2 className="text-lg font-semibold mb-1">
-            {selectedLicitacion.nombre}
-          </h2>
-          <p className="text-sm text-gray-600 mb-2">
+          <p className="text-sm text-gray-600 mb-2 flex items-center gap-2">
+            <Globe className="w-4 h-4 text-gray-400" />
             {selectedLicitacion.descripcion || 'Sin descripción'}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-sm">
-            <div>
+            <div className="flex items-center gap-2">
+              <Hash className="w-4 h-4 text-gray-400" />
               <span className="font-medium">ID licitación: </span>
               <span>{selectedLicitacion.id_original}</span>
             </div>
-            <div>
+            <div className="flex items-center gap-2">
+              <Landmark className="w-4 h-4 text-gray-400" />
               <span className="font-medium">Organismo: </span>
               <span>{selectedLicitacion.nombre_organismo}</span>
             </div>
-            <div>
+            <div className="flex items-center gap-2">
+              <CalendarDays className="w-4 h-4 text-gray-400" />
               <span className="font-medium">Fecha publicación: </span>
               <span>
                 {formatFecha(selectedLicitacion.fecha_hora_publicacion)}
               </span>
             </div>
-            <div>
+            <div className="flex items-center gap-2">
+              <CalendarDays className="w-4 h-4 text-gray-400" />
               <span className="font-medium">Fecha cierre: </span>
               <span>{formatFecha(selectedLicitacion.fecha_hora_cierre)}</span>
             </div>
-            <div>
+            <div className="flex items-center gap-2">
+              <BadgeDollarSign className="w-4 h-4 text-gray-400" />
               <span className="font-medium">Monto disponible: </span>
               <span>
                 {formatMonto(
@@ -107,7 +120,8 @@ const CardInfoLicitacion = () => {
                 )}
               </span>
             </div>
-            <div>
+            <div className="flex items-center gap-2">
+              <Coins className="w-4 h-4 text-gray-400" />
               <span className="font-medium">Moneda: </span>
               <span>{selectedLicitacion.moneda}</span>
             </div>
