@@ -146,7 +146,7 @@ export const InformationPagination = () => {
     useLicitationsFilterByCriteriaContext();
 
   return (
-    <div className="grid grid-cols-2 gap-2">
+    <div className="grid grid-cols-2 gap-2 my-2">
       <div className="">
         <p>Total: {pagination_information?.total_row_count}</p>
         <p>N° de seleccionados: {countSelectedLicitations}</p>
@@ -191,20 +191,22 @@ export const InformationPagination = () => {
     </div>
   );
 };
-
 export const GeneralActionsTable = () => {
   const { queryByCriteria } = useLicitationsFilterByCriteriaContext();
 
   return (
     <>
-      <div className="flex gap-2">
+      <div className="flex gap-2 justify-between my-2 flex-wrap">
         <ButtonRefetch
+          disabled={queryByCriteria.isFetching}
           onRefetch={async () => {
             await queryByCriteria.refetch();
           }}
         />
-        <ButtonClasifyToSelectedLicitationsBulk className="bg-green-500 text-white" />
-        <ButtonClasifyToDiscardLicitationsBulk />
+        <div className="flex gap-2">
+          <ButtonClasifyToSelectedLicitationsBulk className="bg-green-500 text-white" />
+          <ButtonClasifyToDiscardLicitationsBulk />
+        </div>
       </div>
     </>
   );
@@ -219,9 +221,7 @@ export const LicitationsByCriteria = () => {
         </h1>
 
         <div className="lg:col-span-1 col-span-2">
-          <div className="col-span-1 flex gap-2 my-4 w-full justify-between flex-wrap">
-            <GeneralActionsTable />
-          </div>
+          <GeneralActionsTable />
 
           <InformationPagination />
           <LicitationsFilterByCriteriaDataTable />
