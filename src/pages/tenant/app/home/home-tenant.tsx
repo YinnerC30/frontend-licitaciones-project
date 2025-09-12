@@ -28,18 +28,17 @@ export const CountsInformation = () => {
 
   return (
     <>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid lg:grid-cols-3 grid-cols-2 gap-4">
         <div className="flex items-center p-4 rounded-lg bg-green-100 shadow">
-          <CheckCircle className="text-green-600 w-8 h-8 mr-3" />
+          <CheckCircle className="text-green-600 w-8 h-8 mr-3 min-w-8 min-h-8" />
           <div>
-            <p className="text-sm text-green-800 font-semibold">
-              Licitaciones validas
-            </p>
+            <p className="text-sm text-green-800 font-semibold">Validas</p>
             <p className="text-xl font-bold text-green-900">
               {data?.valid_licitations ?? 0}
             </p>
           </div>
         </div>
+
         <div className="flex items-center p-4 rounded-lg bg-red-100 shadow">
           <CalendarDays className="text-red-600 w-8 h-8 mr-3" />
           <div>
@@ -50,12 +49,10 @@ export const CountsInformation = () => {
           </div>
         </div>
 
-        <div className="flex items-center p-4 rounded-lg bg-blue-100 shadow">
+        <div className="flex items-center p-4 rounded-lg bg-blue-100 shadow lg:col-span-1 col-span-2">
           <PartyPopper className="text-blue-600 w-8 h-8 mr-3" />
           <div>
-            <p className="text-sm text-blue-800 font-semibold">
-              Licitaciones nuevas
-            </p>
+            <p className="text-sm text-blue-800 font-semibold">Nuevas</p>
             <p className="text-xl font-bold text-blue-900">
               {data?.all_licitations_by_criteria ?? 0}
             </p>
@@ -205,8 +202,8 @@ export const GeneralActionsTable = () => {
           }}
         />
         <div className="flex gap-2">
-          <ButtonClasifyToSelectedLicitationsBulk className="bg-green-500 text-white" />
-          <ButtonClasifyToDiscardLicitationsBulk />
+          <ButtonClasifyToSelectedLicitationsBulk className="bg-green-500 text-white hover:bg-green-500/80 cursor-pointer" />
+          <ButtonClasifyToDiscardLicitationsBulk className="bg-red-500 text-white hover:bg-red-500/80 cursor-pointer" />
         </div>
       </div>
     </>
