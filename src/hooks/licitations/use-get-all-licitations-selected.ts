@@ -5,7 +5,7 @@ interface AllLicitationsSelectedProps {
   limit?: number;
   offset?: number;
   only_accepted?: boolean;
-  all_records?: boolean;
+  all_selected_records?: boolean;
 }
 
 const getAllLicitationsSelected = (data: AllLicitationsSelectedProps) => {
@@ -13,10 +13,10 @@ const getAllLicitationsSelected = (data: AllLicitationsSelectedProps) => {
     limit = 10,
     offset = 0,
     only_accepted = false,
-    all_records = false,
+    all_selected_records = false,
   } = data;
   return AxiosInstance.get('/licitations/all-selected', {
-    params: { limit, offset, only_accepted, all_records },
+    params: { limit, offset, only_accepted, all_selected_records },
   });
 };
 
