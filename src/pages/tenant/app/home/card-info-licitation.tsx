@@ -17,6 +17,9 @@ import {
   XCircle,
 } from 'lucide-react';
 
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
+
 const formatFecha = (fechaStr?: string) => {
   if (!fechaStr) return '-';
   const fecha = new Date(fechaStr);
@@ -111,13 +114,23 @@ const CardInfoLicitacion = () => {
               <CalendarDays className="w-4 h-4 text-gray-400" />
               <span className="font-medium">Fecha publicación: </span>
               <span>
-                {formatFecha(selectedLicitacion.fecha_hora_publicacion)}
+                {format(
+                  new Date(selectedLicitacion.fecha_hora_publicacion),
+                  "dd 'de' MMMM 'del' yyyy, hh:mm a",
+                  { locale: es }
+                )}
               </span>
             </div>
             <div className="flex items-center gap-2">
               <CalendarDays className="w-4 h-4 text-gray-400" />
               <span className="font-medium">Fecha cierre: </span>
-              <span>{formatFecha(selectedLicitacion.fecha_hora_cierre)}</span>
+              <span>
+                {format(
+                  new Date(selectedLicitacion.fecha_hora_cierre),
+                  "dd 'de' MMMM 'del' yyyy, hh:mm a",
+                  { locale: es }
+                )}
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <BadgeDollarSign className="w-4 h-4 text-gray-400" />
