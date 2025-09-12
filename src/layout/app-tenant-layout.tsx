@@ -61,16 +61,16 @@ const items = [
     url: NAVIGATION_ROUTES.tenant.criteria,
     icon: Filter,
   },
-  {
-    title: 'Etapas',
-    url: NAVIGATION_ROUTES.tenant.licitationStatus,
-    icon: Stamp,
-  },
-  {
-    title: 'Licitaciones',
-    url: NAVIGATION_ROUTES.tenant.rawLicitations,
-    icon: Layers,
-  },
+  // {
+  //   title: 'Etapas',
+  //   url: NAVIGATION_ROUTES.tenant.licitationStatus,
+  //   icon: Stamp,
+  // },
+  // {
+  //   title: 'Licitaciones',
+  //   url: NAVIGATION_ROUTES.tenant.rawLicitations,
+  //   icon: Layers,
+  // },
 ];
 
 export function AppSidebar() {
