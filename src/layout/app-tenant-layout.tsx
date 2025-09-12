@@ -51,7 +51,7 @@ const items = [
     icon: Home,
   },
   {
-    title: 'Licitaciones seleccionadas',
+    title: 'Seleccionadas',
     url: NAVIGATION_ROUTES.tenant.licitationsSelected,
     icon: ListCheck,
   },
