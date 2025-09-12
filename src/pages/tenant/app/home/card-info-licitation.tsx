@@ -21,8 +21,6 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { toast } from 'sonner';
 
-
-
 const formatMonto = (monto?: number, moneda?: string) => {
   if (monto == null) return '-';
   return monto.toLocaleString('es-CL', {
@@ -62,7 +60,6 @@ const CardInfoLicitacion = () => {
 
   const handleConsult = () => {
     toast.error('Pendiente de implementación');
-    
   };
 
   const handleClose = () => {
@@ -72,12 +69,10 @@ const CardInfoLicitacion = () => {
   if (!selectedLicitacion) {
     return (
       <Card>
-        <CardHeader>
-          <CardTitle>Información de la licitación</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-gray-500">
-            Selecciona una licitación para ver los detalles.
+        <CardContent className="flex justify-center items-center h-40">
+          <p className="text-gray-500 text-center">
+            Presiona doble click en un registro para ver los detalles de la
+            licitación.
           </p>
         </CardContent>
       </Card>

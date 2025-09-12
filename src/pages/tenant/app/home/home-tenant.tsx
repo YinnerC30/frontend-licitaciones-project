@@ -241,7 +241,7 @@ export const HomeTenant = () => {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-8">
+    <div className="grid grid-cols-2 gap-8 pb-10">
       <HomeTenantProvider>
         <LicitationsByCriteria />
 
