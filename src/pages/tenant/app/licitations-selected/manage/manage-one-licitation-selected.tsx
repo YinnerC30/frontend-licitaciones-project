@@ -1,9 +1,17 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { useGetOneLicitationSelected } from '@/hooks/licitations/use-get-one-licitation-selected';
 import { useGetAllLogbooksByLicitationSelected } from '@/hooks/logbooks/use-get-all-logbooks-by-licitation-selected';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import {
+  ArrowLeft,
   CalendarDays,
   Coins,
   DollarSign,
@@ -11,7 +19,7 @@ import {
   Hash,
   Landmark,
 } from 'lucide-react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 interface CardLicitationInfoProps {
   data: {
@@ -28,6 +36,7 @@ interface CardLicitationInfoProps {
 
 const CardLicitationInfo = (props: CardLicitationInfoProps) => {
   const { data } = props;
+  const navigate = useNavigate();
   return (
     <div>
       <Card>
@@ -93,6 +102,16 @@ const CardLicitationInfo = (props: CardLicitationInfoProps) => {
             </div>
           </div>
         </CardContent>
+        <CardFooter className="flex justify-end">
+          <Button
+            variant="outline"
+            onClick={() => navigate('/tenant/app/licitations-selected')}
+            className="cursor-pointer"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Volver
+          </Button>
+        </CardFooter>
       </Card>
     </div>
   );
