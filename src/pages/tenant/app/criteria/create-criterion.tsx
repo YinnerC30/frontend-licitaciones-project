@@ -63,7 +63,7 @@ const CreateCriterion = () => {
       <DialogTrigger asChild>
         <Button
           variant="default"
-          className="w-24 dark:text-white"
+          className="w-24 dark:text-white cursor-pointer"
           onClick={() => setStatusDialog(true)}
         >
           <Plus className="h-4 w-4" />

@@ -147,18 +147,20 @@ export const GeneralActionsTable = () => {
           await queryCriteria.refetch();
         }}
       />
-      <CreateCriterion />
-      {hasSelectedCriteria && (
-        <Button
-          onClick={handleRemove}
-          variant="destructive"
-          className="bg-red-500 text-white hover:bg-red-500/80"
-          disabled={!hasSelectedCriteria}
-        >
-          <Trash className="h-4 w-4" />
-          Eliminar
-        </Button>
-      )}
+      <div className="flex gap-2">
+        {hasSelectedCriteria && (
+          <Button
+            onClick={handleRemove}
+            variant="destructive"
+            className="bg-red-500 text-white hover:bg-red-500/80 cursor-pointer"
+            disabled={!hasSelectedCriteria}
+          >
+            <Trash className="h-4 w-4" />
+            Eliminar
+          </Button>
+        )}
+        <CreateCriterion />
+      </div>
     </div>
   );
 };
