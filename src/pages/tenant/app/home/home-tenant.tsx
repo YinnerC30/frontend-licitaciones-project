@@ -1,21 +1,18 @@
-import ButtonRefetch from '@/components/button-refetch';
 import { HomeTenantProvider } from '@/context/tenants/home/home-tenant-context';
 import {
   LicitationsFilterByCriteriaProvider,
   useLicitationsFilterByCriteriaContext,
 } from '@/context/tenants/home/licitations-filter-by-criteria-context';
-import { useGetAllLicitationsByCriteria } from '@/hooks/licitations/use-get-all-licitations-by-criteria';
 import { useGetLicitationsCounts } from '@/hooks/licitations/use-get-licitations-counts';
-import { columnsLicitations } from '../raw-licitations/columns-licitations-table';
 import CardInfoLicitacion from './card-info-licitation';
 import LicitationsFilterByCriteriaDataTable from './licitations-filter-by-criteria-data-table';
 
 import { Button } from '@/components/ui/button';
 import { useAuthTenantStore } from '@/data/auth-tenant-store';
 import { useClasifyLicitationBulk } from '@/hooks/licitations/use-clasify-licitations-bulk';
+import { cn } from '@/lib/utils';
 import { CalendarDays, CheckCircle, Filter, XCircle } from 'lucide-react';
 import { Navigate } from 'react-router';
-import { cn } from '@/lib/utils';
 
 export const CountsInformation = () => {
   const queryCounts = useGetLicitationsCounts();
