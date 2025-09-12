@@ -23,6 +23,10 @@ interface LicitationsFilterByCriteriaContextType<TData> {
     total_page_count: number;
     current_page_count: number;
   };
+  pagination: {
+    pageIndex: number;
+    pageSize: number;
+  };
 }
 
 const LicitationsFilterByCriteriaContext =
@@ -51,6 +55,10 @@ export const LicitationsFilterByCriteriaProvider = <TData, TValue>({
     current_page_count: 0,
   },
 }: LicitationsFilterByCriteriaProviderProps<TData, TValue>) => {
+  const [pagination, setPagination] = React.useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -62,20 +70,25 @@ export const LicitationsFilterByCriteriaProvider = <TData, TValue>({
   const table = useReactTable({
     data,
     columns,
+    manualPagination: true,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    onPaginationChange: setPagination,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
+      pagination,
     },
+    // No usamos getPaginationRowModel porque la paginación es manual
+    pageCount: pagination_information?.total_page_count ?? 0,
+    rowCount: pagination_information?.total_row_count ?? 0,
   });
 
   const countSelectedLicitations = table.getSelectedRowModel().rows.length;
@@ -86,6 +99,7 @@ export const LicitationsFilterByCriteriaProvider = <TData, TValue>({
     hasSelectedLicitations,
     countSelectedLicitations,
     pagination_information,
+    pagination,
   };
 
   return (
