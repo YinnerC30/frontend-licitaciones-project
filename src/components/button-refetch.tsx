@@ -1,12 +1,13 @@
 import { RefreshCw } from 'lucide-react';
 import { Button } from './ui/button';
 
-interface ButtonRefetchProps {
+interface ButtonRefetchProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   onRefetch: () => Promise<void>;
 }
 
 const ButtonRefetch: React.FC<ButtonRefetchProps> = (props) => {
-  const { onRefetch } = props;
+  const { onRefetch, ...rest } = props;
   return (
     <Button
       type="button"
@@ -14,6 +15,7 @@ const ButtonRefetch: React.FC<ButtonRefetchProps> = (props) => {
         await onRefetch();
       }}
       variant={'outline'}
+      {...rest}
     >
       <RefreshCw className="w-4 h-4" />
       Recargar
