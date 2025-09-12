@@ -11,7 +11,7 @@ import {
 import { useClasifyLicitation } from '@/hooks/licitations/use-clasify-licitation';
 
 import type { ColumnDef } from '@tanstack/react-table';
-import { MoreHorizontal } from 'lucide-react';
+import { CheckCircle, Copy, MoreHorizontal, XCircle } from 'lucide-react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
@@ -67,13 +67,16 @@ export const columnsLicitations: ColumnDef<any>[] = [
               <DropdownMenuItem
                 onClick={() => navigator.clipboard.writeText(record.id)}
               >
+                <Copy className="h-4 w-4" />
                 Copiar ID
               </DropdownMenuItem>
 
               <DropdownMenuItem onClick={handleSelected}>
+                <CheckCircle className="h-4 w-4" />
                 Seleccionar
               </DropdownMenuItem>
               <DropdownMenuItem onClick={handleDiscard}>
+                <XCircle className="h-4 w-4" />
                 Descartar
               </DropdownMenuItem>
             </DropdownMenuContent>
