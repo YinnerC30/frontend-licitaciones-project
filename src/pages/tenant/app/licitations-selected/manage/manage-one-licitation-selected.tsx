@@ -1,3 +1,4 @@
+import { TemplateDataTable } from '@/components/data-table/template-data-table';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -8,6 +9,7 @@ import {
 } from '@/components/ui/card';
 import { useGetOneLicitationSelected } from '@/hooks/licitations/use-get-one-licitation-selected';
 import { useGetAllLogbooksByLicitationSelected } from '@/hooks/logbooks/use-get-all-logbooks-by-licitation-selected';
+import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import {
@@ -117,6 +119,48 @@ const CardLicitationInfo = (props: CardLicitationInfoProps) => {
   );
 };
 
+const columnsLogbooks: ColumnDef<any>[] = [
+  {
+    accessorKey: 'usuario',
+    header: 'Usuario',
+    cell: ({ row }) => {
+      return <div>{row.original.usuario.username}</div>;
+    },
+  },
+  {
+    accessorKey: 'contenido',
+    header: 'Contenido',
+  },
+  {
+    accessorKey: 'fecha_hora',
+    header: 'Fecha y hora',
+    cell: ({ row }) => {
+      return (
+        <div>
+          {format(
+            new Date(row.original.fecha_hora),
+            "dd 'de' MMMM 'del' yyyy, hh:mm a",
+            { locale: es }
+          )}
+        </div>
+      );
+    },
+  },
+];
+
+interface TableLogbooksProps {
+  data: any[];
+}
+
+const TableLogbooks = (props: TableLogbooksProps) => {
+  const { data } = props;
+  return (
+    <div>
+      <TemplateDataTable columns={columnsLogbooks} data={data} />
+    </div>
+  );
+};
+
 const ManageOneLicitationSelected = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetOneLicitationSelected(id || '');
@@ -131,7 +175,9 @@ const ManageOneLicitationSelected = () => {
   return (
     <div>
       <CardLicitationInfo data={data?.licitacion} />
-      <pre>{JSON.stringify(logbooks, null, 2)}</pre>
+      <div className="my-4 grid grid-cols-2 gap-4">
+        <TableLogbooks data={logbooks.records} />
+      </div>
     </div>
   );
 };
