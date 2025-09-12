@@ -7,6 +7,7 @@ import { useGetLicitationsCounts } from '@/hooks/licitations/use-get-licitations
 import CardInfoLicitacion from './card-info-licitation';
 import LicitationsFilterByCriteriaDataTable from './licitations-filter-by-criteria-data-table';
 
+import ButtonRefetch from '@/components/button-refetch';
 import { Button } from '@/components/ui/button';
 import {
   Select,
@@ -191,6 +192,24 @@ export const InformationPagination = () => {
   );
 };
 
+export const GeneralActionsTable = () => {
+  const { queryByCriteria } = useLicitationsFilterByCriteriaContext();
+
+  return (
+    <>
+      <div className="flex gap-2">
+        <ButtonRefetch
+          onRefetch={async () => {
+            await queryByCriteria.refetch();
+          }}
+        />
+        <ButtonClasifyToSelectedLicitationsBulk className="bg-green-500 text-white" />
+        <ButtonClasifyToDiscardLicitationsBulk />
+      </div>
+    </>
+  );
+};
+
 export const LicitationsByCriteria = () => {
   return (
     <>
@@ -201,16 +220,7 @@ export const LicitationsByCriteria = () => {
 
         <div className="lg:col-span-1 col-span-2">
           <div className="col-span-1 flex gap-2 my-4 w-full justify-between flex-wrap">
-            {/* <ButtonRefetch
-              className=""
-              onRefetch={async () => {
-                await queryByCriteria.refetch();
-              }}
-            /> */}
-            <div className="flex gap-2">
-              <ButtonClasifyToSelectedLicitationsBulk className="bg-green-500 text-white" />
-              <ButtonClasifyToDiscardLicitationsBulk />
-            </div>
+            <GeneralActionsTable />
           </div>
 
           <InformationPagination />

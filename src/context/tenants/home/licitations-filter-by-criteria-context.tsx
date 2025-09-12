@@ -1,14 +1,15 @@
 import { useGetAllLicitationsByCriteria } from '@/hooks/licitations/use-get-all-licitations-by-criteria';
 import { columnsLicitations } from '@/pages/tenant/app/raw-licitations/columns-licitations-table';
+import type { UseQueryResult } from '@tanstack/react-query';
 import {
-  getCoreRowModel,
-  getFilteredRowModel,
-  getSortedRowModel,
-  useReactTable,
-  type ColumnFiltersState,
-  type SortingState,
-  type Table,
-  type VisibilityState,
+    getCoreRowModel,
+    getFilteredRowModel,
+    getSortedRowModel,
+    useReactTable,
+    type ColumnFiltersState,
+    type SortingState,
+    type Table,
+    type VisibilityState,
 } from '@tanstack/react-table';
 import React, { createContext, useContext, type ReactNode } from 'react';
 
@@ -26,6 +27,7 @@ interface LicitationsFilterByCriteriaContextType<TData> {
     pageIndex: number;
     pageSize: number;
   };
+  queryByCriteria: UseQueryResult<any, Error>
 }
 
 const LicitationsFilterByCriteriaContext =
@@ -93,6 +95,7 @@ export const LicitationsFilterByCriteriaProvider = ({
       current_page_count: 0,
     },
     pagination,
+    queryByCriteria,
   };
 
   return (
