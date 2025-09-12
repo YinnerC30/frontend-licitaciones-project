@@ -14,7 +14,7 @@ import { LoginManagement } from '@/pages/management/auth/login-management';
 import ManageAllCriteria from '@/pages/tenant/app/criteria/manage-all-criteria';
 import { HomeTenant } from '@/pages/tenant/app/home/home-tenant';
 import ManageAllLicitationsStatus from '@/pages/tenant/app/licitation-status/manage-all-licitations-status';
-import LicitationsSelected from '@/pages/tenant/app/licitations-selected';
+import LicitationsSelected from '@/pages/tenant/app/licitations-selected/licitations-selected';
 import ManageAllRawLicitations from '@/pages/tenant/app/raw-licitations/manage-all-raw-licitations';
 
 import { LoginTenant } from '@/pages/tenant/auth/login-tenant';
