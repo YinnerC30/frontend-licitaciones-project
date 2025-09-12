@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useHomeTenantContext } from '@/context/tenants/home/home-tenant-context';
 import { useClasifyLicitation } from '@/hooks/licitations/use-clasify-licitation';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // Iconos de Lucide
 import {
@@ -41,6 +42,7 @@ const formatMonto = (monto?: number, moneda?: string) => {
 const CardInfoLicitacion = () => {
   const { selectedLicitacion, setSelectedLicitacion } = useHomeTenantContext();
   const { mutate } = useClasifyLicitation();
+  const isMobile = useIsMobile();
 
   const handleSelect = () => {
     mutate(
@@ -134,23 +136,27 @@ const CardInfoLicitacion = () => {
             </div>
           </div>
         </div>
-        <div className="flex gap-2 mt-4 justify-end">
-          <Button
-            onClick={handleSelect}
-            variant="default"
-            className="bg-green-500 text-white"
-          >
-            <CheckCircle className="w-4 h-4" />
-            Validar
-          </Button>
-          <Button variant="destructive" onClick={handleDiscard}>
-            <XCircle className="w-4 h-4" />
-            Descartar
-          </Button>
-          <Button variant="outline" onClick={handleClose}>
-            <X className="w-4 h-4" />
-            Cerrar
-          </Button>
+        <div className="grid lg:grid-cols-2 grid-cols-1 gap-2">
+          <div className="flex gap-2 lg:justify-start justify-center px-2">
+            <Button
+              onClick={handleSelect}
+              variant="default"
+              className="bg-green-500 text-white"
+            >
+              {!isMobile && <CheckCircle className="w-4 h-4" />}
+              Validar
+            </Button>
+            <Button variant="destructive" onClick={handleDiscard}>
+              {!isMobile && <XCircle className="w-4 h-4" />}
+              Descartar
+            </Button>
+          </div>
+          <div className="flex lg:justify-end justify-center">
+            <Button variant="outline" onClick={handleClose}>
+              {!isMobile && <X className="w-4 h-4" />}
+              Cerrar
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>
