@@ -44,10 +44,6 @@ export const LicitationsLogbooksProvider = ({
   children,
   id_licitacion_selected,
 }: LicitationsLogbooksProviderProps) => {
-  console.log(
-    '🚀 ~ LicitationsLogbooksProvider ~ id_licitacion_selected:',
-    id_licitacion_selected
-  );
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
     pageSize: 10,
