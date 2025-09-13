@@ -130,7 +130,7 @@ const CardLicitationInfo = (props: CardLicitationInfoProps) => {
               <div className="flex items-center gap-2">
                 <Badge className="w-4 h-4 text-gray-400" />
                 <span className="font-medium">Etapa interna: </span>
-                <span>{licitacion.etapa.codigo}</span>
+                <span>{licitacion.etapa?.codigo || 'Sin etapa'}</span>
                 <Button
                   variant="outline"
                   onClick={() => setOpenDialog(true)}
