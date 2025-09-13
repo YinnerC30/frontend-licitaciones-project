@@ -20,7 +20,7 @@ export const useLoginTenant = () => {
     onSuccess: ({ data: { user } }) => {
       login(user);
       navigate('/tenant/app');
-      toast.success('Puedes ingresar Tenant');
+      toast.success('Bienvenido, ' + user.username);
     },
     onError: () => {
       toast.error('Ocurrió un error');
