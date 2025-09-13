@@ -183,7 +183,7 @@ export const InformationPagination = () => {
     <div className="grid grid-cols-2 gap-2 my-2">
       <div className="">
         <p>Total: {pagination_information?.total_row_count}</p>
-        <p>N° de seleccionados: {countSelectedLicitationLogbooks}</p>
+        {/* <p>N° de seleccionados: {countSelectedLicitationLogbooks}</p> */}
       </div>
 
       <div className="flex items-center gap-2 justify-end">
