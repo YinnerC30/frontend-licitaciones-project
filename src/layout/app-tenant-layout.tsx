@@ -38,9 +38,7 @@ import {
   ChevronUp,
   Filter,
   Home,
-  Layers,
   ListCheck,
-  Stamp,
   User2
 } from 'lucide-react';
 import { useEffect } from 'react';

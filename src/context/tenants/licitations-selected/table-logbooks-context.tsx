@@ -10,7 +10,6 @@ import {
   type VisibilityState,
 } from '@tanstack/react-table';
 import React, { createContext, useContext, type ReactNode } from 'react';
-import { useParams } from 'react-router';
 import { useGetAllLogbooksByLicitationSelected } from '../../../hooks/logbooks/use-get-all-logbooks-by-licitation-selected';
 import { columnsLogbooks } from '../../../pages/tenant/app/licitations-selected/manage/manage-one-licitation-selected';
 
@@ -30,6 +29,7 @@ interface LicitationLogbookContextType<TData> {
 
   hasSelectedLicitationLogbooks: boolean;
   countSelectedLicitationLogbooks: number;
+  id_licitacion_selected: string;
 }
 
 const LicitationsLogbooksContext =
@@ -107,6 +107,7 @@ export const LicitationsLogbooksProvider = ({
     queryLicitationLogbooks,
     hasSelectedLicitationLogbooks,
     countSelectedLicitationLogbooks,
+    id_licitacion_selected,
   };
 
   return (

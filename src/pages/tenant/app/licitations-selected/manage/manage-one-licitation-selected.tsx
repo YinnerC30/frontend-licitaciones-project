@@ -1,3 +1,4 @@
+import ButtonRefetch from '@/components/button-refetch';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -6,6 +7,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import {
   LicitationsLogbooksProvider,
   useLicitationsLogbooksContext,
@@ -24,16 +32,8 @@ import {
   Landmark,
 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router';
+import CreateLogbook from './create-logbook';
 import { LicitationsLogbooksDataTable } from './licitations-logbooks-data-table';
-import ButtonRefetch from '@/components/button-refetch';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { useLicitationsFilterByCriteriaContext } from '@/context/tenants/home/licitations-filter-by-criteria-context';
 
 interface CardLicitationInfoProps {
   data: {
@@ -164,12 +164,13 @@ export const columnsLogbooks: ColumnDef<any>[] = [
 const ActionsLogbooks = () => {
   const { queryLicitationLogbooks } = useLicitationsLogbooksContext();
   return (
-    <div className="my-2 flex">
+    <div className="my-2 flex justify-between">
       <ButtonRefetch
         onRefetch={async () => {
           queryLicitationLogbooks.refetch();
         }}
       />
+      <CreateLogbook />
     </div>
   );
 };
