@@ -1,5 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,6 +14,7 @@ import {
 } from '@/context/tenants/licitations-selected/licitations-selected-context';
 import { useGetAllLicitationsStatus } from '@/hooks/licitations-status/use-get-all-licitations-status';
 import { useUpdateClasifyLicitation } from '@/hooks/licitations/use-update-clasify-licitation';
+import { cn } from '@/lib/utils';
 import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
@@ -22,24 +24,45 @@ import {
   Globe,
   MoreHorizontal,
   Pencil,
+  SquarePen,
   XCircle,
 } from 'lucide-react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import {
   GeneralActionsTable,
   InformationPagination,
   LicitationsSelectedDataTable,
 } from './components';
 import UpdateLicitationStatus from './update-licitation-status';
-import { cn } from '@/lib/utils';
-import { useNavigate } from 'react-router';
 
 export const columnsLicitationsSelected: ColumnDef<any>[] = [
+  {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     id: 'actions',
     cell: ({ row }) => {
       const record = row.original;
-      console.log('🚀 ~ record:', record);
 
       const [openDialog, setOpenDialog] = useState(false);
       const queryLicitationsStatus = useGetAllLicitationsStatus();
@@ -93,13 +116,10 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
                 disabled={!isAccepted}
               >
                 <Pencil className="h-4 w-4" />
-                Actualizar status
+                Actualizar etapa
               </DropdownMenuItem>
 
-              <DropdownMenuItem
-                // onClick={() => setOpenDialog(true)}
-                disabled={!isAccepted}
-              >
+              <DropdownMenuItem disabled={!isAccepted}>
                 <Globe className="h-4 w-4" />
                 Consultar
               </DropdownMenuItem>
@@ -124,8 +144,9 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
                     `/tenant/app/licitations-selected/manage/${record.id}`
                   )
                 }
+                disabled={!isAccepted}
               >
-                <Pencil className="h-4 w-4" />
+                <SquarePen className="h-4 w-4" />
                 Administrar
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -235,7 +256,6 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
     accessorKey: 'es_aceptada',
     header: 'Valida',
     cell: ({ row }) => {
-      console.log(row.original.es_aceptada);
       const color = row.original.es_aceptada ? 'bg-green-500' : 'bg-red-500';
       return (
         <Badge className={cn(color, 'dark:text-white')}>

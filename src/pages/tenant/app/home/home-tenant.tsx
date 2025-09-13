@@ -52,7 +52,7 @@ export const CountsInformation = () => {
         <div className="flex items-center p-4 rounded-lg bg-blue-100 shadow lg:col-span-1 col-span-2">
           <PartyPopper className="text-blue-600 w-8 h-8 mr-3" />
           <div>
-            <p className="text-sm text-blue-800 font-semibold">Nuevas</p>
+            <p className="text-sm text-blue-800 font-semibold">Coincidencias</p>
             <p className="text-xl font-bold text-blue-900">
               {data?.all_licitations_by_criteria ?? 0}
             </p>
@@ -241,7 +241,7 @@ export const HomeTenant = () => {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-8">
+    <div className="grid grid-cols-2 gap-8 pb-10">
       <HomeTenantProvider>
         <LicitationsByCriteria />
 
