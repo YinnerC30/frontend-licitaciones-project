@@ -147,6 +147,7 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
                     `/tenant/app/licitations-selected/manage/${record.id}`
                   )
                 }
+                disabled={!isAccepted}
               >
                 <Pencil className="h-4 w-4" />
                 Administrar
