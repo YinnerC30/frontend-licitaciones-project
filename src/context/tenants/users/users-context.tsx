@@ -1,6 +1,4 @@
-import { useGetAllCriteria } from '@/hooks/criteria/use-get-all-criteria';
 import { useGetAllUsersTenant } from '@/hooks/users/use-get-all-users-tenant';
-import { columnsCriteria } from '@/pages/tenant/app/criteria/manage-all-criteria';
 import { columnsUsers } from '@/pages/tenant/app/users/manage-all-tenant-users';
 import type { UseQueryResult } from '@tanstack/react-query';
 import {
