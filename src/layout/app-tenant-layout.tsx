@@ -33,15 +33,10 @@ import {
   useRefreshTenantToken,
 } from '@/hooks/tenants/use-refresh-tenant-token';
 import { useIsMobile } from '@/hooks/use-mobile';
+import UpdatePasswordUser from '@/pages/tenant/app/users/update-password-user';
 import { NAVIGATION_ROUTES } from '@/router/navigation-routes';
-import {
-  ChevronUp,
-  Filter,
-  Home,
-  ListCheck,
-  User2
-} from 'lucide-react';
-import { useEffect } from 'react';
+import { ChevronUp, Filter, Home, ListCheck, User2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 const items = [
   {
@@ -80,6 +75,7 @@ export function AppSidebar() {
   const { isAuthenticated, user } = useAuthTenantStore((state) => state);
 
   const logoutTenant = useLogoutTenant();
+  const [statusDialog, setStatusDialog] = useState(false);
 
   if (!isAuthenticated) {
     return <Navigate to={'../auth'} replace />;
@@ -90,56 +86,67 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar>
-      <SidebarHeader />
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Barra de navegación</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={location.pathname.includes(item.url)}>
-                    <Link to={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
+    <>
+      <Sidebar>
+        <SidebarHeader />
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupLabel>Barra de navegación</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {items.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={location.pathname.includes(item.url)}
+                    >
+                      <Link to={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
 
-      <SidebarFooter>
-        <ModeToggle />
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton className="capitalize">
-                  <User2 /> {user?.username}
-                  <ChevronUp className="ml-auto" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                side="top"
-                className="w-[--radix-popper-anchor-width]"
-              >
-                <DropdownMenuItem
-                  onClick={() => {
-                    handleLogout();
-                  }}
+        <SidebarFooter>
+          <ModeToggle />
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <SidebarMenuButton className="capitalize">
+                    <User2 /> {user?.username}
+                    <ChevronUp className="ml-auto" />
+                  </SidebarMenuButton>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  side="top"
+                  className="w-[--radix-popper-anchor-width]"
                 >
-                  <span>Cerrar sesión</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
-    </Sidebar>
+                  <DropdownMenuItem onClick={() => {
+                    setStatusDialog(true);
+                  }}>
+                    <span>Actualizar contraseña</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      handleLogout();
+                    }}
+                  >
+                    <span>Cerrar sesión</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarFooter>
+      </Sidebar>
+      <UpdatePasswordUser statusDialog={statusDialog} onChangeStatusDialog={setStatusDialog} />
+    </>
   );
 }
 
@@ -157,7 +164,7 @@ const MainContent = () => {
       }`}
     >
       <SidebarTrigger />
-      <Separator className='my-2' />
+      <Separator className="my-2" />
       <Outlet />
     </main>
   );
