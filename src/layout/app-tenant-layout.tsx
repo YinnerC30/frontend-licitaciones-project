@@ -69,6 +69,11 @@ const items = [
   //   url: NAVIGATION_ROUTES.tenant.rawLicitations,
   //   icon: Layers,
   // },
+  {
+    title: 'Usuarios',
+    url: NAVIGATION_ROUTES.tenant.users,
+    icon: User2,
+  },
 ];
 
 export function AppSidebar() {

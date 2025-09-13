@@ -17,6 +17,7 @@ import ManageAllLicitationsStatus from '@/pages/tenant/app/licitation-status/man
 import LicitationsSelected from '@/pages/tenant/app/licitations-selected/licitations-selected';
 import ManageOneLicitationSelected from '@/pages/tenant/app/licitations-selected/manage/manage-one-licitation-selected';
 import ManageAllRawLicitations from '@/pages/tenant/app/raw-licitations/manage-all-raw-licitations';
+import ManageAllTenantUsers from '@/pages/tenant/app/users/manage-all-tenant-users';
 
 import { LoginTenant } from '@/pages/tenant/auth/login-tenant';
 import { createBrowserRouter, Navigate } from 'react-router';
@@ -150,6 +151,10 @@ export const BrowSerRouter = createBrowserRouter([
           {
             path: 'raw-licitations',
             Component: ManageAllRawLicitations,
+          },
+          {
+            path: 'users',
+            Component: ManageAllTenantUsers,
           },
         ],
       },
