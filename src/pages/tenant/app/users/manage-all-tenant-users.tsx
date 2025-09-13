@@ -184,7 +184,7 @@ const GeneralActionsTable = () => {
 
       <div className="flex gap-2">
         {hasSelectedUsers && (
-          <Button variant="destructive" className="w-24" onClick={handleRemove}>
+          <Button variant="destructive" className="w-24 cursor-pointer bg-red-500 text-white hover:bg-red-500/80" onClick={handleRemove}>
             <Trash className="h-4 w-4" />
             Eliminar
           </Button>
