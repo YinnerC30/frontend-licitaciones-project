@@ -12,7 +12,6 @@ import {
   LicitationsSelectedProvider,
   useLicitationsSelectedContext,
 } from '@/context/tenants/licitations-selected/licitations-selected-context';
-import { useGetAllLicitationsStatus } from '@/hooks/licitations-status/use-get-all-licitations-status';
 import { useUpdateClasifyLicitation } from '@/hooks/licitations/use-update-clasify-licitation';
 import { cn } from '@/lib/utils';
 import type { ColumnDef } from '@tanstack/react-table';
@@ -23,18 +22,15 @@ import {
   Copy,
   Globe,
   MoreHorizontal,
-  Pencil,
   SquarePen,
-  XCircle,
+  XCircle
 } from 'lucide-react';
-import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
   GeneralActionsTable,
   InformationPagination,
   LicitationsSelectedDataTable,
 } from './components';
-import UpdateLicitationStatus from './update-licitation-status';
 
 export const columnsLicitationsSelected: ColumnDef<any>[] = [
   {
@@ -64,33 +60,17 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
     cell: ({ row }) => {
       const record = row.original;
 
-      const [openDialog, setOpenDialog] = useState(false);
-      const queryLicitationsStatus = useGetAllLicitationsStatus();
       const navigate = useNavigate();
       const isAccepted = record.es_aceptada;
 
       const { mutate } = useUpdateClasifyLicitation();
 
       const handleSelect = () => {
-        mutate(
-          { id: record.id, es_aceptada: true },
-          {
-            onSuccess: () => {
-              setOpenDialog(false);
-            },
-          }
-        );
+        mutate({ id: record.id, es_aceptada: true });
       };
 
       const handleDiscard = () => {
-        mutate(
-          { id: record.id, es_aceptada: false },
-          {
-            onSuccess: () => {
-              setOpenDialog(false);
-            },
-          }
-        );
+        mutate({ id: record.id, es_aceptada: false });
       };
 
       return (
@@ -111,13 +91,13 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
                 Copiar ID
               </DropdownMenuItem>
 
-              <DropdownMenuItem
+              {/* <DropdownMenuItem
                 onClick={() => setOpenDialog(true)}
                 disabled={!isAccepted}
               >
                 <Pencil className="h-4 w-4" />
                 Actualizar etapa
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
 
               <DropdownMenuItem disabled={!isAccepted}>
                 <Globe className="h-4 w-4" />
@@ -151,14 +131,6 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          {openDialog && (
-            <UpdateLicitationStatus
-              data={record}
-              statusDialog={openDialog}
-              onChangeStatusDialog={setOpenDialog}
-              query={queryLicitationsStatus}
-            />
-          )}
         </>
       );
     },

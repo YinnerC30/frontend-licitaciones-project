@@ -1,3 +1,7 @@
+import { useGetAllCriteria } from '@/hooks/criteria/use-get-all-criteria';
+import { useGetAllUsersTenant } from '@/hooks/users/use-get-all-users-tenant';
+import { columnsCriteria } from '@/pages/tenant/app/criteria/manage-all-criteria';
+import { columnsUsers } from '@/pages/tenant/app/users/manage-all-tenant-users';
 import type { UseQueryResult } from '@tanstack/react-query';
 import {
   getCoreRowModel,
@@ -10,11 +14,11 @@ import {
   type VisibilityState,
 } from '@tanstack/react-table';
 import React, { createContext, useContext, type ReactNode } from 'react';
-import { useGetAllLogbooksByLicitationSelected } from '../../../hooks/logbooks/use-get-all-logbooks-by-licitation-selected';
-import { columnsLogbooks } from '../../../pages/tenant/app/licitations-selected/manage/manage-one-licitation-selected';
 
-interface LicitationLogbookContextType<TData> {
+interface UsersContextType<TData> {
   table: Table<TData>;
+  hasSelectedUsers: boolean;
+  countSelectedUsers: number;
   pagination_information: {
     total_row_count: number;
     current_row_count: number;
@@ -25,36 +29,25 @@ interface LicitationLogbookContextType<TData> {
     pageIndex: number;
     pageSize: number;
   };
-  queryLicitationLogbooks: UseQueryResult<any, Error>;
-
-  hasSelectedLicitationLogbooks: boolean;
-  countSelectedLicitationLogbooks: number;
-  id_licitacion_selected: string;
+  queryUsers: UseQueryResult<any, Error>;
 }
 
-const LicitationsLogbooksContext =
-  createContext<LicitationLogbookContextType<any> | null>(null);
+const UsersContext = createContext<UsersContextType<any> | null>(null);
 
-interface LicitationsLogbooksProviderProps {
+interface UsersProviderProps {
   children: ReactNode;
-  id_licitacion_selected: string;
 }
 
-export const LicitationsLogbooksProvider = ({
-  children,
-  id_licitacion_selected,
-}: LicitationsLogbooksProviderProps) => {
+export const UsersProvider = ({ children }: UsersProviderProps) => {
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
     pageSize: 10,
   });
 
-  const queryLicitationLogbooks = useGetAllLogbooksByLicitationSelected({
+  const queryUsers = useGetAllUsersTenant({
     limit: pagination.pageSize,
     offset: pagination.pageIndex,
-    id_licitacion_selected: id_licitacion_selected,
   });
-
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -64,8 +57,8 @@ export const LicitationsLogbooksProvider = ({
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
-    data: queryLicitationLogbooks.data?.records || [],
-    columns: columnsLogbooks,
+    data: queryUsers.data?.records || [],
+    columns: columnsUsers,
     manualPagination: true,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -83,42 +76,38 @@ export const LicitationsLogbooksProvider = ({
       pagination,
     },
     // No usamos getPaginationRowModel porque la paginación es manual
-    pageCount: queryLicitationLogbooks.data?.total_page_count ?? 0,
-    rowCount: queryLicitationLogbooks.data?.total_row_count ?? 0,
+    pageCount: queryUsers.data?.total_page_count ?? 0,
+    rowCount: queryUsers.data?.total_row_count ?? 0,
   });
 
-  const countSelectedLicitationLogbooks =
-    table.getSelectedRowModel().rows.length;
-  const hasSelectedLicitationLogbooks = countSelectedLicitationLogbooks > 0;
+  const countSelectedUsers = table.getSelectedRowModel().rows.length;
+  const hasSelectedUsers = countSelectedUsers > 0;
 
   const value = {
     table,
-    pagination_information: queryLicitationLogbooks.data ?? {
+    hasSelectedUsers,
+    countSelectedUsers,
+    pagination_information: queryUsers.data ?? {
       total_row_count: 0,
       total_page_count: 0,
       current_row_count: 0,
       current_page_count: 0,
     },
     pagination,
-    queryLicitationLogbooks,
-    hasSelectedLicitationLogbooks,
-    countSelectedLicitationLogbooks,
-    id_licitacion_selected,
+    queryUsers,
   };
 
   return (
-    <LicitationsLogbooksContext.Provider value={value}>
-      {children}
-    </LicitationsLogbooksContext.Provider>
+    <UsersContext.Provider value={value}>{children}</UsersContext.Provider>
   );
 };
 
-export const useLicitationsLogbooksContext = <TData = any,>() => {
-  const context = useContext(LicitationsLogbooksContext);
+export const useUsersContext = <TData = any,>() => {
+  const context = useContext(UsersContext);
   if (context === null) {
     throw new Error(
-      'useLicitationsLogbooksContext debe usarse dentro de LicitationsLogbooksProvider'
+      'useCriteriaContext debe usarse dentro de CriteriaProvider'
     );
   }
-  return context as LicitationLogbookContextType<TData>;
+  return context as UsersContextType<TData>;
 };

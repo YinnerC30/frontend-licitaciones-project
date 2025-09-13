@@ -3,7 +3,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 const createLogbook = async (data: any) => {
-  console.log('🚀 ~ createLogbook ~ data:', data)
   const res = AxiosInstance.post('/logbook/create/one', data);
   return res;
 };
@@ -14,7 +13,9 @@ export const useCreateLogbook = () => {
     mutationFn: createLogbook,
     onSuccess: async () => {
       toast.success('El registro fue guardado');
-      await queryClient.invalidateQueries({ queryKey: ['logbooks-by-licitation-selected'] });
+      await queryClient.invalidateQueries({
+        queryKey: ['logbooks-by-licitation-selected'],
+      });
     },
   });
 
