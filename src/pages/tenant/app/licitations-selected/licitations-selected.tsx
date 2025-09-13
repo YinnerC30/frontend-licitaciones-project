@@ -63,7 +63,6 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
     id: 'actions',
     cell: ({ row }) => {
       const record = row.original;
-      console.log('🚀 ~ record:', record);
 
       const [openDialog, setOpenDialog] = useState(false);
       const queryLicitationsStatus = useGetAllLicitationsStatus();
@@ -120,9 +119,7 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
                 Actualizar etapa
               </DropdownMenuItem>
 
-              <DropdownMenuItem
-                disabled={!isAccepted}
-              >
+              <DropdownMenuItem disabled={!isAccepted}>
                 <Globe className="h-4 w-4" />
                 Consultar
               </DropdownMenuItem>
@@ -259,7 +256,6 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
     accessorKey: 'es_aceptada',
     header: 'Valida',
     cell: ({ row }) => {
-      console.log(row.original.es_aceptada);
       const color = row.original.es_aceptada ? 'bg-green-500' : 'bg-red-500';
       return (
         <Badge className={cn(color, 'dark:text-white')}>

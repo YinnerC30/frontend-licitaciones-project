@@ -1,4 +1,3 @@
-import { TemplateDataTable } from '@/components/data-table/template-data-table';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -7,8 +6,11 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import {
+  LicitationsLogbooksProvider,
+  useLicitationsLogbooksContext,
+} from '@/context/tenants/licitations-selected/table-logbooks-context';
 import { useGetOneLicitationSelected } from '@/hooks/licitations/use-get-one-licitation-selected';
-import { useGetAllLogbooksByLicitationSelected } from '@/hooks/logbooks/use-get-all-logbooks-by-licitation-selected';
 import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
@@ -22,6 +24,16 @@ import {
   Landmark,
 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router';
+import { LicitationsLogbooksDataTable } from './licitations-logbooks-data-table';
+import ButtonRefetch from '@/components/button-refetch';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { useLicitationsFilterByCriteriaContext } from '@/context/tenants/home/licitations-filter-by-criteria-context';
 
 interface CardLicitationInfoProps {
   data: {
@@ -119,7 +131,7 @@ const CardLicitationInfo = (props: CardLicitationInfoProps) => {
   );
 };
 
-const columnsLogbooks: ColumnDef<any>[] = [
+export const columnsLogbooks: ColumnDef<any>[] = [
   {
     accessorKey: 'usuario',
     header: 'Usuario',
@@ -127,7 +139,7 @@ const columnsLogbooks: ColumnDef<any>[] = [
       return <div>{row.original.usuario.username}</div>;
     },
   },
-  
+
   {
     accessorKey: 'fecha_hora',
     header: 'Fecha y hora',
@@ -149,16 +161,66 @@ const columnsLogbooks: ColumnDef<any>[] = [
   },
 ];
 
-interface TableLogbooksProps {
-  data: any[];
-}
-
-const TableLogbooks = (props: TableLogbooksProps) => {
-  const { data } = props;
+const ActionsLogbooks = () => {
+  const { queryLicitationLogbooks } = useLicitationsLogbooksContext();
   return (
-    <div className='col-span-2'>
-      <h2 className='text-lg font-bold my-2'>Historial de bitácora</h2>
-      <TemplateDataTable columns={columnsLogbooks} data={data} />
+    <div className="my-2 flex">
+      <ButtonRefetch
+        onRefetch={async () => {
+          queryLicitationLogbooks.refetch();
+        }}
+      />
+    </div>
+  );
+};
+
+export const InformationPagination = () => {
+  const { countSelectedLicitationLogbooks, pagination_information, table } =
+    useLicitationsLogbooksContext();
+
+  return (
+    <div className="grid grid-cols-2 gap-2 my-2">
+      <div className="">
+        <p>Total: {pagination_information?.total_row_count}</p>
+        <p>N° de seleccionados: {countSelectedLicitationLogbooks}</p>
+      </div>
+
+      <div className="flex items-center gap-2 justify-end">
+        <p className="text-sm font-medium text-muted-foreground">
+          N° registros:
+        </p>
+        <Select
+          value={`${table.getState().pagination.pageSize}`}
+          onValueChange={(value) => {
+            table.setPageSize(Number(value));
+          }}
+        >
+          <SelectTrigger
+            className="h-8 w-[70px]"
+            data-testid="btn-page-size-selector"
+          >
+            <SelectValue
+              className="font-medium text-muted-foreground"
+              placeholder={table.getState().pagination.pageSize}
+              data-testid="page-size-value"
+            />
+          </SelectTrigger>
+          <SelectContent
+            side="top"
+            onPointerDownOutside={(e) => e.preventDefault()}
+          >
+            {[10, 20, 30, 40, 50].map((pageSize) => (
+              <SelectItem
+                key={pageSize}
+                value={`${pageSize}`}
+                data-testid={`select-item-page-size-${pageSize}`}
+              >
+                {pageSize}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
     </div>
   );
 };
@@ -166,20 +228,26 @@ const TableLogbooks = (props: TableLogbooksProps) => {
 const ManageOneLicitationSelected = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetOneLicitationSelected(id || '');
-  const { data: logbooks, isLoading: isLoadingLogbooks } =
-    useGetAllLogbooksByLicitationSelected({
-      id_licitacion_selected: id || '',
-    });
-  if (isLoading || isLoadingLogbooks) {
+
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
   return (
     <div>
       <CardLicitationInfo data={data?.licitacion} />
-      <div className="my-4 grid grid-cols-2 gap-4">
-        <TableLogbooks data={logbooks.records} />
-      </div>
+      {id && (
+        <LicitationsLogbooksProvider id_licitacion_selected={id}>
+          <div className="my-4 grid grid-cols-2 gap-4">
+            <div className="col-span-2">
+              <h2 className="text-lg font-bold my-2">Historial de bitácora</h2>
+              <ActionsLogbooks />
+              <InformationPagination />
+              <LicitationsLogbooksDataTable />
+            </div>
+          </div>
+        </LicitationsLogbooksProvider>
+      )}
     </div>
   );
 };
