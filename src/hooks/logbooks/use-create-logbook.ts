@@ -13,7 +13,7 @@ export const useCreateLogbook = () => {
   const mutation = useMutation({
     mutationFn: createLogbook,
     onSuccess: async () => {
-      toast.success('El registro de bitácora fue creado');
+      toast.success('El registro fue guardado');
       await queryClient.invalidateQueries({ queryKey: ['logbooks-by-licitation-selected'] });
     },
   });

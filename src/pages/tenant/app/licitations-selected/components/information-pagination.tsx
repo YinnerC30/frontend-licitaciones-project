@@ -17,7 +17,7 @@ export const InformationPagination = () => {
       </div>
 
       <div className="flex items-center gap-2 justify-end">
-        <p className="text-sm font-medium">N° registros:</p>
+        <p className="text-sm">N° registros:</p>
         <Select
           value={`${table.getState().pagination.pageSize}`}
           onValueChange={(value) => {

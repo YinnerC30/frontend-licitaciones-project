@@ -26,6 +26,9 @@ export const useUpdateLicitationSelectedStatus = () => {
       await queryClient.invalidateQueries({
         queryKey: ['licitations-selected'],
       });
+      await queryClient.invalidateQueries({
+        queryKey: ['logbooks-by-licitation-selected'],
+      });
       toast.success('La etapa de la licitación seleccionada fue actualizada');
     },
     onError: () => {
