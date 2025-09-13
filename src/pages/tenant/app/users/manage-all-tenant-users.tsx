@@ -3,7 +3,6 @@ import {
   UsersProvider,
   useUsersContext,
 } from '@/context/tenants/users/users-context';
-import { useRemoveCriterion } from '@/hooks/criteria/use-remove-criterion';
 import UsersDataTable from './users-data-table';
 
 import ButtonRefetch from '@/components/button-refetch';
@@ -22,12 +21,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useRemoveUserBulk } from '@/hooks/users/use-remove-bulk-users';
+import { useRemoveUser } from '@/hooks/users/use-remove-user';
 import type { ColumnDef } from '@tanstack/react-table';
 import { Copy, MoreHorizontal, Pencil, Trash } from 'lucide-react';
 import { useState } from 'react';
-import UpdateCriterion from '../criteria/update-criterion';
 import CreateUser from './create-user';
-import { useRemoveUser } from '@/hooks/users/use-remove-user';
 import UpdateUser from './update-user';
 
 export const columnsUsers: ColumnDef<any>[] = [
@@ -118,13 +117,13 @@ export const columnsUsers: ColumnDef<any>[] = [
 ];
 
 const PaginationInformation = () => {
-  const { pagination_information, countSelectedCriteria, table } =
+  const { pagination_information, countSelectedUsers, table } =
     useUsersContext();
   return (
     <div className="grid grid-cols-2 gap-2 my-2">
       <div className="">
         <p>Total: {pagination_information.total_row_count}</p>
-        <p>N° de seleccionados: {countSelectedCriteria}</p>
+        <p>N° de seleccionados: {countSelectedUsers}</p>
       </div>
       <div className="flex items-center gap-2 justify-end">
         <p className="text-sm">N° registros:</p>
@@ -165,7 +164,16 @@ const PaginationInformation = () => {
 };
 
 const GeneralActionsTable = () => {
-  const { queryUsers, table } = useUsersContext();
+  const { queryUsers, table, hasSelectedUsers } = useUsersContext();
+  const { mutate } = useRemoveUserBulk();
+
+  const handleRemove = () => {
+    const selectedIds = table.getSelectedRowModel().rows.map((row) => {
+      return { id: row.original.id };
+    });
+    mutate({ recordsIds: selectedIds });
+  };
+
   return (
     <div className="flex justify-between">
       <ButtonRefetch
@@ -173,7 +181,17 @@ const GeneralActionsTable = () => {
           await queryUsers.refetch();
         }}
       />
-      <CreateUser />
+
+      <div className="flex gap-2">
+        {hasSelectedUsers && (
+          <Button variant="destructive" className="w-24" onClick={handleRemove}>
+            <Trash className="h-4 w-4" />
+            Eliminar
+          </Button>
+        )}
+
+        <CreateUser />
+      </div>
     </div>
   );
 };

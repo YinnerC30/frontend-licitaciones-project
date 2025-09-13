@@ -17,8 +17,8 @@ import React, { createContext, useContext, type ReactNode } from 'react';
 
 interface UsersContextType<TData> {
   table: Table<TData>;
-  hasSelectedCriteria: boolean;
-  countSelectedCriteria: number;
+  hasSelectedUsers: boolean;
+  countSelectedUsers: number;
   pagination_information: {
     total_row_count: number;
     current_row_count: number;
@@ -80,13 +80,13 @@ export const UsersProvider = ({ children }: UsersProviderProps) => {
     rowCount: queryUsers.data?.total_row_count ?? 0,
   });
 
-  const countSelectedCriteria = table.getSelectedRowModel().rows.length;
-  const hasSelectedCriteria = countSelectedCriteria > 0;
+  const countSelectedUsers = table.getSelectedRowModel().rows.length;
+  const hasSelectedUsers = countSelectedUsers > 0;
 
   const value = {
     table,
-    hasSelectedCriteria,
-    countSelectedCriteria,
+    hasSelectedUsers,
+    countSelectedUsers,
     pagination_information: queryUsers.data ?? {
       total_row_count: 0,
       total_page_count: 0,
@@ -98,9 +98,7 @@ export const UsersProvider = ({ children }: UsersProviderProps) => {
   };
 
   return (
-    <UsersContext.Provider value={value}>
-      {children}
-    </UsersContext.Provider>
+    <UsersContext.Provider value={value}>{children}</UsersContext.Provider>
   );
 };
 

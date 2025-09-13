@@ -9,7 +9,7 @@ interface RemoveUserBulkProps {
 }
 
 const removeUserBulk = async (data: RemoveUserBulkProps) => {
-  const res = AxiosInstance.delete('/criteria/remove/bulk', { data });
+  const res = AxiosInstance.delete('/users/remove/bulk', { data });
   return res;
 };
 
