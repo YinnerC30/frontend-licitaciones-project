@@ -1,5 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,6 +14,7 @@ import {
 } from '@/context/tenants/licitations-selected/licitations-selected-context';
 import { useGetAllLicitationsStatus } from '@/hooks/licitations-status/use-get-all-licitations-status';
 import { useUpdateClasifyLicitation } from '@/hooks/licitations/use-update-clasify-licitation';
+import { cn } from '@/lib/utils';
 import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
@@ -22,18 +24,17 @@ import {
   Globe,
   MoreHorizontal,
   Pencil,
+  SquarePen,
   XCircle,
 } from 'lucide-react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import {
   GeneralActionsTable,
   InformationPagination,
   LicitationsSelectedDataTable,
 } from './components';
 import UpdateLicitationStatus from './update-licitation-status';
-import { cn } from '@/lib/utils';
-import { useNavigate } from 'react-router';
-import { Checkbox } from '@/components/ui/checkbox';
 
 export const columnsLicitationsSelected: ColumnDef<any>[] = [
   {
@@ -116,11 +117,10 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
                 disabled={!isAccepted}
               >
                 <Pencil className="h-4 w-4" />
-                Actualizar status
+                Actualizar etapa
               </DropdownMenuItem>
 
               <DropdownMenuItem
-                // onClick={() => setOpenDialog(true)}
                 disabled={!isAccepted}
               >
                 <Globe className="h-4 w-4" />
@@ -149,7 +149,7 @@ export const columnsLicitationsSelected: ColumnDef<any>[] = [
                 }
                 disabled={!isAccepted}
               >
-                <Pencil className="h-4 w-4" />
+                <SquarePen className="h-4 w-4" />
                 Administrar
               </DropdownMenuItem>
             </DropdownMenuContent>
