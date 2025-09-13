@@ -88,6 +88,7 @@ const UpdateLicitationStatus: React.FC<UpdateLicitationStatusProps> = (
       {
         onSuccess: ({ data }: { data: UpdateLicitationStatusFormData }) => {
           form.reset(data);
+          onChangeStatusDialog(false);
         },
       }
     );
@@ -102,12 +103,9 @@ const UpdateLicitationStatus: React.FC<UpdateLicitationStatusProps> = (
     <Dialog open={statusDialog} onOpenChange={onChangeStatusDialog}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>
-            Actualizar información de la etapa de la licitación
-          </DialogTitle>
+          <DialogTitle>Actualizar etapa de la licitación</DialogTitle>
           <DialogDescription>
-            Complete los campos para actualizar la etapa de la licitación en el
-            sistema.
+            Seleccione una de las opciones disponibles.
           </DialogDescription>
         </DialogHeader>
 

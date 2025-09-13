@@ -24,19 +24,24 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import {
   ArrowLeft,
+  Badge,
   CalendarDays,
   Coins,
   DollarSign,
   Globe,
   Hash,
   Landmark,
+  Pencil,
 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router';
 import CreateLogbook from './create-logbook';
 import { LicitationsLogbooksDataTable } from './licitations-logbooks-data-table';
+import UpdateLicitationStatus from '../update-licitation-status';
+import { useState } from 'react';
+import { useGetAllLicitationsStatus } from '@/hooks/licitations-status/use-get-all-licitations-status';
 
 interface CardLicitationInfoProps {
-  data: {
+  licitacion: {
     id_original: string;
     nombre: string;
     nombre_organismo: string;
@@ -45,41 +50,49 @@ interface CardLicitationInfoProps {
     fecha_hora_publicacion: string;
     fecha_hora_cierre: string;
     monto_disponible: number;
+    etapa: {
+      id: string;
+      codigo: string;
+      descripcion: string;
+    };
   };
 }
 
 const CardLicitationInfo = (props: CardLicitationInfoProps) => {
-  const { data } = props;
+  const { id } = useParams();
+  const { licitacion } = props;
   const navigate = useNavigate();
+  const queryLicitationsStatus = useGetAllLicitationsStatus();
+  const [openDialog, setOpenDialog] = useState(false);
   return (
     <div>
       <Card>
         <CardHeader>
-          <CardTitle>{data.nombre}</CardTitle>
+          <CardTitle>{licitacion.nombre}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="mb-4">
             <p className="text-sm text-gray-600 mb-2 flex items-center gap-2">
               <Globe className="w-4 h-4 text-gray-400" />
-              {data.descripcion || 'Sin descripción'}
+              {licitacion.descripcion || 'Sin descripción'}
             </p>
             <div className="grid grid-cols-1 gap-x-8 gap-y-2 text-sm">
               <div className="flex items-center gap-2">
                 <Hash className="w-4 h-4 text-gray-400" />
                 <span className="font-medium">ID licitación: </span>
-                <span>{data.id_original}</span>
+                <span>{licitacion.id_original}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Landmark className="w-4 h-4 text-gray-400" />
                 <span className="font-medium">Organismo: </span>
-                <span>{data.nombre_organismo}</span>
+                <span>{licitacion.nombre_organismo}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CalendarDays className="w-4 h-4 text-gray-400" />
                 <span className="font-medium">Fecha publicación: </span>
                 <span>
                   {format(
-                    new Date(data.fecha_hora_publicacion),
+                    new Date(licitacion.fecha_hora_publicacion),
                     "dd 'de' MMMM 'del' yyyy, hh:mm a",
                     { locale: es }
                   )}
@@ -90,7 +103,7 @@ const CardLicitationInfo = (props: CardLicitationInfoProps) => {
                 <span className="font-medium">Fecha cierre: </span>
                 <span>
                   {format(
-                    new Date(data.fecha_hora_cierre),
+                    new Date(licitacion.fecha_hora_cierre),
                     "dd 'de' MMMM 'del' yyyy, hh:mm a",
                     { locale: es }
                   )}
@@ -100,9 +113,9 @@ const CardLicitationInfo = (props: CardLicitationInfoProps) => {
                 <DollarSign className="w-4 h-4 text-gray-400" />
                 <span className="font-medium">Monto disponible: </span>
                 <span>
-                  {data.monto_disponible.toLocaleString('es-CL', {
+                  {licitacion.monto_disponible.toLocaleString('es-CL', {
                     style: 'currency',
-                    currency: data.moneda || 'CLP',
+                    currency: licitacion.moneda || 'CLP',
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
                   })}
@@ -111,7 +124,21 @@ const CardLicitationInfo = (props: CardLicitationInfoProps) => {
               <div className="flex items-center gap-2">
                 <Coins className="w-4 h-4 text-gray-400" />
                 <span className="font-medium">Moneda: </span>
-                <span>{data.moneda}</span>
+                <span>{licitacion.moneda}</span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Badge className="w-4 h-4 text-gray-400" />
+                <span className="font-medium">Etapa interna: </span>
+                <span>{licitacion.etapa.codigo}</span>
+                <Button
+                  variant="outline"
+                  onClick={() => setOpenDialog(true)}
+                  className="cursor-pointer"
+                >
+                  <Pencil className="w-4 h-4" />
+                  Actualizar
+                </Button>
               </div>
             </div>
           </div>
@@ -127,6 +154,14 @@ const CardLicitationInfo = (props: CardLicitationInfoProps) => {
           </Button>
         </CardFooter>
       </Card>
+      {openDialog && (
+        <UpdateLicitationStatus
+          data={{ ...licitacion, id }}
+          statusDialog={openDialog}
+          onChangeStatusDialog={setOpenDialog}
+          query={queryLicitationsStatus}
+        />
+      )}
     </div>
   );
 };
@@ -235,7 +270,9 @@ const ManageOneLicitationSelected = () => {
 
   return (
     <div>
-      <CardLicitationInfo data={data?.licitacion} />
+      <CardLicitationInfo
+        licitacion={{ ...data?.licitacion, etapa: data?.etapa }}
+      />
       {id && (
         <LicitationsLogbooksProvider id_licitacion_selected={id}>
           <div className="my-4 grid grid-cols-2 gap-4">
