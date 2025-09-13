@@ -176,8 +176,7 @@ const ActionsLogbooks = () => {
 };
 
 export const InformationPagination = () => {
-  const { countSelectedLicitationLogbooks, pagination_information, table } =
-    useLicitationsLogbooksContext();
+  const { pagination_information, table } = useLicitationsLogbooksContext();
 
   return (
     <div className="grid grid-cols-2 gap-2 my-2">
