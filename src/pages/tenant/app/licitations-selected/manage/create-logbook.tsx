@@ -75,10 +75,9 @@ const CreateLogbook = () => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Registrar un registro de bitácora</DialogTitle>
+          <DialogTitle>Registrar una bitácora</DialogTitle>
           <DialogDescription>
-            Complete el contenido para crear un nuevo registro de bitácora en el
-            sistema.
+            Complete el contenido para crear un nuevo registro en la bitácora.
           </DialogDescription>
         </DialogHeader>
 
